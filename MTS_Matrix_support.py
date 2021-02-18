@@ -30,8 +30,11 @@ def init(top, gui, *args, **kwargs):
     top_level = top
     root = top
 
+#Disbled NW comm if remark insterted!
+    
 def send_tcp_packet(packet_to_be_send):
-
+    #Converting TCP IP data from GUI to valid IP address
+    #For socket operations and data sending TCP
     TCP_IP1 = w.Entry13.get()    
     TCP_IP2 = ipaddress.IPv4Address(TCP_IP1)
     TCP_IP = str(TCP_IP2)
@@ -42,6 +45,68 @@ def send_tcp_packet(packet_to_be_send):
     s.connect((TCP_IP, TCP_PORT))
     s.send(MESSAGE)
     s.close()
+    
+def Step_Matrix_Down(matrix_NUM):
+
+    #Converting string name to Class object
+    obj_convert = str("w.Entry") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    
+    current_att = eval(object1.get())
+        
+    if current_att > 95:
+        object1.delete(0,2)
+        object1.insert(0,str("95"))
+        current_att = 95
+
+    if current_att < 0:
+        object1.delete(0,2)
+        object1.insert(0,str("0"))
+        current_att = 0
+       
+    if current_att > 0:
+        current_att = current_att - 1
+        object1.delete(0,2)
+        object1.insert(0,str(current_att))
+
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'
+    print(m1)
+    print(m2)
+    send_tcp_packet(m2)
+
+def Step_Matrix_UP(matrix_NUM):
+
+    #Converting string name to Class object
+    obj_convert = str("w.Entry") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    
+    current_att = eval(object1.get())
+        
+    if current_att > 95:
+        object1.delete(0,2)
+        object1.insert(0,str("95"))
+        current_att = 95
+
+    if current_att < 0:
+        object1.delete(0,2)
+        object1.insert(0,str("0"))
+        current_att = 0
+       
+    if current_att < 95:
+        current_att = current_att + 1
+        object1.delete(0,2)
+        object1.insert(0,str(current_att))
+        
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'
+    print(m1)
+    print(m2)
+    send_tcp_packet(m2)
 
 
 def Check_Conn_Click(p1):
@@ -67,391 +132,77 @@ def Check_Conn_Click(p1):
        w.Entry15.insert(0,"ERROR")
 
 def Dw10_Click(p1):
-    current_att = eval(w.Entry10.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw10_Click')
-        sys.stdout.flush()
-        w.Entry10.delete(0,2)
-        w.Entry10.insert(0,str(current_att))
-    val = 'A10P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(10)
 
 def Dw11_Click(p1):
-    current_att = eval(w.Entry11.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw11_Click')
-        sys.stdout.flush()
-        w.Entry11.delete(0,2)
-        w.Entry11.insert(0,str(current_att))
-    val = 'A11P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_Down(11)
 
 def Dw12_Click(p1):
-    current_att = eval(w.Entry12.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw12_Click')
-        sys.stdout.flush()
-        w.Entry12.delete(0,2)
-        w.Entry12.insert(0,str(current_att))
-    val = 'A12P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_Down(12)
 
 def Dw1_Click(p1):
-    current_att = eval(w.Entry1.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw1_Click')
-        sys.stdout.flush()
-        w.Entry1.delete(0,2)
-        w.Entry1.insert(0,str(current_att))
-    val = 'A1P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(1)
 
 def Dw2_Click(p1):
-    current_att = eval(w.Entry2.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw2_Click')
-        sys.stdout.flush()
-        w.Entry2.delete(0,2)
-        w.Entry2.insert(0,str(current_att))
-    val = 'A2P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(2)
+    
 def Dw3_Click(p1):
-    current_att = eval(w.Entry3.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw3_Click')
-        sys.stdout.flush()
-        w.Entry3.delete(0,2)
-        w.Entry3.insert(0,str(current_att))
-    val = 'A3P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_Down(3)
 
 def Dw4_Click(p1):
-    current_att = eval(w.Entry4.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw4_Click')
-        sys.stdout.flush()
-        w.Entry4.delete(0,2)
-        w.Entry4.insert(0,str(current_att))
-    val = 'A4P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(4)
+    
 def Dw5_Click(p1):
-    current_att = eval(w.Entry5.get())
-    if current_att > 0:
-        current_att = current_att - 1    
-        print('MTS_Matrix_support.Dw5_Click')
-        sys.stdout.flush()
-        w.Entry5.delete(0,2)
-        w.Entry5.insert(0,str(current_att))
-    val = 'A5P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(5)
+    
 def Dw6_Click(p1):
-    current_att = eval(w.Entry6.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw6_Click')
-        sys.stdout.flush()
-        w.Entry6.delete(0,2)
-        w.Entry6.insert(0,str(current_att))
-    val = 'A6P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(6)
+    
 def Dw7_Click(p1):
-    current_att = eval(w.Entry7.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw7_Click')
-        sys.stdout.flush()
-        w.Entry7.delete(0,2)
-        w.Entry7.insert(0,str(current_att))
-    val = 'A7P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(7)
+    
 def Dw8_Click(p1):
-    current_att = eval(w.Entry8.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw8_Click')
-        sys.stdout.flush()
-        w.Entry8.delete(0,2)
-        w.Entry8.insert(0,str(current_att))
-    val = 'A8P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(8)
+    
 def Dw9_Click(p1):
-    current_att = eval(w.Entry9.get())
-    if current_att > 0:
-        current_att = current_att - 1
-        print('MTS_Matrix_support.Dw9_Click')
-        sys.stdout.flush()
-        w.Entry9.delete(0,2)
-        w.Entry9.insert(0,str(current_att))
-    val = 'A9P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_Down(9)
+    
 def Up10_Click(p1):
-    current_att = eval(w.Entry10.get())
-    if current_att < 95:
-        current_att = current_att + 1
-        print('MTS_Matrix_support.Up10_Click')
-        sys.stdout.flush()
-        w.Entry10.delete(0,2)
-        w.Entry10.insert(0,str(current_att))
-    val = 'A10P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_UP(10)
 
 def Up11_Click(p1):
-    current_att = eval(w.Entry11.get())
-    if current_att < 95:
-        current_att = current_att + 1    
-        print('MTS_Matrix_support.Up11_Click')
-        sys.stdout.flush()
-        w.Entry11.delete(0,2)
-        w.Entry11.insert(0,str(current_att))
-    val = 'A11P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(11)
+    
 def Up12_Click(p1):
-    current_att = eval(w.Entry12.get())
-    if current_att < 95:
-        current_att = current_att + 1    
-        print('MTS_Matrix_support.Up12_Click')
-        sys.stdout.flush()
-        w.Entry12.delete(0,2)
-        w.Entry12.insert(0,str(current_att))
-    val = 'A12P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(12)
+    
 def Up1_Click(p1):
-    current_att = eval(w.Entry1.get())
-    if current_att < 95:
-        current_att = current_att + 1    
-        print('MTS_Matrix_support.Up1_Click')
-        sys.stdout.flush()
-        w.Entry1.delete(0,2)
-        w.Entry1.insert(0,str(current_att))
-    val = 'A1P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(1)
+    
 def Up2_click(p1):
-    current_att = eval(w.Entry2.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up2_click')
-        sys.stdout.flush()
-        w.Entry2.delete(0,2)
-        w.Entry2.insert(0,str(current_att))
-    val = 'A2P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(2)
+    
 def Up3_Click(p1):
-    current_att = eval(w.Entry3.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up3_Click')
-        sys.stdout.flush()
-        w.Entry3.delete(0,2)
-        w.Entry3.insert(0,str(current_att))
-    val = 'A3P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_UP(3)
 
 def Up4_Click(p1):
-    current_att = eval(w.Entry4.get())
-    if current_att < 95:
-        current_att = current_att + 1    
-        print('MTS_Matrix_support.Up4_Click')
-        sys.stdout.flush()
-        w.Entry4.delete(0,2)
-        w.Entry4.insert(0,str(current_att))
-    val = 'A4P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(4)
+    
 def Up5_Click(p1):
-    current_att = eval(w.Entry5.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up5_Click')
-        sys.stdout.flush()
-        w.Entry5.delete(0,2)
-        w.Entry5.insert(0,str(current_att))
-    val = 'A5P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(5)
+    
 def Up6_Click(p1):
-    current_att = eval(w.Entry6.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up6_Click')
-        sys.stdout.flush()
-        w.Entry6.delete(0,2)
-        w.Entry6.insert(0,str(current_att))
-    val = 'A6P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_UP(6)
 
 def Up7_Click(p1):
-    current_att = eval(w.Entry7.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up7_Click')
-        sys.stdout.flush()
-        w.Entry7.delete(0,2)
-        w.Entry7.insert(0,str(current_att))
-    val = 'A7P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_UP(7)
 
 def Up8_Click(p1):
-    current_att = eval(w.Entry8.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up8_Click')
-        sys.stdout.flush()
-        w.Entry8.delete(0,2)
-        w.Entry8.insert(0,str(current_att))
-    val = 'A8P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
+    Step_Matrix_UP(8)
 
 def Up9_Click(p1):
-    current_att = eval(w.Entry9.get())
-    if current_att < 95:
-        current_att = current_att + 1        
-        print('MTS_Matrix_support.Up9_Click')
-        sys.stdout.flush()
-        w.Entry9.delete(0,2)
-        w.Entry9.insert(0,str(current_att))
-    val = 'A9P' + str(current_att)
-    message1 = val.encode('utf-8')
-    m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
-    send_tcp_packet(m2)
-
+    Step_Matrix_UP(9)
+    
 def destroy_window():
     # Function which closes the window.
     global top_level
