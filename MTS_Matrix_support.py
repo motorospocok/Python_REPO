@@ -30,6 +30,20 @@ def init(top, gui, *args, **kwargs):
     top_level = top
     root = top
 
+def send_tcp_packet(packet_to_be_send):
+
+    TCP_IP1 = w.Entry13.get()    
+    TCP_IP2 = ipaddress.IPv4Address(TCP_IP1)
+    TCP_IP = str(TCP_IP2)
+    TCP_PORT = eval(w.Entry14.get()) 
+
+    MESSAGE = binascii.unhexlify(packet_to_be_send)    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((TCP_IP, TCP_PORT))
+    s.send(MESSAGE)
+    s.close()
+
+
 def Check_Conn_Click(p1):
     print('MTS_Matrix_support.Check_Conn_Click')
     TCP_IP1 = w.Entry13.get()    
@@ -66,6 +80,7 @@ def Dw10_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 
 def Dw11_Click(p1):
@@ -82,6 +97,7 @@ def Dw11_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw12_Click(p1):
     current_att = eval(w.Entry12.get())
@@ -97,6 +113,7 @@ def Dw12_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw1_Click(p1):
     current_att = eval(w.Entry1.get())
@@ -112,6 +129,7 @@ def Dw1_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 
 def Dw2_Click(p1):
@@ -128,6 +146,7 @@ def Dw2_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw3_Click(p1):
     current_att = eval(w.Entry3.get())
@@ -143,6 +162,7 @@ def Dw3_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw4_Click(p1):
     current_att = eval(w.Entry4.get())
@@ -158,6 +178,7 @@ def Dw4_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw5_Click(p1):
     current_att = eval(w.Entry5.get())
@@ -173,6 +194,7 @@ def Dw5_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw6_Click(p1):
     current_att = eval(w.Entry6.get())
@@ -188,6 +210,7 @@ def Dw6_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw7_Click(p1):
     current_att = eval(w.Entry7.get())
@@ -203,6 +226,7 @@ def Dw7_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw8_Click(p1):
     current_att = eval(w.Entry8.get())
@@ -218,6 +242,7 @@ def Dw8_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Dw9_Click(p1):
     current_att = eval(w.Entry9.get())
@@ -233,10 +258,11 @@ def Dw9_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up10_Click(p1):
     current_att = eval(w.Entry10.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1
         print('MTS_Matrix_support.Up10_Click')
         sys.stdout.flush()
@@ -248,10 +274,11 @@ def Up10_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up11_Click(p1):
     current_att = eval(w.Entry11.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1    
         print('MTS_Matrix_support.Up11_Click')
         sys.stdout.flush()
@@ -263,10 +290,11 @@ def Up11_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up12_Click(p1):
     current_att = eval(w.Entry12.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1    
         print('MTS_Matrix_support.Up12_Click')
         sys.stdout.flush()
@@ -278,11 +306,11 @@ def Up12_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
-
+    send_tcp_packet(m2)
 
 def Up1_Click(p1):
     current_att = eval(w.Entry1.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1    
         print('MTS_Matrix_support.Up1_Click')
         sys.stdout.flush()
@@ -294,11 +322,11 @@ def Up1_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
-
+    send_tcp_packet(m2)
 
 def Up2_click(p1):
     current_att = eval(w.Entry2.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up2_click')
         sys.stdout.flush()
@@ -310,11 +338,11 @@ def Up2_click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
-
+    send_tcp_packet(m2)
 
 def Up3_Click(p1):
     current_att = eval(w.Entry3.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up3_Click')
         sys.stdout.flush()
@@ -326,10 +354,11 @@ def Up3_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up4_Click(p1):
     current_att = eval(w.Entry4.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1    
         print('MTS_Matrix_support.Up4_Click')
         sys.stdout.flush()
@@ -341,10 +370,11 @@ def Up4_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up5_Click(p1):
     current_att = eval(w.Entry5.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up5_Click')
         sys.stdout.flush()
@@ -356,10 +386,11 @@ def Up5_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up6_Click(p1):
     current_att = eval(w.Entry6.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up6_Click')
         sys.stdout.flush()
@@ -371,10 +402,11 @@ def Up6_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up7_Click(p1):
     current_att = eval(w.Entry7.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up7_Click')
         sys.stdout.flush()
@@ -386,10 +418,11 @@ def Up7_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up8_Click(p1):
     current_att = eval(w.Entry8.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up8_Click')
         sys.stdout.flush()
@@ -401,10 +434,11 @@ def Up8_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def Up9_Click(p1):
     current_att = eval(w.Entry9.get())
-    if current_att < 99:
+    if current_att < 95:
         current_att = current_att + 1        
         print('MTS_Matrix_support.Up9_Click')
         sys.stdout.flush()
@@ -416,6 +450,7 @@ def Up9_Click(p1):
     m2 = '02' + m1 + '03'
     print(m1)
     print(m2)
+    send_tcp_packet(m2)
 
 def destroy_window():
     # Function which closes the window.

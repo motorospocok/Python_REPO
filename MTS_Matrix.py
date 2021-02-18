@@ -70,7 +70,7 @@ class Toplevel1:
         self.Entry1.configure(font="TkFixedFont")
         self.Entry1.configure(foreground="#000000")
         self.Entry1.configure(insertbackground="black")
-        self.Entry1.insert(0,"99")
+        self.Entry1.insert(0,"95")
 
         self.Entry2 = tk.Entry(top)
         self.Entry2.place(relx=0.101, rely=0.056, height=30, relwidth=0.055)
@@ -79,7 +79,7 @@ class Toplevel1:
         self.Entry2.configure(font="TkFixedFont")
         self.Entry2.configure(foreground="#000000")
         self.Entry2.configure(insertbackground="black")
-        self.Entry2.insert(0,"99")
+        self.Entry2.insert(0,"95")
 
         self.Entry3 = tk.Entry(top)
         self.Entry3.place(relx=0.177, rely=0.056, height=30, relwidth=0.055)
@@ -88,7 +88,7 @@ class Toplevel1:
         self.Entry3.configure(font="TkFixedFont")
         self.Entry3.configure(foreground="#000000")
         self.Entry3.configure(insertbackground="black")
-        self.Entry3.insert(0,"99")
+        self.Entry3.insert(0,"95")
 
         self.Entry4 = tk.Entry(top)
         self.Entry4.place(relx=0.258, rely=0.056, height=30, relwidth=0.055)
@@ -97,7 +97,7 @@ class Toplevel1:
         self.Entry4.configure(font="TkFixedFont")
         self.Entry4.configure(foreground="#000000")
         self.Entry4.configure(insertbackground="black")
-        self.Entry4.insert(0,"99")
+        self.Entry4.insert(0,"95")
 
         self.Entry5 = tk.Entry(top)
         self.Entry5.place(relx=0.338, rely=0.056, height=30, relwidth=0.055)
@@ -106,7 +106,7 @@ class Toplevel1:
         self.Entry5.configure(font="TkFixedFont")
         self.Entry5.configure(foreground="#000000")
         self.Entry5.configure(insertbackground="black")
-        self.Entry5.insert(0,"99")
+        self.Entry5.insert(0,"95")
 
         self.Entry6 = tk.Entry(top)
         self.Entry6.place(relx=0.424, rely=0.056, height=30, relwidth=0.055)
@@ -115,7 +115,7 @@ class Toplevel1:
         self.Entry6.configure(font="TkFixedFont")
         self.Entry6.configure(foreground="#000000")
         self.Entry6.configure(insertbackground="black")
-        self.Entry6.insert(0,"99")
+        self.Entry6.insert(0,"95")
 
         self.Entry7 = tk.Entry(top)
         self.Entry7.place(relx=0.499, rely=0.056, height=30, relwidth=0.055)
@@ -124,7 +124,7 @@ class Toplevel1:
         self.Entry7.configure(font="TkFixedFont")
         self.Entry7.configure(foreground="#000000")
         self.Entry7.configure(insertbackground="black")
-        self.Entry7.insert(0,"99")
+        self.Entry7.insert(0,"95")
 
         self.Entry8 = tk.Entry(top)
         self.Entry8.place(relx=0.58, rely=0.056, height=30, relwidth=0.055)
@@ -133,7 +133,7 @@ class Toplevel1:
         self.Entry8.configure(font="TkFixedFont")
         self.Entry8.configure(foreground="#000000")
         self.Entry8.configure(insertbackground="black")
-        self.Entry8.insert(0,"99")
+        self.Entry8.insert(0,"95")
 
         self.menubar = tk.Menu(top,font="TkMenuFont",bg=_bgcolor,fg=_fgcolor)
         top.configure(menu = self.menubar)
@@ -145,7 +145,7 @@ class Toplevel1:
         self.Entry9.configure(font="TkFixedFont")
         self.Entry9.configure(foreground="#000000")
         self.Entry9.configure(insertbackground="black")
-        self.Entry9.insert(0,"99")
+        self.Entry9.insert(0,"95")
 
         self.Entry10 = tk.Entry(top)
         self.Entry10.place(relx=0.744, rely=0.056, height=30, relwidth=0.055)
@@ -154,7 +154,7 @@ class Toplevel1:
         self.Entry10.configure(font="TkFixedFont")
         self.Entry10.configure(foreground="#000000")
         self.Entry10.configure(insertbackground="black")
-        self.Entry10.insert(0,"99")
+        self.Entry10.insert(0,"95")
 
         self.Entry11 = tk.Entry(top)
         self.Entry11.place(relx=0.824, rely=0.056, height=30, relwidth=0.055)
@@ -163,7 +163,7 @@ class Toplevel1:
         self.Entry11.configure(font="TkFixedFont")
         self.Entry11.configure(foreground="#000000")
         self.Entry11.configure(insertbackground="black")
-        self.Entry11.insert(0,"99")
+        self.Entry11.insert(0,"95")
 
         self.Entry12 = tk.Entry(top)
         self.Entry12.place(relx=0.905, rely=0.056, height=30, relwidth=0.055)
@@ -172,7 +172,7 @@ class Toplevel1:
         self.Entry12.configure(font="TkFixedFont")
         self.Entry12.configure(foreground="#000000")
         self.Entry12.configure(insertbackground="black")
-        self.Entry12.insert(0,"99")
+        self.Entry12.insert(0,"95")
 
         self.Up1 = tk.Button(top)
         self.Up1.place(relx=0.016, rely=0.167, height=44, width=37)
