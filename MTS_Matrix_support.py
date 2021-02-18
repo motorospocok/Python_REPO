@@ -32,7 +32,7 @@ def init(top, gui, *args, **kwargs):
 
 #Disbled NW comm if remark insterted!
     
-#def send_tcp_packet(packet_to_be_send):
+def send_tcp_packet(packet_to_be_send):
     #Converting TCP IP data from GUI to valid IP address
     #For socket operations and data sending TCP
     TCP_IP1 = w.Entry13.get()    
@@ -72,9 +72,7 @@ def Step_Matrix_Down(matrix_NUM):
     val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
     message1 = val.encode('utf-8')
     m1 = message1.hex()
-    m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
+    m2 = '02' + m1 + '03'    
     send_tcp_packet(m2)
 
 def Step_Matrix_UP(matrix_NUM):
@@ -104,22 +102,17 @@ def Step_Matrix_UP(matrix_NUM):
     message1 = val.encode('utf-8')
     m1 = message1.hex()
     m2 = '02' + m1 + '03'
-    print(m1)
-    print(m2)
     send_tcp_packet(m2)
 
 
 def Check_Conn_Click(p1):
-    print('MTS_Matrix_support.Check_Conn_Click')
+    
     TCP_IP1 = w.Entry13.get()    
     TCP_IP2 = ipaddress.IPv4Address(TCP_IP1)
     TCP_IP = str(TCP_IP2)
     TCP_PORT = eval(w.Entry14.get())    
-    print(TCP_IP)
     location = (TCP_IP,TCP_PORT)
     BUFFER_SIZE = 1024
-    print(TCP_IP)
-    print(TCP_PORT)
     sys.stdout.flush()
     
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -172,7 +165,7 @@ def Dw4_Click(p1):
 
 def Dw4_hold(p1):
     Step_Matrix_Down(4)
-    
+
 def Dw5_Click(p1):
     Step_Matrix_Down(5)
 
@@ -196,34 +189,34 @@ def Dw8_Click(p1):
 
 def Dw8_hold(p1):
     Step_Matrix_Down(8)
-
+    
 def Dw9_Click(p1):
     Step_Matrix_Down(9)
 
 def Dw9_hold(p1):
     Step_Matrix_Down(9)
-    
+
 def Up10_Click(p1):
     Step_Matrix_UP(10)
-	
+
 def Up10_hold(p1):
     Step_Matrix_UP(10)
 
 def Up11_Click(p1):
     Step_Matrix_UP(11)
-	
+
 def Up11_hold(p1):
     Step_Matrix_UP(11)
 
 def Up12_Click(p1):
     Step_Matrix_UP(12)
-	
+
 def Up12_hold(p1):
     Step_Matrix_UP(12)
     
 def Up1_Click(p1):
     Step_Matrix_UP(1)
-	
+    
 def Up1_hold(p1):
     Step_Matrix_UP(1)
     
@@ -241,28 +234,28 @@ def Up3_hold(p1):
 
 def Up4_Click(p1):
     Step_Matrix_UP(4)
-	
+
 def Up4_hold(p1):
     Step_Matrix_UP(4)
 
 def Up5_Click(p1):
     Step_Matrix_UP(5)
-	
+
 def Up5_hold(p1):
     Step_Matrix_UP(5)
-    
+
 def Up6_Click(p1):
     Step_Matrix_UP(6)
-	
+
 def Up6_hold(p1):
     Step_Matrix_UP(6)
 
 def Up7_Click(p1):
     Step_Matrix_UP(7)
-	
+
 def Up7_hold(p1):
     Step_Matrix_UP(7)
-	
+
 def Up8_Click(p1):
     Step_Matrix_UP(8)
 
@@ -271,10 +264,11 @@ def Up8_hold(p1):
 
 def Up9_Click(p1):
     Step_Matrix_UP(9)
-	
+
 def Up9_hold(p1):
     Step_Matrix_UP(9)
 
+    
 def destroy_window():
     # Function which closes the window.
     global top_level
