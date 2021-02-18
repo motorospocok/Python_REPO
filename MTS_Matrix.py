@@ -188,6 +188,7 @@ class Toplevel1:
         self.Up1.configure(pady="0")
         self.Up1.configure(text='''UP1''')
         self.Up1.bind('<Button-1>',lambda e:MTS_Matrix_support.Up1_Click(e))
+        self.Up1.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up1_hold(e))
 
         self.Dw1 = tk.Button(top)
         self.Dw1.place(relx=0.016, rely=0.306, height=44, width=37)
@@ -201,6 +202,7 @@ class Toplevel1:
         self.Dw1.configure(pady="0")
         self.Dw1.configure(text='''DW1''')
         self.Dw1.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw1_Click(e))
+        self.Dw1.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw1_hold(e))
 
         self.Up2 = tk.Button(top)
         self.Up2.place(relx=0.101, rely=0.167, height=44, width=37)
@@ -214,6 +216,7 @@ class Toplevel1:
         self.Up2.configure(pady="0")
         self.Up2.configure(text='''UP2''')
         self.Up2.bind('<Button-1>',lambda e:MTS_Matrix_support.Up2_click(e))
+        self.Up2.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up2_hold(e))
 
         self.Dw2 = tk.Button(top)
         self.Dw2.place(relx=0.101, rely=0.306, height=44, width=37)
@@ -227,6 +230,7 @@ class Toplevel1:
         self.Dw2.configure(pady="0")
         self.Dw2.configure(text='''DW2''')
         self.Dw2.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw2_Click(e))
+        self.Dw2.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw2_hold(e))
 
         self.Button3 = tk.Button(top)
         self.Button3.place(relx=0.18, rely=0.167, height=44, width=37)
@@ -240,6 +244,7 @@ class Toplevel1:
         self.Button3.configure(pady="0")
         self.Button3.configure(text='''UP3''')
         self.Button3.bind('<Button-1>',lambda e:MTS_Matrix_support.Up3_Click(e))
+        self.Button3.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up3_hold(e))
 
         self.Dw3 = tk.Button(top)
         self.Dw3.place(relx=0.18, rely=0.306, height=44, width=37)
@@ -253,6 +258,7 @@ class Toplevel1:
         self.Dw3.configure(pady="0")
         self.Dw3.configure(text='''DW3''')
         self.Dw3.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw3_Click(e))
+        self.Dw3.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw3_hold(e))
 
         self.Button5 = tk.Button(top)
         self.Button5.place(relx=0.258, rely=0.167, height=44, width=37)
@@ -266,6 +272,7 @@ class Toplevel1:
         self.Button5.configure(pady="0")
         self.Button5.configure(text='''UP4''')
         self.Button5.bind('<Button-1>',lambda e:MTS_Matrix_support.Up4_Click(e))
+        self.Button5.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up4_hold(e))
 
         self.Dw4 = tk.Button(top)
         self.Dw4.place(relx=0.258, rely=0.306, height=44, width=37)
@@ -279,10 +286,10 @@ class Toplevel1:
         self.Dw4.configure(pady="0")
         self.Dw4.configure(text='''DW4''')
         self.Dw4.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw4_Click(e))
+        self.Dw4.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw4_hold(e))
 
         self.Frame1 = tk.Frame(top)
-        self.Frame1.place(relx=0.016, rely=0.639, relheight=0.208
-                , relwidth=0.958)
+        self.Frame1.place(relx=0.016, rely=0.639, relheight=0.208, relwidth=0.958)
         self.Frame1.configure(relief='groove')
         self.Frame1.configure(borderwidth="2")
         self.Frame1.configure(relief="groove")
@@ -354,6 +361,7 @@ class Toplevel1:
         self.Button7.configure(pady="0")
         self.Button7.configure(text='''UP5''')
         self.Button7.bind('<Button-1>',lambda e:MTS_Matrix_support.Up5_Click(e))
+        self.Button7.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up5_hold(e))
 
         self.Dw5 = tk.Button(top)
         self.Dw5.place(relx=0.338, rely=0.306, height=44, width=37)
@@ -367,6 +375,7 @@ class Toplevel1:
         self.Dw5.configure(pady="0")
         self.Dw5.configure(text='''DW5''')
         self.Dw5.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw5_Click(e))
+        self.Dw5.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw5_hold(e))
 
         self.Button9 = tk.Button(top)
         self.Button9.place(relx=0.419, rely=0.167, height=44, width=37)
@@ -380,6 +389,7 @@ class Toplevel1:
         self.Button9.configure(pady="0")
         self.Button9.configure(text='''UP6''')
         self.Button9.bind('<Button-1>',lambda e:MTS_Matrix_support.Up6_Click(e))
+        self.Button9.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up6_hold(e))
 
         self.Dw6 = tk.Button(top)
         self.Dw6.place(relx=0.419, rely=0.306, height=44, width=37)
@@ -393,6 +403,7 @@ class Toplevel1:
         self.Dw6.configure(pady="0")
         self.Dw6.configure(text='''DW6''')
         self.Dw6.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw6_Click(e))
+        self.Dw6.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw6_hold(e))
 
         self.Button11 = tk.Button(top)
         self.Button11.place(relx=0.499, rely=0.167, height=44, width=37)
@@ -406,6 +417,7 @@ class Toplevel1:
         self.Button11.configure(pady="0")
         self.Button11.configure(text='''UP7''')
         self.Button11.bind('<Button-1>',lambda e:MTS_Matrix_support.Up7_Click(e))
+        self.Button11.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up7_hold(e))
 
         self.Dw7 = tk.Button(top)
         self.Dw7.place(relx=0.499, rely=0.306, height=44, width=37)
@@ -419,6 +431,7 @@ class Toplevel1:
         self.Dw7.configure(pady="0")
         self.Dw7.configure(text='''DW7''')
         self.Dw7.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw7_Click(e))
+        self.Dw7.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw7_hold(e))
 
         self.Button13 = tk.Button(top)
         self.Button13.place(relx=0.58, rely=0.167, height=44, width=37)
@@ -432,6 +445,7 @@ class Toplevel1:
         self.Button13.configure(pady="0")
         self.Button13.configure(text='''UP8''')
         self.Button13.bind('<Button-1>',lambda e:MTS_Matrix_support.Up8_Click(e))
+        self.Button13.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up8_hold(e))
 
         self.Dw8 = tk.Button(top)
         self.Dw8.place(relx=0.58, rely=0.306, height=44, width=37)
@@ -445,6 +459,7 @@ class Toplevel1:
         self.Dw8.configure(pady="0")
         self.Dw8.configure(text='''DW8''')
         self.Dw8.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw8_Click(e))
+        self.Dw8.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw8_hold(e))
 
         self.Button15 = tk.Button(top)
         self.Button15.place(relx=0.663, rely=0.167, height=44, width=37)
@@ -458,7 +473,8 @@ class Toplevel1:
         self.Button15.configure(pady="0")
         self.Button15.configure(text='''UP9''')
         self.Button15.bind('<Button-1>',lambda e:MTS_Matrix_support.Up9_Click(e))
-
+        self.Button15.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up9_hold(e))
+	
         self.Dw9 = tk.Button(top)
         self.Dw9.place(relx=0.66, rely=0.306, height=44, width=37)
         self.Dw9.configure(activebackground="#ececec")
@@ -471,6 +487,7 @@ class Toplevel1:
         self.Dw9.configure(pady="0")
         self.Dw9.configure(text='''DW9''')
         self.Dw9.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw9_Click(e))
+        self.Dw9.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw9_hold(e))
 
         self.Button17 = tk.Button(top)
         self.Button17.place(relx=0.744, rely=0.167, height=44, width=37)
@@ -484,6 +501,7 @@ class Toplevel1:
         self.Button17.configure(pady="0")
         self.Button17.configure(text='''UP10''')
         self.Button17.bind('<Button-1>',lambda e:MTS_Matrix_support.Up10_Click(e))
+        self.Button17.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up10_hold(e))
 
         self.Dw10 = tk.Button(top)
         self.Dw10.place(relx=0.741, rely=0.306, height=44, width=37)
@@ -497,6 +515,7 @@ class Toplevel1:
         self.Dw10.configure(pady="0")
         self.Dw10.configure(text='''DW10''')
         self.Dw10.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw10_Click(e))
+        self.Dw10.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw10_hold(e))
 
         self.Button19 = tk.Button(top)
         self.Button19.place(relx=0.824, rely=0.167, height=44, width=37)
@@ -510,6 +529,7 @@ class Toplevel1:
         self.Button19.configure(pady="0")
         self.Button19.configure(text='''UP11''')
         self.Button19.bind('<Button-1>',lambda e:MTS_Matrix_support.Up11_Click(e))
+        self.Button19.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up11_hold(e))
 
         self.Dw11 = tk.Button(top)
         self.Dw11.place(relx=0.821, rely=0.306, height=44, width=37)
@@ -523,6 +543,7 @@ class Toplevel1:
         self.Dw11.configure(pady="0")
         self.Dw11.configure(text='''DW11''')
         self.Dw11.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw11_Click(e))
+        self.Dw11.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw11_hold(e))
 
         self.Button21 = tk.Button(top)
         self.Button21.place(relx=0.905, rely=0.167, height=44, width=37)
@@ -536,6 +557,7 @@ class Toplevel1:
         self.Button21.configure(pady="0")
         self.Button21.configure(text='''UP12''')
         self.Button21.bind('<Button-1>',lambda e:MTS_Matrix_support.Up12_Click(e))
+        self.Button21.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Up12_hold(e))
 
         self.Dw12 = tk.Button(top)
         self.Dw12.place(relx=0.905, rely=0.306, height=44, width=37)
@@ -549,6 +571,7 @@ class Toplevel1:
         self.Dw12.configure(pady="0")
         self.Dw12.configure(text='''DW12''')
         self.Dw12.bind('<Button-1>',lambda e:MTS_Matrix_support.Dw12_Click(e))
+        self.Dw12.bind('<B1-Motion>',lambda e:MTS_Matrix_support.Dw12_hold(e))
 
 if __name__ == '__main__':
     vp_start_gui()
