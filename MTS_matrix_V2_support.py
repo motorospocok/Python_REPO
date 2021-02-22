@@ -6,6 +6,12 @@
 #    Feb 21, 2021 10:54:27 PM CET  platform: Windows NT
 
 import sys
+import socket
+import struct
+import time
+import binascii
+import ipaddress
+
 
 try:
     import Tkinter as tk
@@ -51,209 +57,899 @@ def init(top, gui, *args, **kwargs):
     top_level = top
     root = top
 
+def Step_Matrix_MAX(matrix_NUM):
+    obj_convert = str("w.Display") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    object1.delete(0,2)
+    object1.insert(0,str("95"))
+    current_att = 95
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'    
+    send_tcp_packet(m2)
+
+def Step_Matrix_MIN(matrix_NUM):
+    obj_convert = str("w.Display") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    object1.delete(0,2)
+    object1.insert(0,str("0"))
+    current_att = 0
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'    
+    send_tcp_packet(m2)
+
+def Step_Matrix_Down(matrix_NUM):
+
+    #Converting string name to Class object
+    obj_convert = str("w.Display") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    
+    current_att = eval(object1.get())
+        
+    if current_att > 95:
+        object1.delete(0,2)
+        object1.insert(0,str("95"))
+        current_att = 95
+
+    if current_att < 0:
+        object1.delete(0,2)
+        object1.insert(0,str("0"))
+        current_att = 0
+       
+    if current_att > 0:
+        current_att = current_att - 1
+        object1.delete(0,2)
+        object1.insert(0,str(current_att))
+
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'
+    send_tcp_packet(m2)
+
+def Step_Matrix_UP(matrix_NUM):
+
+    #Converting string name to Class object
+    obj_convert = str("w.Display") + str(matrix_NUM)
+    object1 = eval(obj_convert)
+    
+    current_att = eval(object1.get())
+        
+    if current_att > 95:
+        object1.delete(0,2)
+        object1.insert(0,str("95"))
+        current_att = 95
+
+    if current_att < 0:
+        object1.delete(0,2)
+        object1.insert(0,str("0"))
+        current_att = 0
+       
+    if current_att < 95:
+        current_att = current_att + 1
+        object1.delete(0,2)
+        object1.insert(0,str(current_att))
+        
+    val = 'A' + str(matrix_NUM) + 'P' + str(current_att)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'
+    send_tcp_packet(m2)
+
+def send_tcp_packet(packet_to_be_send):
+    #Converting TCP IP data from GUI to valid IP address
+    #For socket operations and data sending TCP
+    TCP_IP1 = w.IP_address_in.get()    
+    TCP_IP2 = ipaddress.IPv4Address(TCP_IP1)
+    TCP_IP = str(TCP_IP2)
+    TCP_PORT = eval(w.IP_port_in.get()) 
+
+    MESSAGE = binascii.unhexlify(packet_to_be_send)    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((TCP_IP, TCP_PORT))
+    s.send(MESSAGE)
+    s.close()
+
+
 def Check_connection_Click(p1):
     print('MTS_matrix_V2_support.Check_connection_Click')
     sys.stdout.flush()
 
 def Dw10_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw10_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(10)
 
-def Dw10_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw10_Right_Click')
-    sys.stdout.flush()
+def Dw10_Right_Click(p1):    
+    Step_Matrix_MIN(10)
 
 def Dw11_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw11_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(11)
 
 def Dw11_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw11_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(11)
 
 def Dw12_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw12_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(12)
 
 def Dw12_Right_Left(p1):
-    print('MTS_matrix_V2_support.Dw12_Right_Left')
-    sys.stdout.flush()
+    Step_Matrix_MIN(12)
 
 def Dw1_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw1_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(1)
 
 def Dw1_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw1_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(1)
 
 def Dw2_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw2_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(2)
+
+def Dw2_Right_Click(p1):
+    Step_Matrix_MIN(2)
 
 def Dw3_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw3_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(3)
 
 def Dw3_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw3_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(3)
 
 def Dw4_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw4_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(4)
 
 def Dw4_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw4_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(4)
 
 def Dw5_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw5_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(5)
 
 def Dw5_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw5_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(5)
 
 def Dw6_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw6_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(6)
 
 def Dw6_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw6_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(6)
 
 def Dw7_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw7_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(7)
 
 def Dw7_Right_Click(p1):
-    print('MTS_matrix_V2_support.Dw7_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(7)
 
 def Dw8_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw8_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(8)
 
 def Dw8_Right_Clik(p1):
-    print('MTS_matrix_V2_support.Dw8_Right_Clik')
-    sys.stdout.flush()
+    Step_Matrix_MIN(8)
 
 def Dw9_Left_Click(p1):
-    print('MTS_matrix_V2_support.Dw9_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_Down(9)
 
 def Dw9_Rigth_Click(p1):
-    print('MTS_matrix_V2_support.Dw9_Rigth_Click')
-    sys.stdout.flush()
+    Step_Matrix_MIN(9)
 
 def GR_Dw_Left_Click(p1):
-    print('MTS_matrix_V2_support.GR_Dw_Left_Click')
-    sys.stdout.flush()
+    val = ""
+    if che1.get() == 1:
+       obj_convert = str("w.Display1")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val1 = 'A' + str("1") + 'P' + str(current_att)
+       val = val+val1
+       
+    if che2.get() == 1:
+       obj_convert = str("w.Display2")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val2 = 'A' + str("2") + 'P' + str(current_att)
+       val = val+val2
+       
+    if che3.get() == 1:
+       obj_convert = str("w.Display3")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val3 = 'A' + str("3") + 'P' + str(current_att)
+       val = val+val3
+       
+    if che4.get() == 1:
+       obj_convert = str("w.Display4")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val4 = 'A' + str("4") + 'P' + str(current_att)
+       val = val+val4
+
+    if che5.get() == 1:
+       obj_convert = str("w.Display5")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val5 = 'A' + str("5") + 'P' + str(current_att)
+       val = val+val5
+
+    if che6.get() == 1:
+       obj_convert = str("w.Display6")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val6 = 'A' + str("6") + 'P' + str(current_att)
+       val = val+val6
+
+    if che7.get() == 1:
+       obj_convert = str("w.Display7")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val7 = 'A' + str("7") + 'P' + str(current_att)
+       val = val+val7
+
+    if che8.get() == 1:
+       obj_convert = str("w.Display8")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val8 = 'A' + str("8") + 'P' + str(current_att)
+       val = val+val8
+
+    if che9.get() == 1:
+       obj_convert = str("w.Display9")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val9 = 'A' + str("9") + 'P' + str(current_att)
+       val = val+val9
+       
+    if che10.get() == 1:
+       obj_convert = str("w.Display10")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val10 = 'A' + str("10") + 'P' + str(current_att)
+       val = val+val10
+       
+    if che11.get() == 1:
+       obj_convert = str("w.Display11")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val11 = 'A' + str("11") + 'P' + str(current_att)
+       val = val+val11
+       
+    if che12.get() == 1:
+       obj_convert = str("w.Display12")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att > 0:
+              current_att = current_att - 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val12 = 'A' + str("12") + 'P' + str(current_att)
+       val = val+val12
+    print(val)
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'
+    send_tcp_packet(m2)
 
 def GR_Dw_Right_click(p1):
-    print('MTS_matrix_V2_support.GR_Dw_Right_click')
-    sys.stdout.flush()
+    val = ""
+    if che1.get() == 1:
+       w.Display1.delete(0,2)
+       w.Display1.insert(0,str("0"))
+       current_att = 0
+       val1 = 'A' + str("1") + 'P' + str("0")
+       val = val + val1
+
+    if che2.get() == 1:
+       w.Display2.delete(0,2)
+       w.Display2.insert(0,str("0"))
+       current_att = 0
+       val2 = 'A' + str("2") + 'P' + str("0")
+       val = val + val2
+
+    if che3.get() == 1:
+       w.Display3.delete(0,2)
+       w.Display3.insert(0,str("0"))
+       current_att = 0
+       val3 = 'A' + str("3") + 'P' + str("0")
+       val = val + val3
+
+    if che4.get() == 1:
+       w.Display4.delete(0,2)
+       w.Display4.insert(0,str("0"))
+       current_att = 0
+       val4 = 'A' + str("4") + 'P' + str("0")
+       val = val + val4
+
+    if che5.get() == 1:
+       w.Display5.delete(0,2)
+       w.Display5.insert(0,str("0"))
+       current_att = 0
+       val5 = 'A' + str("5") + 'P' + str("0")
+       val = val + val5
+
+    if che6.get() == 1:
+       w.Display6.delete(0,2)
+       w.Display6.insert(0,str("0"))
+       current_att = 0
+       val6 = 'A' + str("6") + 'P' + str("0")
+       val = val + val6
+
+    if che7.get() == 1:
+       w.Display7.delete(0,2)
+       w.Display7.insert(0,str("0"))
+       current_att = 0
+       val7 = 'A' + str("7") + 'P' + str("0")
+       val = val + val7
+
+    if che8.get() == 1:
+       w.Display8.delete(0,2)
+       w.Display8.insert(0,str("0"))
+       current_att = 0
+       val8 = 'A' + str("8") + 'P' + str("0")
+       val = val + val8
+
+    if che9.get() == 1:
+       w.Display9.delete(0,2)
+       w.Display9.insert(0,str("0"))
+       current_att = 0
+       val9 = 'A' + str("9") + 'P' + str("0")
+       val = val + val9
+
+    if che10.get() == 1:
+       w.Display10.delete(0,2)
+       w.Display10.insert(0,str("0"))
+       current_att = 0
+       val10 = 'A' + str("10") + 'P' + str("0")
+       val = val + val10
+
+    if che11.get() == 1:
+       w.Display11.delete(0,2)
+       w.Display11.insert(0,str("0"))
+       current_att = 0
+       val11 = 'A' + str("11") + 'P' + str("0")
+       val = val + val11
+
+    if che12.get() == 1:
+       w.Display12.delete(0,2)
+       w.Display12.insert(0,str("0"))
+       current_att = 0
+       val12 = 'A' + str("12") + 'P' + str("0")
+       val = val + val12
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'    
+    send_tcp_packet(m2)
 
 def GR_Up_Left_Click(p1):
-    print('MTS_matrix_V2_support.GR_Up_Left_Click')
-    sys.stdout.flush()
+    val = ""
+    if che1.get() == 1:
+       obj_convert = str("w.Display1")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val1 = 'A' + str("1") + 'P' + str(current_att)
+       val = val+val1
+       
+    if che2.get() == 1:
+       obj_convert = str("w.Display2")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val2 = 'A' + str("2") + 'P' + str(current_att)
+       val = val+val2
+       
+    if che3.get() == 1:
+       obj_convert = str("w.Display3")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val3 = 'A' + str("3") + 'P' + str(current_att)
+       val = val+val3
+       
+    if che4.get() == 1:
+       obj_convert = str("w.Display4")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val4 = 'A' + str("4") + 'P' + str(current_att)
+       val = val+val4
+
+    if che5.get() == 1:
+       obj_convert = str("w.Display5")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val5 = 'A' + str("5") + 'P' + str(current_att)
+       val = val+val5
+
+    if che6.get() == 1:
+       obj_convert = str("w.Display6")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val6 = 'A' + str("6") + 'P' + str(current_att)
+       val = val+val6
+
+    if che7.get() == 1:
+       obj_convert = str("w.Display7")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val7 = 'A' + str("7") + 'P' + str(current_att)
+       val = val+val7
+
+    if che8.get() == 1:
+       obj_convert = str("w.Display8")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val8 = 'A' + str("8") + 'P' + str(current_att)
+       val = val+val8
+
+    if che9.get() == 1:
+       obj_convert = str("w.Display9")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val9 = 'A' + str("9") + 'P' + str(current_att)
+       val = val+val9
+       
+    if che10.get() == 1:
+       obj_convert = str("w.Display10")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val10 = 'A' + str("10") + 'P' + str(current_att)
+       val = val+val10
+       
+    if che11.get() == 1:
+       obj_convert = str("w.Display11")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val11 = 'A' + str("11") + 'P' + str(current_att)
+       val = val+val11
+       
+    if che12.get() == 1:
+       obj_convert = str("w.Display12")
+       object1 = eval(obj_convert)
+       current_att = eval(object1.get())
+       if current_att > 95:
+              object1.delete(0,2)
+              object1.insert(0,str("95"))
+              current_att = 95
+       if current_att < 0:
+              object1.delete(0,2)
+              object1.insert(0,str("0"))
+              current_att = 0
+       if current_att < 95:
+              current_att = current_att + 1
+              object1.delete(0,2)
+              object1.insert(0,str(current_att))
+       val12 = 'A' + str("12") + 'P' + str(current_att)
+       val = val+val12
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'    
+    send_tcp_packet(m2)
 
 def GR_Up_Right_Click(p1):
-    print('MTS_matrix_V2_support.GR_Up_Right_Click')
-    sys.stdout.flush()
+    val = ""
+    if che1.get() == 1:
+       w.Display1.delete(0,2)
+       w.Display1.insert(0,str("95"))
+       current_att = 95
+       val1 = 'A' + str("1") + 'P' + str("95")
+       val = val + val1
+
+    if che2.get() == 1:
+       w.Display2.delete(0,2)
+       w.Display2.insert(0,str("95"))
+       current_att = 95
+       val2 = 'A' + str("2") + 'P' + str("95")
+       val = val + val2
+
+    if che3.get() == 1:
+       w.Display3.delete(0,2)
+       w.Display3.insert(0,str("95"))
+       current_att = 95
+       val3 = 'A' + str("3") + 'P' + str("95")
+       val = val + val3
+
+    if che4.get() == 1:
+       w.Display4.delete(0,2)
+       w.Display4.insert(0,str("95"))
+       current_att = 95
+       val4 = 'A' + str("4") + 'P' + str("95")
+       val = val + val4
+
+    if che5.get() == 1:
+       w.Display5.delete(0,2)
+       w.Display5.insert(0,str("95"))
+       current_att = 95
+       val5 = 'A' + str("5") + 'P' + str("95")
+       val = val + val5
+
+    if che6.get() == 1:
+       w.Display6.delete(0,2)
+       w.Display6.insert(0,str("95"))
+       current_att = 95
+       val6 = 'A' + str("6") + 'P' + str("95")
+       val = val + val6
+
+    if che7.get() == 1:
+       w.Display7.delete(0,2)
+       w.Display7.insert(0,str("95"))
+       current_att = 95
+       val7 = 'A' + str("7") + 'P' + str("95")
+       val = val + val7
+
+    if che8.get() == 1:
+       w.Display8.delete(0,2)
+       w.Display8.insert(0,str("95"))
+       current_att = 95
+       val8 = 'A' + str("8") + 'P' + str("95")
+       val = val + val8
+
+    if che9.get() == 1:
+       w.Display9.delete(0,2)
+       w.Display9.insert(0,str("95"))
+       current_att = 95
+       val9 = 'A' + str("9") + 'P' + str("95")
+       val = val + val9
+
+    if che10.get() == 1:
+       w.Display10.delete(0,2)
+       w.Display10.insert(0,str("95"))
+       current_att = 95
+       val10 = 'A' + str("10") + 'P' + str("95")
+       val = val + val10
+
+    if che11.get() == 1:
+       w.Display11.delete(0,2)
+       w.Display11.insert(0,str("95"))
+       current_att = 95
+       val11 = 'A' + str("11") + 'P' + str("95")
+       val = val + val11
+
+    if che12.get() == 1:
+       w.Display12.delete(0,2)
+       w.Display12.insert(0,str("95"))
+       current_att = 95
+       val12 = 'A' + str("12") + 'P' + str("95")
+       val = val + val12
+    message1 = val.encode('utf-8')
+    m1 = message1.hex()
+    m2 = '02' + m1 + '03'    
+    send_tcp_packet(m2)
 
 def Up10_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up10_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(10)
+
+def Up10_Right_Click(p1):
+    Step_Matrix_MAX(10)
 
 def Up11_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up11_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(11)
 
 def Up11_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up11_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(11)
 
 def Up12_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up12_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(12)
 
 def Up12_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up12_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(12)
 
 def Up1_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up1_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(1)
 
 def Up1_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up1_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(1)
 
 def Up2_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up2_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(2)
 
 def Up2_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up2_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(2)
 
 def Up3_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up3_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(3)
 
 def Up3_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up3_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(3)
 
 def Up4_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up4_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(4)
 
 def Up4_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up4_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(4)
 
 def Up5_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up5_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(5)
 
 def Up5_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up5_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(5)
 
 def Up6_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up6_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(6)
 
 def Up6_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up6_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(6)
 
 def Up7_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up7_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(7)
 
 def Up7_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up7_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(7)
 
 def Up8_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up8_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(8)
 
 def Up8_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up8_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(8)
 
 def Up9_Left_Click(p1):
-    print('MTS_matrix_V2_support.Up9_Left_Click')
-    sys.stdout.flush()
+    Step_Matrix_UP(9)
 
 def Up9_Right_Click(p1):
-    print('MTS_matrix_V2_support.Up9_Right_Click')
-    sys.stdout.flush()
+    Step_Matrix_MAX(9)
 
 def destroy_window():
     # Function which closes the window.
