@@ -5,6 +5,11 @@
 #  in conjunction with Tcl version 8.6
 #    Feb 21, 2021 10:54:27 PM CET  platform: Windows NT
 
+# This program helps to control the MTS matrix remotely over IP
+# Supported Matrix type SCF - 0600 Standard Coupling unit by MTS Systemtechnik
+# Current version works wihout feedback from the unit, sending the TPC packets, but do not receive anything from the Matrix
+# It is required to have MTS_matrix_V2.py together
+
 import sys
 import socket
 import struct
