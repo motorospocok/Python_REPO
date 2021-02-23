@@ -11,6 +11,9 @@ import struct
 import time
 import binascii
 import ipaddress
+from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import asksaveasfile
+
 
 
 try:
@@ -155,8 +158,24 @@ def send_tcp_packet(packet_to_be_send):
 
 
 def Check_connection_Click(p1):
-    print('MTS_matrix_V2_support.Check_connection_Click')
+    
+    TCP_IP1 = w.IP_address_in.get()    
+    TCP_IP2 = ipaddress.IPv4Address(TCP_IP1)
+    TCP_IP = str(TCP_IP2)
+    TCP_PORT = eval(w.IP_port_in.get())   
+    location = (TCP_IP,TCP_PORT)
+    BUFFER_SIZE = 1024
     sys.stdout.flush()
+    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result_of_check = s.connect_ex(location)
+    if result_of_check == 0:
+       w.Entry1.delete(0,11)
+       w.Entry1.insert(0,"CONNECT OK")
+    else:
+       w.Entry1.delete(0,11)
+       w.Entry1.insert(0,"ERROR")
+
 
 def Dw10_Left_Click(p1):
     Step_Matrix_Down(10)
@@ -951,6 +970,45 @@ def Up9_Left_Click(p1):
 def Up9_Right_Click(p1):
     Step_Matrix_MAX(9)
 
+def Load_File():
+    name = askopenfilename(initialdir="C:/1/pytonWin/",
+                           filetypes =(("Text File", "*.txt"),("All Files","*.*")),
+                           title = "Choose a file."
+                           )
+    print (name)
+    
+    #Using try in case user types in unknown file or closes without choosing a file.
+    
+    c = 1
+    try:
+        with open(name) as f:
+         
+        #Content_list is the list that contains the read lines.     
+             for line in f:
+                 obj_convert = str("w.CellName") + str(c)
+                 object1 = eval(obj_convert)
+                 object1.delete(0,15)
+                 object1.insert(0,str(line))
+                 if c < 12:
+                    c = c + 1
+    except:
+           print("No File Selected")
+
+def Save_File():
+    ext_data = [('All tyes(*.*)', '*.txt')]
+    f = asksaveasfile(mode='w', defaultextension=ext_data)
+    print(f)
+    c = 1
+    if f:
+         for x in range(1,13):
+             obj_convert = str("w.CellName") + str(x)
+             object1 = eval(obj_convert)
+             alma = object1.get()
+             if not alma:
+                alma = "\n"
+             f.write(alma)
+         f.close()    
+
 def destroy_window():
     # Function which closes the window.
     global top_level
@@ -960,7 +1018,4 @@ def destroy_window():
 if __name__ == '__main__':
     import MTS_matrix_V2
     MTS_matrix_V2.vp_start_gui()
-
-
-
 

@@ -275,9 +275,9 @@ class Toplevel1:
                 tearoff=0)
         self.menubar.add_cascade(menu=self.sub_menu,
                 label="File")
-        self.sub_menu.add_command(
+        self.sub_menu.add_command(command=MTS_matrix_V2_support.Load_File,
                 label="Load_labels_from_file")
-        self.sub_menu.add_command(
+        self.sub_menu.add_command(command=MTS_matrix_V2_support.Save_File,
                 label="Save_labels_to_file")
         self.sub_menu1 = tk.Menu(top,
                 activebackground="#ececec",
