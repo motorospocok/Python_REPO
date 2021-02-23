@@ -1007,7 +1007,17 @@ def Save_File():
              if not alma:
                 alma = "\n"
              f.write(alma)
-         f.close()    
+         f.close()
+
+def About():
+
+    popup = tk.Tk()
+    popup.wm_title("!")
+    label = ttk.Label(popup, text="Version 1.2 - 2021 Feb23", font="TkFixedFont")
+    label.pack(side="top", fill="x", pady=10)
+    B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+    B1.pack()
+    popup.mainloop()
 
 def destroy_window():
     # Function which closes the window.

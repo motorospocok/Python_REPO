@@ -289,10 +289,8 @@ class Toplevel1:
                 foreground="#000000",
                 tearoff=0)
         self.menubar.add_cascade(menu=self.sub_menu1,
-                label="Help")
-        self.sub_menu1.add_command(
-                label="How_to_use")
-        self.sub_menu1.add_command(
+                label="About")
+        self.sub_menu1.add_command(command=MTS_matrix_V2_support.About,
                 label="About")
 
         self.TSeparator11 = ttk.Separator(top)
