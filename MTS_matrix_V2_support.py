@@ -1018,7 +1018,7 @@ def About():
 
     popup = tk.Tk()
     popup.wm_title("!")
-    label = ttk.Label(popup, text="Version 1.2 - 2021 Feb23", font="TkFixedFont")
+    label = ttk.Label(popup, text="Version 1.21 - 2021 Feb24", font="TkFixedFont")
     label.pack(side="top", fill="x", pady=10)
     B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
     B1.pack()

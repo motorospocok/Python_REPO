@@ -72,7 +72,7 @@ class Toplevel1:
         top.minsize(120, 1)
         top.maxsize(1284, 1005)
         top.resizable(1,  1)
-        top.title("Remote MTS Matrix Control V1.2")
+        top.title("Remote MTS Matrix Control V1.21")
         top.configure(background="#d9d9d9")
         top.configure(highlightbackground="#d9d9d9")
         top.configure(highlightcolor="black")
@@ -480,7 +480,7 @@ class Toplevel1:
         self.Up1.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up1_tooltip = \
-        ToolTip(self.Up1, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up1, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up1.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up1_Left_Click(e))
         self.Up1.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up1_Right_Click(e))
 
@@ -497,7 +497,7 @@ class Toplevel1:
         self.Up2.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up2_tooltip = \
-        ToolTip(self.Up2, self.tooltip_font, '''Increase Attenuation''')
+        ToolTip(self.Up2, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up2.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up2_Left_Click(e))
         self.Up2.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up2_Right_Click(e))
 
@@ -514,7 +514,7 @@ class Toplevel1:
         self.Up3.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up3_tooltip = \
-        ToolTip(self.Up3, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up3, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up3.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up3_Left_Click(e))
         self.Up3.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up3_Right_Click(e))
 
@@ -531,7 +531,7 @@ class Toplevel1:
         self.Up4.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up4_tooltip = \
-        ToolTip(self.Up4, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up4, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up4.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up4_Left_Click(e))
         self.Up4.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up4_Right_Click(e))
 
@@ -548,7 +548,7 @@ class Toplevel1:
         self.Up5.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up5_tooltip = \
-        ToolTip(self.Up5, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up5, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up5.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up5_Left_Click(e))
         self.Up5.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up5_Right_Click(e))
 
@@ -565,7 +565,7 @@ class Toplevel1:
         self.Up6.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up6_tooltip = \
-        ToolTip(self.Up6, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up6, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up6.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up6_Left_Click(e))
         self.Up6.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up6_Right_Click(e))
 
@@ -582,7 +582,7 @@ class Toplevel1:
         self.Up7.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up7_tooltip = \
-        ToolTip(self.Up7, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up7, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up7.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up7_Left_Click(e))
         self.Up7.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up7_Right_Click(e))
 
@@ -599,7 +599,7 @@ class Toplevel1:
         self.Up8.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up8_tooltip = \
-        ToolTip(self.Up8, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up8, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up8.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up8_Left_Click(e))
         self.Up8.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up8_Right_Click(e))
 
@@ -616,7 +616,7 @@ class Toplevel1:
         self.Up9.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up9_tooltip = \
-        ToolTip(self.Up9, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up9, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up9.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up9_Left_Click(e))
         self.Up9.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up9_Right_Click(e))
 
@@ -650,7 +650,7 @@ class Toplevel1:
         self.Up12.configure(text='''Up''')
         self.tooltip_font = "TkDefaultFont"
         self.Up12_tooltip = \
-        ToolTip(self.Up12, self.tooltip_font, '''Increase attenuation''')
+        ToolTip(self.Up12, self.tooltip_font, '''Mouse left click increase by one, mouse right click set to max 95''')
         self.Up12.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Up12_Left_Click(e))
         self.Up12.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Up12_Right_Click(e))
 
@@ -667,7 +667,7 @@ class Toplevel1:
         self.Dw1.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw1_tooltip = \
-        ToolTip(self.Dw1, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw1, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw1.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw1_Left_Click(e))
         self.Dw1.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw1_Right_Click(e))
 
@@ -684,7 +684,7 @@ class Toplevel1:
         self.Dw3.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw3_tooltip = \
-        ToolTip(self.Dw3, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw3, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw3.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw3_Left_Click(e))
         self.Dw3.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw3_Right_Click(e))
 
@@ -701,7 +701,7 @@ class Toplevel1:
         self.Dw4.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw4_tooltip = \
-        ToolTip(self.Dw4, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw4, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw4.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw4_Left_Click(e))
         self.Dw4.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw4_Right_Click(e))
 
@@ -718,7 +718,7 @@ class Toplevel1:
         self.Dw5.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw5_tooltip = \
-        ToolTip(self.Dw5, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw5, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw5.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw5_Left_Click(e))
         self.Dw5.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw5_Right_Click(e))
 
@@ -735,7 +735,7 @@ class Toplevel1:
         self.Dw6.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw6_tooltip = \
-        ToolTip(self.Dw6, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw6, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw6.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw6_Left_Click(e))
         self.Dw6.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw6_Right_Click(e))
 
@@ -752,7 +752,7 @@ class Toplevel1:
         self.Dw7.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw7_tooltip = \
-        ToolTip(self.Dw7, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw7, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw7.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw7_Left_Click(e))
         self.Dw7.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw7_Right_Click(e))
 
@@ -769,7 +769,7 @@ class Toplevel1:
         self.Dw8.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw8_tooltip = \
-        ToolTip(self.Dw8, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw8, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw8.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw8_Left_Click(e))
         self.Dw8.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw8_Right_Clik(e))
 
@@ -786,7 +786,7 @@ class Toplevel1:
         self.Dw9.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw9_tooltip = \
-        ToolTip(self.Dw9, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw9, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw9.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw9_Left_Click(e))
         self.Dw9.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw9_Rigth_Click(e))
 
@@ -803,7 +803,7 @@ class Toplevel1:
         self.Dw10.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw10_tooltip = \
-        ToolTip(self.Dw10, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw10, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw10.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw10_Left_Click(e))
         self.Dw10.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw10_Right_Click(e))
 
@@ -820,7 +820,7 @@ class Toplevel1:
         self.Dw11.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw11_tooltip = \
-        ToolTip(self.Dw11, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw11, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw11.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw11_Left_Click(e))
         self.Dw11.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw11_Right_Click(e))
 
@@ -837,7 +837,7 @@ class Toplevel1:
         self.Dw12.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw12_tooltip = \
-        ToolTip(self.Dw12, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw12, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw12.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw12_Left_Click(e))
         self.Dw12.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw12_Right_Left(e))
 
@@ -854,7 +854,7 @@ class Toplevel1:
         self.Dw2.configure(text='''Down''')
         self.tooltip_font = "TkDefaultFont"
         self.Dw2_tooltip = \
-        ToolTip(self.Dw2, self.tooltip_font, '''Decrease attenuation''')
+        ToolTip(self.Dw2, self.tooltip_font, '''Mouse left click decrease by one, mouse right click set to min 0''')
         self.Dw2.bind('<Button-1>',lambda e:MTS_matrix_V2_support.Dw2_Left_Click(e))
         self.Dw2.bind('<Button-3>',lambda e:MTS_matrix_V2_support.Dw2_Right_Click(e))
 
@@ -871,7 +871,7 @@ class Toplevel1:
         self.GR1.configure(variable=MTS_matrix_V2_support.che1)
         self.tooltip_font = "TkDefaultFont"
         self.GR1_tooltip = \
-        ToolTip(self.GR1, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR1, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR2 = tk.Checkbutton(top)
         self.GR2.place(relx=0.107, rely=0.366, relheight=0.04, relwidth=0.067)
@@ -886,7 +886,7 @@ class Toplevel1:
         self.GR2.configure(variable=MTS_matrix_V2_support.che2)
         self.tooltip_font = "TkDefaultFont"
         self.GR2_tooltip = \
-        ToolTip(self.GR2, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR2, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR3 = tk.Checkbutton(top)
         self.GR3.place(relx=0.183, rely=0.366, relheight=0.04, relwidth=0.067)
@@ -901,7 +901,7 @@ class Toplevel1:
         self.GR3.configure(variable=MTS_matrix_V2_support.che3)
         self.tooltip_font = "TkDefaultFont"
         self.GR3_tooltip = \
-        ToolTip(self.GR3, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR3, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR4 = tk.Checkbutton(top)
         self.GR4.place(relx=0.258, rely=0.366, relheight=0.04, relwidth=0.069)
@@ -916,7 +916,7 @@ class Toplevel1:
         self.GR4.configure(variable=MTS_matrix_V2_support.che4)
         self.tooltip_font = "TkDefaultFont"
         self.GR4_tooltip = \
-        ToolTip(self.GR4, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR4, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR5 = tk.Checkbutton(top)
         self.GR5.place(relx=0.333, rely=0.366, relheight=0.04, relwidth=0.066)
@@ -931,7 +931,7 @@ class Toplevel1:
         self.GR5.configure(variable=MTS_matrix_V2_support.che5)
         self.tooltip_font = "TkDefaultFont"
         self.GR5_tooltip = \
-        ToolTip(self.GR5, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR5, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR6 = tk.Checkbutton(top)
         self.GR6.place(relx=0.408, rely=0.366, relheight=0.04, relwidth=0.069)
@@ -946,7 +946,7 @@ class Toplevel1:
         self.GR6.configure(variable=MTS_matrix_V2_support.che6)
         self.tooltip_font = "TkDefaultFont"
         self.GR6_tooltip = \
-        ToolTip(self.GR6, self.tooltip_font, '''Select this antenna port for group operationn''')
+        ToolTip(self.GR6, self.tooltip_font, '''Select/deselect this antenna port for group operationn''')
 
         self.GR7 = tk.Checkbutton(top)
         self.GR7.place(relx=0.483, rely=0.366, relheight=0.04, relwidth=0.066)
@@ -961,7 +961,7 @@ class Toplevel1:
         self.GR7.configure(variable=MTS_matrix_V2_support.che7)
         self.tooltip_font = "TkDefaultFont"
         self.GR7_tooltip = \
-        ToolTip(self.GR7, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR7, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR8 = tk.Checkbutton(top)
         self.GR8.place(relx=0.559, rely=0.366, relheight=0.04, relwidth=0.067)
@@ -976,7 +976,7 @@ class Toplevel1:
         self.GR8.configure(variable=MTS_matrix_V2_support.che8)
         self.tooltip_font = "TkDefaultFont"
         self.GR8_tooltip = \
-        ToolTip(self.GR8, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR8, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR9 = tk.Checkbutton(top)
         self.GR9.place(relx=0.634, rely=0.366, relheight=0.04, relwidth=0.067)
@@ -991,7 +991,7 @@ class Toplevel1:
         self.GR9.configure(variable=MTS_matrix_V2_support.che9)
         self.tooltip_font = "TkDefaultFont"
         self.GR9_tooltip = \
-        ToolTip(self.GR9, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR9, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR10 = tk.Checkbutton(top)
         self.GR10.place(relx=0.709, rely=0.366, relheight=0.04, relwidth=0.067)
@@ -1006,7 +1006,7 @@ class Toplevel1:
         self.GR10.configure(variable=MTS_matrix_V2_support.che10)
         self.tooltip_font = "TkDefaultFont"
         self.GR10_tooltip = \
-        ToolTip(self.GR10, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR10, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR11 = tk.Checkbutton(top)
         self.GR11.place(relx=0.784, rely=0.366, relheight=0.04, relwidth=0.066)
@@ -1021,7 +1021,7 @@ class Toplevel1:
         self.GR11.configure(variable=MTS_matrix_V2_support.che11)
         self.tooltip_font = "TkDefaultFont"
         self.GR11_tooltip = \
-        ToolTip(self.GR11, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR11, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.GR12 = tk.Checkbutton(top)
         self.GR12.place(relx=0.859, rely=0.366, relheight=0.04, relwidth=0.068)
@@ -1036,7 +1036,7 @@ class Toplevel1:
         self.GR12.configure(variable=MTS_matrix_V2_support.che12)
         self.tooltip_font = "TkDefaultFont"
         self.GR12_tooltip = \
-        ToolTip(self.GR12, self.tooltip_font, '''Select this antenna port for group operation''')
+        ToolTip(self.GR12, self.tooltip_font, '''Select/deselect this antenna port for group operation''')
 
         self.Up11 = tk.Button(top)
         self.Up11.place(relx=0.795, rely=0.46, height=44, width=47)
@@ -1079,7 +1079,7 @@ class Toplevel1:
         self.GR_Up.configure(text='''UP group''')
         self.tooltip_font = "TkDefaultFont"
         self.GR_Up_tooltip = \
-        ToolTip(self.GR_Up, self.tooltip_font, '''Increase Attenuaton for antenna port group''')
+        ToolTip(self.GR_Up, self.tooltip_font, '''Increase Attenuaton for antenna port group -left click by one, right click set to max 95''')
         self.GR_Up.bind('<Button-1>',lambda e:MTS_matrix_V2_support.GR_Up_Left_Click(e))
         self.GR_Up.bind('<Button-3>',lambda e:MTS_matrix_V2_support.GR_Up_Right_Click(e))
 
@@ -1097,7 +1097,7 @@ class Toplevel1:
         self.GR_Dw.configure(text='''Down group''')
         self.tooltip_font = "TkDefaultFont"
         self.GR_Dw_tooltip = \
-        ToolTip(self.GR_Dw, self.tooltip_font, '''Decrease Attenuaton for antenna port group''')
+        ToolTip(self.GR_Dw, self.tooltip_font, '''Decrease Attenuaton for antenna port group - left click by one, right click set to min 0''')
         self.GR_Dw.bind('<Button-1>',lambda e:MTS_matrix_V2_support.GR_Dw_Left_Click(e))
         self.GR_Dw.bind('<Button-3>',lambda e:MTS_matrix_V2_support.GR_Dw_Right_click(e))
 
