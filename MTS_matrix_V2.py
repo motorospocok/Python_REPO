@@ -72,7 +72,7 @@ class Toplevel1:
         top.minsize(120, 1)
         top.maxsize(1284, 1005)
         top.resizable(1,  1)
-        top.title("Remote MTS Matrix Control V1.21")
+        top.title("Remote MTS Matrix Control V1.22")
         top.configure(background="#d9d9d9")
         top.configure(highlightbackground="#d9d9d9")
         top.configure(highlightcolor="black")

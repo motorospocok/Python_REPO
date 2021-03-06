@@ -9,6 +9,8 @@
 # Supported Matrix type SCF - 0600 Standard Coupling unit by MTS Systemtechnik
 # Current version works wihout feedback from the unit, sending the TPC packets, but do not receive anything from the Matrix
 # It is required to have MTS_matrix_V2.py together
+# Version 1.21 - 2021 Feb23 First version provided to public
+# Version 1.22 - 2021 Marc3 Fixed save menu issues
 
 import sys
 import socket
@@ -1009,8 +1011,11 @@ def Save_File():
              obj_convert = str("w.CellName") + str(x)
              object1 = eval(obj_convert)
              alma = object1.get()
+             
              if not alma:
                 alma = "\n"
+             else:
+                alma = alma+"\n"
              f.write(alma)
          f.close()
 
@@ -1018,7 +1023,7 @@ def About():
 
     popup = tk.Tk()
     popup.wm_title("!")
-    label = ttk.Label(popup, text="Version 1.21 - 2021 Feb24", font="TkFixedFont")
+    label = ttk.Label(popup, text="Version 1.22 - 2021 Feb24", font="TkFixedFont")
     label.pack(side="top", fill="x", pady=10)
     B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
     B1.pack()
