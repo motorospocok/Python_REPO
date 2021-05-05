@@ -22,7 +22,7 @@ for x in range(9):
  keyboard.send_keys('t')
 mouse.click(coords=(1053, 752))
 time.sleep(1)
-keyboard.send_keys('ethtoja{TAB}Speter35{ENTER}')
+keyboard.send_keys('user{TAB}psw{ENTER}')
 OTP = input("Please enter OTP:\n")
 mouse.click(coords=(962, 866))
 keyboard.send_keys(OTP)
@@ -32,7 +32,7 @@ mouse.click(coords=(330, 632))
 time.sleep(5)
 keyboard.send_keys('{ENTER}')
 time.sleep(0.5)
-keyboard.send_keys('ethtoja{TAB}Er1css0n21!/{ENTER}')
+keyboard.send_keys('user{TAB}psw/{ENTER}')
 
 
 
