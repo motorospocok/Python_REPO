@@ -5,7 +5,7 @@ import os
 import re
 import sys
 
-path1='/home/motor/6630FFI/' #set the working directory
+path1='/home/ETHTOJA/6631FFI/' #set the working directory
 int_ip_oam='10.244.89.216'
 int_ip_gw='10.244.89.217'
 int_vid = '3001'
@@ -33,8 +33,10 @@ for file_sites in file_list1:
     source_file = open(old_path)  # open the old file
     target_file = open(new_path, 'w')  # open a new file
     for line in source_file:
-        if old_site_name in line: #If old site name found replace it with SiteNameX
-            x = line.replace(old_site_name,new_site_name)
+        y='ManagedElement='+old_site_name
+        z='ManagedElement='+new_site_name
+        if y in line: #If old site name found replace it with SiteNameX
+            x = line.replace(y,z)
             line = x
             no_change_flag = 0
         if 'fingerprint' in line: #Also if Fingerprint found replace it with the new FP
