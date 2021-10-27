@@ -170,6 +170,7 @@ def send_tcp_packet(packet_to_be_send):
         w.Entry1.delete(0, 15)
         w.Entry1.configure(background="#00ff00")
         w.Entry1.insert(0, "MATRIX UPDATED")
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
         s.send(MESSAGE)
         s.close()
