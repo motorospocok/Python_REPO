@@ -143,8 +143,8 @@ if len(sys.argv) == 4:
      open_session_ENM(cmds_2G,fetch_2G,elements_2G,response_group_2G)
 else:
    print('It seems not all parameter given.')
-   print('python p.py LTE BUE15 BUE151_08 - finds radio for LTE cell BUE151_08')
-   print('python p.py 5G BUE15 BUE151N1_35 - finds radio for NR cell BUE151N1_35')
-   print('python p.py 3G BUE11 S1C1 - finds radio for WCDMA cell sector 1, carrier 1')
-   print('python p.py 2G BUE11 1-0  - finds radio for Gsm Sector 1, TRX 0')
+   print('python RRU_query.py LTE BUE15 BUE151_08 - finds radio for LTE cell BUE151_08')
+   print('python RRU_query.py 5G BUE15 BUE151N1_35 - finds radio for NR cell BUE151N1_35')
+   print('python RRU_query.py 3G BUE11 S1C1 - finds radio for WCDMA cell sector 1, carrier 1')
+   print('python RRU_query.py 2G BUE11 1-0  - finds radio for Gsm Sector 1, TRX 0')
 print('The END') 
