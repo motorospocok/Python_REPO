@@ -5,7 +5,6 @@
 #example GSM Sector and TRX: 1-1
 #V1.0 5th November 2021
 
-
 import enmscripting
 import re
 import sys
@@ -16,13 +15,11 @@ def check_radio(op_state1,product_data1):
        product_data1 = product_data1.replace('}','')
        product_data1 = ' ' + product_data1
        p1 = product_data1.split(',')
-       #this for cycle is needed because the serial number can be in vary position in the printout list 
+       #this for cycle is needed because the serial number can be in variated position in the printout list 
        for serialNum in p1:
            if 'serialNumber' in serialNum:
                serialNum2 = serialNum
-       p1_serial = serialNum2.split('=')
-       
-       
+       p1_serial = serialNum2.split('=')  
        x = 'NOT FOUND_IN_DATABASE;NOT_FOUND_IN_DATABASE' #needs this trick if the radio is not listed in the csv file
        with open('/home/shared/common/data_collections/SSC_RU_list.csv') as temp_f:
             datafile = temp_f.readlines()
@@ -42,7 +39,7 @@ def check_radio(op_state1,product_data1):
        print('--------------------------------------------------------------------------')
     else:
        print('--------------------------------------------------------------------------')
-       print('The RRU is disabled, fix the physical connection and repeat the query!')
+       print('The RRU is disabled, fix the physical connecntion and repeat the query!')
        print('--------------------------------------------------------------------------')
        
 def fetch_MO(mo_to_search,mo_class):
@@ -54,7 +51,7 @@ def fetch_MO(mo_to_search,mo_class):
            
 
 def open_session_ENM(cmds_list,fetch_list,elements_list,response_group):
-    session = enmscripting.open('<ENM Launcher URL>').with_credentials(enmscripting.UsernameAndPassword('<user name>','<password>'))
+    session = enmscripting.open('<ENM Launcher URL>').with_credentials(enmscripting.UsernameAndPassword('user','pass'))
     e_count = 0
     param1 = site
     param2 = cell
@@ -98,12 +95,8 @@ def open_session_ENM(cmds_list,fetch_list,elements_list,response_group):
     enmscripting.close(session)
     check_radio(op_state,product_data)
 
-    
-tech = sys.argv[1]
-site = sys.argv[2]
-cell = sys.argv[3]
 
-#Commands for 5G query
+    #Commands for 5G query
 cmds_5G = ['cmedit get SITENAME NrCellDu.(nRCellDUId==PARAMETER,nRSectorCarrierRef) -t',
            'cmedit get SITENAME NRSectorCarrier.(nRSectorCarrierId==PARAMETER,sectorEquipmentFunctionRef) -t',
            'cmedit get SITENAME SectorEquipmentFunction.(sectorEquipmentFunctionId==PARAMETER,rfBranchRef) -t']
@@ -136,12 +129,22 @@ elements_2G = ['4','3']
 response_group_2G = ['1','0']
 
 
-if tech == '5G':
-  open_session_ENM(cmds_5G,fetch_5G,elements_5G,response_group_5G)
-if tech == 'LTE' or tech == '4G':
-  open_session_ENM(cmds_LTE,fetch_LTE,elements_LTE,response_group_LTE)
-if tech == 'WCDMA' or tech == '3G':
-  open_session_ENM(cmds_3G,fetch_3G,elements_3G,response_group_3G)
-if tech == '2G' or tech == 'GSM':
-  open_session_ENM(cmds_2G,fetch_2G,elements_2G,response_group_2G)
+if len(sys.argv) == 4:
+   tech = sys.argv[1]
+   site = sys.argv[2]
+   cell = sys.argv[3]
+   if tech == '5G':
+      open_session_ENM(cmds_5G,fetch_5G,elements_5G,response_group_5G)
+   if tech == 'LTE' or tech == '4G':
+      open_session_ENM(cmds_LTE,fetch_LTE,elements_LTE,response_group_LTE)
+   if tech == 'WCDMA' or tech == '3G':
+      open_session_ENM(cmds_3G,fetch_3G,elements_3G,response_group_3G)
+   if tech == '2G' or tech == 'GSM':
+     open_session_ENM(cmds_2G,fetch_2G,elements_2G,response_group_2G)
+else:
+   print('It seems not all parameter given.')
+   print('python p.py LTE BUE15 BUE151_08 - finds radio for LTE cell BUE151_08')
+   print('python p.py 5G BUE15 BUE151N1_35 - finds radio for NR cell BUE151N1_35')
+   print('python p.py 3G BUE11 S1C1 - finds radio for WCDMA cell sector 1, carrier 1')
+   print('python p.py 2G BUE11 1-0  - finds radio for Gsm Sector 1, TRX 0')
 print('The END') 
