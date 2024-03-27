@@ -1,26 +1,240 @@
+#Alarm check tool by Toja
+#This code is written for to evalate the alarms of the health_checkV2.mos file
+#Just copy all the pre and post alarms into the same directory and run for this script
+#Needs to install termcolor and colorama modules
+
 import os
 from colorama import just_fix_windows_console
 from termcolor import colored
+from datetime import datetime
+
 just_fix_windows_console()
 
+version = "V1.1"
 directory = "."  # Directory containing the log files
 pre_alarms = []
 pre_alarms2 = []
+pre_sites = []
+new_alarms = []
+ceased_alarms = []
+site_OK = []
+site_NOK = []
+file_path = "result.txt"
 
 post_alarms = []
 post_alarms2 = []
+post_sites = []
 
 #Handling additonal alarm check
 def handling_special(alarm_string):
- ai_index = alarm_string.find("TimeoutExpired")
- if ai_index != -1:  # Check if "TimeoutExpired:" is found in the string
-    alarm_string = alarm_string[:ai_index]
- return(alarm_string)
+    ai_index = alarm_string.find("TimeoutExpired")
+    if ai_index != -1:  # Check if "TimeoutExpired:" is found in the string
+        alarm_string = alarm_string[:ai_index]
+    return(alarm_string)
+        
+def alarm_comp1():    
+    set_pre_alarms = set(pre_alarms2)
+    set_post_alarms = set(post_alarms2)
+
+    set_pre_sites = set(pre_sites)
+    set_post_sites = set(post_sites)
+
+    difference1 = set_pre_alarms - set_post_alarms
+    difference2 = set_post_alarms - set_pre_alarms
+
+    difference3 = set_pre_sites - set_post_sites 
+    difference4 = set_post_sites - set_pre_sites 
+    with open(file_path,"w") as file:
+        text1 = "---------------------------------------------------------Alarm tool " + version + "-----------------------------------------------------"
+        print(colored(text1, "white", "on_cyan"))
+        file.write(text1 + "\n")
+        text1 = "Site number check"
+        file.write(text1 + "\n")
+        print(colored("Site number check", 'white','on_magenta'))
+        if difference3 == set() and difference4 == set():            
+            
+            print(" ")
+            file.write(" " + "\n")
+            text1 = "Ok, same sites are checked in the pre and post check"
+            file.write(text1 + "\n")
+            text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+            file.write(text1 + "\n")            
+            print(colored("Ok, same sites are checked in the pre and post check",'white','on_green'))
+            print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+        if difference3 != set():            
+            text1 = "The following sites are not in the post check"
+            file.write(text1 + "\n")
+            text1 = str(difference3)            
+            text2 = text1.split("'")            
+            for elements in text2:
+                if elements == ", " or elements == "}" or elements == "{" :
+                    text2.remove(elements)
+            for elements in text2:                    
+                    handling_sites("NOK",elements)
+
+            print("The following sites are not in the post check")
+            for elements in text2:
+                text1 = elements
+                file.write(text1 + "\n")
+                print(colored(text1,'white','on_red'))
+            
+
+        if difference4 != set():            
+            text1 = "The following sites are not in the pre check"
+            text1 = str(difference4)            
+            text2 = text1.split("'")
+            for elements in text2:
+                if elements == ", " or elements == "}" or elements == "{" :
+                    text2.remove(elements)
+            for elements in text2:                    
+                    handling_sites("NOK",elements)                             
+            print("The following sites are not in the pre check")
+            for elements in text2:
+                text1 = elements
+                file.write(text1 + "\n")
+                print(colored(text1,'white','on_red'))
+
+        if difference4 != set() or difference3 != set():
+            
+            text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+            file.write(text1 + "\n")
+            text1 = "It seems the pre and post number of sites are different!"
+            file.write(text1 + "\n")
+            text1 = "The analysis will give wrong results"
+            file.write(text1 + "\n")
+            text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+            file.write(text1 + "\n")
+            
+            print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+            print(colored('It seems the pre and post number of sites are different!','white','on_red'))
+            print(colored('The analysis will give wrong results!','white','on_red'))
+            print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+        if difference2 == set():
+            text1 = "No new alarms"
+            file.write(text1 + "\n")
+            print(colored("No new alarms","white","on_green"))
+        else:
+            text1 = "New alarm list:"
+            file.write(text1 + "\n")
+            file.write(" " + "\n")
+            
+            print(colored("New alarm list:", 'white','on_magenta'))
+            print(" ")
+            for elements in new_alarms:
+                text1 = elements
+                file.write(text1 + "\n")
+                file.write(" " + "\n")
+                print(colored(elements,'white','on_red'))  
+                print(" ")
+        if difference1 != set():
+            text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+            file.write(text1 + "\n")
+            text1 = "Ceased alarm list:"
+            file.write(text1 + "\n")
+            
+            print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+            print(colored("Ceased alarm list:", 'white','on_magenta'))
+            for elements in ceased_alarms:
+                text1 = elements
+                file.write(text1 + "\n")
+                file.write(" " + "\n")
+                print(colored(elements, 'white', 'on_green'))
+                print(" ")
+        file.write(" " + "\n")
+        text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+        file.write(text1 + "\n")
+        print(" ")
+        print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+        
+        text1 = "Sites with OK status:"
+        file.write(text1 + "\n")
+        file.write(" " + "\n")
+        print(colored("Sites with OK status:", 'white','on_magenta'))
+        print(" ")
+        for elements in site_OK:
+            text1 = elements
+            file.write(text1 + "\n")
+            print(colored(elements, 'white', 'on_green'))
+            
+        text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+        file.write(text1 + "\n")
+        text1 = "Sites need to be checked:"
+        file.write(text1 + "\n")
+        
+        print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))        
+        print(colored("Sites need to be checked:", 'white','on_magenta'))
+        print(" ")
+        if not site_NOK:
+            text1 = "Seems everything superb!"
+            file.write(text1 + "\n")
+            print(colored("Seems everything superb!","white","on_green"))
+        else:
+            for elements in site_NOK:        
+                text1 = str(elements)
+                file.write(text1 + "\n")
+                print(colored(text1, 'white', 'on_red'))
+        file.write(" " + "\n")
+        text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+        file.write(text1 + "\n")
+        file.write(" " + "\n")
+        print(" ")
+        print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_blue"))
+        print(" ")
+        current_date_time = datetime.now()
+        formatted_date_time = current_date_time.strftime("%Y-%m-%d %H:%M:%S")
+        time1 = "Report date: " + formatted_date_time
+        print(colored(time1,"black","on_white"))
+        text1 = time1
+        file.write(text1 + "\n")
+        print(" ")
+        file.write(" " + "\n")
+        print(colored("-----------------------------------------------------------------------------------------------------------------------------", "white", "on_cyan"))
+        text1 = "-----------------------------------------------------------------------------------------------------------------------------"
+        file.write(text1 + "\n")
+
+def alarm_comp2():
+    for elements in post_alarms2:
+        s1 = elements.split(";")
+        s2 = s1[1].split(",")
+        s1 = s2[0].split("=")
+        found_flag = "no"
+        for elements2 in pre_alarms2:
+            if elements == elements2:
+                found_flag = "yes"
+        if found_flag == "no":
+            new_alarms.append(elements.strip())
+            handling_sites("NOK",s1[1])
+            #site_NOK.append(s1[1])
+            try:
+                site_OK.remove(s1[1])
+            except:
+                print(colored("It seems site is missed in Pre HC","black","on_red"))
+                print(colored(s1[1],"black","on_red"))
+                
+    for elements in pre_alarms2:
+        found_flag = "no"
+        for elements2 in post_alarms2:
+            if elements == elements2:
+                found_flag = "yes"
+        if found_flag == "no":
+            ceased_alarms.append(elements.strip())
+            
+def handling_sites(list_type,site_name):
+    if list_type == "NOK":
+        insert_flag = "YES"
+        for element in site_NOK:
+            if site_name == element:
+                insert_flag = "NO"
+        if insert_flag == "YES":
+            site_NOK.append(site_name)
+            
  
-
-
-for filename in os.listdir(directory):
+            
+#Main program starts from here    
+for filename in os.listdir(directory):        
     if "pre_alarms.txt" in filename:
+        f1 = filename.split("_")
+        pre_sites.append(f1[0])    
         with open(os.path.join(directory, filename), "r") as file:
             for line in file:
                 if "ManagedElement" in line:
@@ -32,15 +246,13 @@ for filename in os.listdir(directory):
                     cut_off_parts = handling_special(cut_off_parts)
                     pre_alarms2.append(cut_off_parts.strip())
 
-print("Lines containing 'ManagedElement':")
-for line in pre_alarms:
-    print(line)
-print("--------")
-for line in pre_alarms2:
-    print(line)
+
     
 for filename in os.listdir(directory):
     if "post_alarms.txt" in filename:
+        f1 = filename.split("_")
+        post_sites.append(f1[0]) 
+        site_OK.append(f1[0]) 
         with open(os.path.join(directory, filename), "r") as file:
             for line in file:
                 if "ManagedElement" in line:
@@ -51,28 +263,17 @@ for filename in os.listdir(directory):
                         cut_off_parts = cut_off_parts[:ai_index]
                     cut_off_parts = handling_special(cut_off_parts)
                     post_alarms2.append(cut_off_parts.strip())
-                    
-for line in post_alarms:
-    print(line)
-print("--------")
-for line in post_alarms2:
-    print(line)
-set_pre_alarms = set(pre_alarms2)
-set_post_alarms = set(post_alarms2)
-
-difference1 = set_pre_alarms - set_post_alarms
-difference2 = set_post_alarms - set_pre_alarms
-
-print("--------")
-print(difference1)
-print(difference2)
-if difference2 == set():
- print("No new alarms")
+                                        
+alarm_comp2()
+alarm_comp1()
+answer = input("Do you want to keep 'result.txt'? (yes/no): ")
+if answer.lower() == "no":
+    # Check if the file exists before attempting to delete it
+    if os.path.exists(file_path):
+        # Delete the file
+        os.remove(file_path)
+        print("File 'result.txt' has been deleted.")
+    else:
+        print("File 'result.txt' does not exist.")
 else:
- print("New alarm list")
- print(colored(difference2,'white','on_red'))
-if difference1 != set():
- print("The following alarms are ceased:")
- print(colored(difference1, 'white', 'on_green'))
-
-
+    print("File is stored.")
