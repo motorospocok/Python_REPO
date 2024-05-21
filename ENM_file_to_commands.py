@@ -10,6 +10,8 @@ def read_and_print_file(filename):
                 command = line
                 cmd = session.command()
                 response = cmd.execute(command)
+                for line in response.get_output():
+                    print(line)
             enmscripting.close(session)
 
     except FileNotFoundError:
