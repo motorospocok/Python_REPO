@@ -7,8 +7,8 @@ import threading
 import pyautogui
 import time
 
-password = "A1mafeJ$7"
-password2 = "Almafej323!Ad"
+password = "LAN_PSW"
+password2 = "CAS_PSW"
 x_coord = [1846,1217,1047,1003,1831]
 y_coord = [262,871,963,918,161]
 phase = -1
