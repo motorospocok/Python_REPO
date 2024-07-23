@@ -6,10 +6,11 @@ from colorama import just_fix_windows_console
 from termcolor import colored
 from datetime import datetime
 
+version = 'v1.0'
 just_fix_windows_console()
 
 
-directory_path = 'C:\cygwin64\home\ETHTOJA\HC\c2'
+directory_path = '.'
 old_prefix = 'preHC'
 new_prefix = 'postHC'
 
@@ -18,16 +19,16 @@ def print_result(text1,text2,color1):
     print(colored(text2,"white", color1))
     print(colored("--------------------------------------------","white", "on_blue"))
 
-
 def collect_and_replace_files(directory, old_prefix, new_prefix):
     # List to hold the original file names
     original_files = []
     
     # List to hold the new file names
     new_files = []
-    
+    found_all = 0
     # Iterate over all the files in the directory
     for file in os.listdir(directory):
+        
         # Check if the file name starts with the old prefix
         if file.startswith(old_prefix):
             original_files.append(file)
@@ -36,10 +37,16 @@ def collect_and_replace_files(directory, old_prefix, new_prefix):
             # Check if the new file exists in the directory
             if os.path.exists(os.path.join(directory, new_file_name)):
                 new_files.append(new_file_name)
-                print(f"Ok, file has beenfound: {new_file_name}")
+                print(colored(f"Ok, file has beenfound: {new_file_name}","white","on_green"))
             else:
-                print(f"This file not found: {new_file_name}")
-    
+                print(colored(f"This file not found: {new_file_name}","white","on_red"))
+                found_all = 1
+                
+    if found_all == 0:
+        print(colored("All files paired","white","on_green"))
+    else:
+        print(colored("Not all file pairs exists!","white","on_red"))
+    user_input = input("Please HIT enter to continue")
     return original_files, new_files
 
 def read_file_to_dict(filename):
