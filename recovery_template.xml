@@ -1,0 +1,4 @@
+<summary:AutoIntegrationRbsSummaryFile xmlns:summary="http://www.ericsson.se/RbsSummaryFileSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ericsson.se/RbsSummaryFileSchemaSummaryFile.xsd">
+  <Format revision="G" />
+  <ConfigurationFiles backupFilePath="/home/demo/sftp/backup_here" upgradePackageFilePath="/home/demo/sftp/sw/sw_here"/>
+</summary:AutoIntegrationRbsSummaryFile>
