@@ -1,33 +1,17 @@
+# Bonn BUAW20 attenuator matrix Controller by ethtoja
+# V 1.0 - 21th October 2024 - working very basic functions - can step the matrix remotely :)
+
+
 import tkinter as tk
 import socket
 
 global connect_flag
 
 def update_display(matrix_data):
-
-    display1.delete(0, tk.END)
-    display1.insert(0, str(matrix_data[0]))
-
-    display2.delete(0, tk.END)
-    display2.insert(0, str(matrix_data[1]))
-
-    display3.delete(0, tk.END)
-    display3.insert(0, str(matrix_data[2]))
-
-    display4.delete(0, tk.END)
-    display4.insert(0, str(matrix_data[3]))
-
-    display5.delete(0, tk.END)
-    display5.insert(0, str(matrix_data[4]))
-
-    display6.delete(0, tk.END)
-    display6.insert(0, str(matrix_data[5]))
-
-    display7.delete(0, tk.END)
-    display7.insert(0, str(matrix_data[6]))
-
-    display8.delete(0, tk.END)
-    display8.insert(0, str(matrix_data[7]))
+    
+    for x in range(0, 8):
+        displays[x].delete(0, tk.END)
+        displays[x].insert(0, str(matrix_data[x]))
 
 def update_matrix():
     message = "*ASK\r\n"
@@ -42,9 +26,7 @@ def update_matrix():
     global m3
     global mode_flag
     mode_flag = current_setup[1]
-    print("itttttt ",mode_flag)
-
-
+    
     m0 = [current_setup[9], current_setup[15], current_setup[21], current_setup[27], current_setup[33],
           current_setup[39], current_setup[45], current_setup[51]]
 
@@ -58,7 +40,6 @@ def update_matrix():
           current_setup[42], current_setup[48], current_setup[54]]
 
     conn = connector_selection.get()
-
     if conn == 0:
         update_display(m0)
     if conn == 1:
@@ -69,13 +50,16 @@ def update_matrix():
         update_display(m3)
 
 def send_tcp_packet(data):
-    ip = "192.168.16.210"
+    # ip = "192.168.16.210"
+    ip = ip_entry.get()
     port = 23
+    timeout=2
     print(data)
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
+        sock.settimeout(timeout)
         # Connect the socket to the server
         sock.connect((ip, port))
 
@@ -88,6 +72,11 @@ def send_tcp_packet(data):
         print(f"Received response: {response.decode('utf-8')}")
         return response_decoded
 
+    except socket.timeout:
+        print("Socket timeout occurred")
+        status_display.delete(0, tk.END)
+        status_display.insert(0, "SOCKET ERROR")
+        response= "!ASK:00,0,3,0,5.07,3.26,0.19,+35.6,08,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,47,37,27,60,60,56,46,36,26,60,60,55,45,35,25,60,60,54,44,34,24,60,60,53,43,33,23,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60"
     except socket.error as e:
         print(f"Socket error: {e}")
 
@@ -101,7 +90,7 @@ def matrix_step(connector,selected_matrix,value1):
     send_tcp_packet(data)
 
 def LocRem():
-    print('yeah')
+
     update_matrix()
     global connect_flag
     print('flag')
@@ -131,191 +120,26 @@ def LocRem():
         status_display.insert(0, "Remote mode")
         button_mode.config(bg="green")
 
+def increment_matrix(number):
 
-def increment_display1():
-    value = int(display1.get()) if display1.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display1.delete(0, tk.END)
-        display1.insert(0, str(value + 1))
-        value = int(display1.get())
-        print(connector_selection)
+    value = int(displays[number].get()) if displays[number].get().isdigit() else 0
+    if 0 <=value <60:
+        displays[number].delete(0, tk.END)
+        displays[number].insert(0, str(value + 1))
+        value = int(displays[number].get())
         conn = str(connector_selection.get())
-        matrix_step(conn,"0", str(value))
-
-def increment_display2():
-    value = int(display2.get()) if display2.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display2.delete(0, tk.END)
-        display2.insert(0, str(value + 1))
-        value = int(display2.get())
-        print(connector_selection)
+        matrix_step(conn,str(number), str(value))
+        
+def decrement_matrix(number):
+    value = int(displays[number].get()) if displays[number].get().isdigit() else 0
+    if 0 <value <=60:
+        displays[number].delete(0, tk.END)
+        displays[number].insert(0, str(value - 1))
+        value = int(displays[number].get())
         conn = str(connector_selection.get())
-        matrix_step(conn, "1", str(value))
-
-def increment_display3():
-    value = int(display3.get()) if display3.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display3.delete(0, tk.END)
-        display3.insert(0, str(value + 1))
-        value = int(display3.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "2", str(value))
-
-def increment_display4():
-    value = int(display4.get()) if display4.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display4.delete(0, tk.END)
-        display4.insert(0, str(value + 1))
-        value = int(display4.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "3", str(value))
-
-def increment_display5():
-    value = int(display5.get()) if display5.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display5.delete(0, tk.END)
-        display5.insert(0, str(value + 1))
-        value = int(display5.get())
-        conn = str(connector_selection.get())
-        matrix_step(conn, str(value))
-        matrix_step(conn, "4", str(value))
-
-def increment_display6():
-    value = int(display6.get()) if display6.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display6.delete(0, tk.END)
-        display6.insert(0, str(value + 1))
-        value = int(display6.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "5", str(value))
-
-def increment_display7():
-    value = int(display7.get()) if display7.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display7.delete(0, tk.END)
-        display7.insert(0, str(value + 1))
-        value = int(display7.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "6", str(value))
-
-def increment_display8():
-    value = int(display8.get()) if display8.get().isdigit() else 0
-
-    if 0 <= value < 60:
-        display8.delete(0, tk.END)
-        display8.insert(0, str(value + 1))
-        value = int(display8.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "7", str(value))
-
-
-def decrement_display1():
-    value = int(display1.get()) if display1.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display1.delete(0, tk.END)
-        display1.insert(0, str(value - 1))
-        value = int(display1.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "0", str(value))
-
-
-def decrement_display2():
-    value = int(display2.get()) if display2.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display2.delete(0, tk.END)
-        display2.insert(0, str(value - 1))
-        value = int(display2.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "1", str(value))
-
-
-def decrement_display3():
-    value = int(display3.get()) if display3.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display3.delete(0, tk.END)
-        display3.insert(0, str(value - 1))
-        value = int(display3.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "2", str(value))
-
-
-def decrement_display4():
-    value = int(display4.get()) if display4.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display4.delete(0, tk.END)
-        display4.insert(0, str(value - 1))
-        value = int(display4.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "3", str(value))
-
-
-def decrement_display5():
-    value = int(display5.get()) if display5.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display5.delete(0, tk.END)
-        display5.insert(0, str(value - 1))
-        value = int(display5.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "4", str(value))
-
-
-def decrement_display6():
-    value = int(display6.get()) if display6.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display6.delete(0, tk.END)
-        display6.insert(0, str(value - 1))
-        value = int(display6.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "5", str(value))
-
-
-def decrement_display7():
-    value = int(display7.get()) if display7.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display7.delete(0, tk.END)
-        display7.insert(0, str(value - 1))
-        value = int(display7.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "6", str(value))
-
-
-def decrement_display8():
-    value = int(display8.get()) if display8.get().isdigit() else 0
-
-    if 0 < value <= 60:
-        display8.delete(0, tk.END)
-        display8.insert(0, str(value - 1))
-        value = int(display8.get())
-        print(connector_selection)
-        conn = str(connector_selection.get())
-        matrix_step(conn, "7", str(value))
-
+        matrix_step(conn,str(number), str(value))
+        
+    
 
 def on_radio_button_selected():
     print(f"Connector selected: {connector_selection.get()}")
@@ -323,8 +147,8 @@ def on_radio_button_selected():
     button_color_change(selected_value)
     update_matrix()
 
-
 def button_color_change(code):
+    colors = ["#00FF00","#3399ff","#00ffff","#ffffff"]
     if code == 0:
         hex_color = "#00FF00"
     if code == 1:
@@ -333,24 +157,11 @@ def button_color_change(code):
         hex_color = "#00ffff"
     if code == 3:
         hex_color = "#ffffff"
-
-    button_up1.config(bg=hex_color)
-    button_up2.config(bg=hex_color)
-    button_up3.config(bg=hex_color)
-    button_up4.config(bg=hex_color)
-    button_up5.config(bg=hex_color)
-    button_up6.config(bg=hex_color)
-    button_up7.config(bg=hex_color)
-    button_up8.config(bg=hex_color)
-    button_down1.config(bg=hex_color)
-    button_down2.config(bg=hex_color)
-    button_down3.config(bg=hex_color)
-    button_down4.config(bg=hex_color)
-    button_down5.config(bg=hex_color)
-    button_down6.config(bg=hex_color)
-    button_down7.config(bg=hex_color)
-    button_down8.config(bg=hex_color)
-
+    
+    for x in range(0, 8):
+        buttons_up[x].config(bg=colors[code])
+        buttons_down[x].config(bg=colors[code])
+    
 
 def toggle_checkbox():
     # Print the state of the checkbox
@@ -366,7 +177,7 @@ def toggle_checkbox():
 
 
 root = tk.Tk()
-root.title("Tkinter Example")
+root.title("BonnBonn Controller V1.0")
 global connect_flag
 connect_flag = 0
 connector_selection = tk.IntVar()
@@ -434,53 +245,57 @@ display7.grid(row=2, column=8, padx=padding, pady=padding)
 display8 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
 display8.grid(row=2, column=9, padx=padding, pady=padding)
 
-button_up1 = tk.Button(root, text="Up1", command=increment_display1, width=4, height=2)
+button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0), width=4, height=2)
 button_up1.grid(row=3, column=2, padx=padding, pady=padding)
 
-button_up2 = tk.Button(root, text="Up2", command=increment_display2, width=4, height=2)
+button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1), width=4, height=2)
 button_up2.grid(row=3, column=3, padx=padding, pady=padding)
 
-button_up3 = tk.Button(root, text="Up3", command=increment_display3, width=4, height=2)
+button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2), width=4, height=2)
 button_up3.grid(row=3, column=4, padx=padding, pady=padding)
 
-button_up4 = tk.Button(root, text="Up4", command=increment_display4, width=4, height=2)
+button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3), width=4, height=2)
 button_up4.grid(row=3, column=5, padx=padding, pady=padding)
 
-button_up5 = tk.Button(root, text="Up5", command=increment_display5, width=4, height=2)
+button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4), width=4, height=2)
 button_up5.grid(row=3, column=6, padx=padding, pady=padding)
 
-button_up6 = tk.Button(root, text="Up6", command=increment_display6, width=4, height=2)
+button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5), width=4, height=2)
 button_up6.grid(row=3, column=7, padx=padding, pady=padding)
 
-button_up7 = tk.Button(root, text="Up7", command=increment_display7, width=4, height=2)
+button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6), height=2)
 button_up7.grid(row=3, column=8, padx=padding, pady=padding)
 
-button_up8 = tk.Button(root, text="Up8", command=increment_display8, width=4, height=2)
+button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7), width=4, height=2)
 button_up8.grid(row=3, column=9, padx=padding, pady=padding)
 
-button_down1 = tk.Button(root, text="Dn1", command=decrement_display1, width=4, height=2)
+button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0), width=4, height=2)
 button_down1.grid(row=4, column=2, padx=padding, pady=padding)
 
-button_down2 = tk.Button(root, text="Dn2", command=decrement_display2, width=4, height=2)
+button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1), width=4, height=2)
 button_down2.grid(row=4, column=3, padx=padding, pady=padding)
 
-button_down3 = tk.Button(root, text="Dn3", command=decrement_display3, width=4, height=2)
+button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2), width=4, height=2)
 button_down3.grid(row=4, column=4, padx=padding, pady=padding)
 
-button_down4 = tk.Button(root, text="Dn4", command=decrement_display4, width=4, height=2)
+button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3), width=4, height=2)
 button_down4.grid(row=4, column=5, padx=padding, pady=padding)
 
-button_down5 = tk.Button(root, text="Dn5", command=decrement_display5, width=4, height=2)
+button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4), width=4, height=2)
 button_down5.grid(row=4, column=6, padx=padding, pady=padding)
 
-button_down6 = tk.Button(root, text="Dn6", command=decrement_display6, width=4, height=2)
+button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5), width=4, height=2)
 button_down6.grid(row=4, column=7, padx=padding, pady=padding)
 
-button_down7 = tk.Button(root, text="Dn7", command=decrement_display7, width=4, height=2)
+button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6), width=4, height=2)
 button_down7.grid(row=4, column=8, padx=padding, pady=padding)
 
-button_down8 = tk.Button(root, text="Dn8", command=decrement_display8, width=4, height=2)
+button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7), width=4, height=2)
 button_down8.grid(row=4, column=9, padx=padding, pady=padding)
+
+buttons_down = [button_down1,button_down2,button_down3,button_down4,button_down5,button_down6,button_down7,button_down8]
+buttons_up = [button_up1,button_up2,button_up3,button_up4,button_up5,button_up6,button_up7,button_up8]
+displays = [display1,display2,display3,display4,display5,display6,display7,display8]
 
 radio_button1 = tk.Radiobutton(root, text="Connector 1", variable=connector_selection, value=0,
                                command=on_radio_button_selected, bg="#00FF00")
@@ -496,6 +311,7 @@ radio_button2.grid(row=1, column=0, padx=padding, pady=padding)
 radio_button3.grid(row=2, column=0, padx=padding, pady=padding)
 radio_button4.grid(row=3, column=0, padx=padding, pady=padding)
 
+
 button_mode = tk.Button(root, text="Local-Remote", command=LocRem, width=15, height=3, bg='#666699')
 button_mode.grid(row=8, column=0, padx=10, pady=0)
 
@@ -507,7 +323,7 @@ ip_label = tk.Label(root, text="Matrix IP address:", bg="white")
 ip_label.grid(row=10, column=0, pady=10)
 ip_entry = tk.Entry(root, width=15, font=lcd_font2, justify='center', bg='white', fg='black')
 ip_entry.grid(row=10, column=1, padx=padding, pady=padding)
-ip_entry.insert(0, "192.168.1.1")
+ip_entry.insert(0, "192.168.16.210")
 
 checkbox1 = tk.Checkbutton(root, text="Add M1", variable=checkbox1_var, command=toggle_checkbox)
 checkbox1.grid(row=5, column=2, padx=padding, pady=padding)
