@@ -120,26 +120,43 @@ def LocRem():
         status_display.insert(0, "Remote mode")
         button_mode.config(bg="green")
 
-def increment_matrix(number):
-
-    value = int(displays[number].get()) if displays[number].get().isdigit() else 0
-    if 0 <=value <60:
-        displays[number].delete(0, tk.END)
-        displays[number].insert(0, str(value + 1))
-        value = int(displays[number].get())
-        conn = str(connector_selection.get())
-        matrix_step(conn,str(number), str(value))
-        
-def decrement_matrix(number):
-    value = int(displays[number].get()) if displays[number].get().isdigit() else 0
-    if 0 <value <=60:
-        displays[number].delete(0, tk.END)
-        displays[number].insert(0, str(value - 1))
-        value = int(displays[number].get())
-        conn = str(connector_selection.get())
-        matrix_step(conn,str(number), str(value))
-        
+def increment_matrix(number1,number2):
     
+    if number2 == 0:
+        value = int(displays[number1].get()) if displays[number1].get().isdigit() else 0
+        if 0 <=value <60:
+            if value <9:
+                displays[number1].delete(0, tk.END)
+                displays[number1].insert(0, "0" + str(value + 1))
+            else:                
+                displays[number1].delete(0, tk.END)
+                displays[number1].insert(0, str(value + 1))
+    else:
+        displays[number1].delete(0, tk.END)
+        displays[number1].insert(0, "60")
+                
+    value = int(displays[number1].get())
+    conn = str(connector_selection.get())
+    matrix_step(conn,str(number1), str(value))
+        
+def decrement_matrix(number1,number2):
+    value = int(displays[number1].get()) if displays[number1].get().isdigit() else 0
+    if number2 == 0:
+        if 0 <value <=60:            
+            if value < 11:
+                displays[number1].delete(0, tk.END)
+                displays[number1].insert(0, "0" + str(value - 1))
+            else:
+                displays[number1].delete(0, tk.END)
+                displays[number1].insert(0, str(value - 1))
+    else:
+        displays[number1].delete(0, tk.END)
+        displays[number1].insert(0, "00")
+        
+    value = int(displays[number1].get())
+    conn = str(connector_selection.get())
+    matrix_step(conn,str(number1), str(value))
+        
 
 def on_radio_button_selected():
     print(f"Connector selected: {connector_selection.get()}")
@@ -245,53 +262,69 @@ display7.grid(row=2, column=8, padx=padding, pady=padding)
 display8 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
 display8.grid(row=2, column=9, padx=padding, pady=padding)
 
-button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0), width=4, height=2)
+button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0,0), width=4, height=2)
 button_up1.grid(row=3, column=2, padx=padding, pady=padding)
+button_up1.bind("<Button-3>", lambda event: increment_matrix(0,1))
 
-button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1), width=4, height=2)
+button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1,0), width=4, height=2)
 button_up2.grid(row=3, column=3, padx=padding, pady=padding)
+button_up2.bind("<Button-3>", lambda event: increment_matrix(1,1))
 
-button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2), width=4, height=2)
+button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2,0), width=4, height=2)
 button_up3.grid(row=3, column=4, padx=padding, pady=padding)
+button_up3.bind("<Button-3>", lambda event: increment_matrix(2,1))
 
-button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3), width=4, height=2)
+button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3,0), width=4, height=2)
 button_up4.grid(row=3, column=5, padx=padding, pady=padding)
+button_up4.bind("<Button-3>", lambda event: increment_matrix(3,1))
 
-button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4), width=4, height=2)
+button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4,0), width=4, height=2)
 button_up5.grid(row=3, column=6, padx=padding, pady=padding)
+button_up5.bind("<Button-3>", lambda event: increment_matrix(4,1))
 
-button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5), width=4, height=2)
+button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5,0), width=4, height=2)
 button_up6.grid(row=3, column=7, padx=padding, pady=padding)
+button_up6.bind("<Button-3>", lambda event: increment_matrix(5,1))
 
-button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6), height=2)
+button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6,0), height=2)
 button_up7.grid(row=3, column=8, padx=padding, pady=padding)
+button_up7.bind("<Button-3>", lambda event: increment_matrix(6,1))
 
-button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7), width=4, height=2)
+button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7,0), width=4, height=2)
 button_up8.grid(row=3, column=9, padx=padding, pady=padding)
+button_up8.bind("<Button-3>", lambda event: increment_matrix(7,1))
 
-button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0), width=4, height=2)
+button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0,0), width=4, height=2)
 button_down1.grid(row=4, column=2, padx=padding, pady=padding)
+button_down1.bind("<Button-3>", lambda event: decrement_matrix(0,1))
 
-button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1), width=4, height=2)
+button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1,0), width=4, height=2)
 button_down2.grid(row=4, column=3, padx=padding, pady=padding)
+button_down2.bind("<Button-3>", lambda event: decrement_matrix(1,1))
 
-button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2), width=4, height=2)
+button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2,0), width=4, height=2)
 button_down3.grid(row=4, column=4, padx=padding, pady=padding)
+button_down3.bind("<Button-3>", lambda event: decrement_matrix(2,1))
 
-button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3), width=4, height=2)
+button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3,0), width=4, height=2)
 button_down4.grid(row=4, column=5, padx=padding, pady=padding)
+button_down4.bind("<Button-3>", lambda event: decrement_matrix(3,1))
 
-button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4), width=4, height=2)
+button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4,0), width=4, height=2)
 button_down5.grid(row=4, column=6, padx=padding, pady=padding)
+button_down5.bind("<Button-3>", lambda event: decrement_matrix(4,1))
 
-button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5), width=4, height=2)
+button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5,0), width=4, height=2)
 button_down6.grid(row=4, column=7, padx=padding, pady=padding)
+button_down6.bind("<Button-3>", lambda event: decrement_matrix(5,1))
 
-button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6), width=4, height=2)
+button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6,0), width=4, height=2)
 button_down7.grid(row=4, column=8, padx=padding, pady=padding)
+button_down7.bind("<Button-3>", lambda event: decrement_matrix(6,1))
 
-button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7), width=4, height=2)
+button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7,0), width=4, height=2)
 button_down8.grid(row=4, column=9, padx=padding, pady=padding)
+button_down8.bind("<Button-3>", lambda event: decrement_matrix(7,1))
 
 buttons_down = [button_down1,button_down2,button_down3,button_down4,button_down5,button_down6,button_down7,button_down8]
 buttons_up = [button_up1,button_up2,button_up3,button_up4,button_up5,button_up6,button_up7,button_up8]
