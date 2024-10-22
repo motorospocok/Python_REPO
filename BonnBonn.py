@@ -1,5 +1,6 @@
 # Bonn BUAW20 attenuator matrix Controller by ethtoja
 # V 1.0 - 21th October 2024 - working very basic functions - can step the matrix remotely :)
+# V 1.1 - 21th October 2024 - multiple button selection
 
 
 import tkinter as tk
@@ -15,8 +16,7 @@ def update_display(matrix_data):
 
 def update_matrix():
     message = "*ASK\r\n"
-    response = send_tcp_packet(message)
-    print(response)
+    response = send_tcp_packet(message)    
     response = response.replace('!ASK:', '')
     current_setup = response.split(',')
 
@@ -49,8 +49,7 @@ def update_matrix():
     if conn == 3:
         update_display(m3)
 
-def send_tcp_packet(data):
-    # ip = "192.168.16.210"
+def send_tcp_packet(data):    
     ip = ip_entry.get()
     port = 23
     timeout=2
@@ -85,8 +84,7 @@ def send_tcp_packet(data):
         sock.close()
 
 def matrix_step(connector,selected_matrix,value1):
-    data = '*SAT:' + connector + ',' + selected_matrix + ',' + str(value1) + '\r\n'
-    print(data)
+    data = '*SAT:' + connector + ',' + selected_matrix + ',' + str(value1) + '\r\n'    
     send_tcp_packet(data)
 
 def LocRem():
@@ -100,13 +98,11 @@ def LocRem():
         update_matrix()
     else:
         if mode_flag == "0":
-            message = "*SCT:1\r\n"
-            print("kuldes", message)
+            message = "*SCT:1\r\n"            
             response = send_tcp_packet(message)
 
         if mode_flag == "1":
-            message = "*SCT:0\r\n"
-            print("kuldes", message)
+            message = "*SCT:0\r\n"            
             response = send_tcp_packet(message)
 
     update_matrix()
@@ -135,9 +131,25 @@ def increment_matrix(number1,number2):
         displays[number1].delete(0, tk.END)
         displays[number1].insert(0, "60")
                 
-    value = int(displays[number1].get())
+    value = int(displays[number1].get())    
     conn = str(connector_selection.get())
     matrix_step(conn,str(number1), str(value))
+    check_boxes = [checkbox1_var.get(),checkbox2_var.get(),checkbox3_var.get(),checkbox4_var.get(),checkbox5_var.get(),checkbox6_var.get(),checkbox7_var.get(),checkbox8_var.get()]            
+    if check_boxes[number1] == True:
+        print("heureka")
+        for x in range (0, 8):
+            if check_boxes[x] and x != number1:
+                value = int(displays[x].get())
+                if 0 <=value <60:
+                    if value <9:
+                        displays[x].delete(0, tk.END)
+                        displays[x].insert(0, "0" + str(value + 1))
+                    else:                
+                        displays[x].delete(0, tk.END)
+                        displays[x].insert(0, str(value + 1))
+                value = int(displays[x].get())
+                conn = str(connector_selection.get())
+                matrix_step(conn,str(x), str(value))
         
 def decrement_matrix(number1,number2):
     value = int(displays[number1].get()) if displays[number1].get().isdigit() else 0
@@ -153,9 +165,27 @@ def decrement_matrix(number1,number2):
         displays[number1].delete(0, tk.END)
         displays[number1].insert(0, "00")
         
-    value = int(displays[number1].get())
+    value = int(displays[number1].get())    
     conn = str(connector_selection.get())
     matrix_step(conn,str(number1), str(value))
+    
+    check_boxes = [checkbox1_var.get(),checkbox2_var.get(),checkbox3_var.get(),checkbox4_var.get(),checkbox5_var.get(),checkbox6_var.get(),checkbox7_var.get(),checkbox8_var.get()]    
+    if check_boxes[number1] == True:
+        print("heureka")
+        for x in range (0, 8):
+            if check_boxes[x] and x != number1:
+                value = int(displays[x].get())
+                if 0 <value <=60:
+                    if value <11:
+                        displays[x].delete(0, tk.END)
+                        displays[x].insert(0, "0" + str(value - 1))
+                    else:                
+                        displays[x].delete(0, tk.END)
+                        displays[x].insert(0, str(value - 1))
+                value = int(displays[x].get())
+                conn = str(connector_selection.get())
+                matrix_step(conn,str(x), str(value))
+                   
         
 
 def on_radio_button_selected():
@@ -182,19 +212,12 @@ def button_color_change(code):
 
 def toggle_checkbox():
     # Print the state of the checkbox
-    value = checkbox1_var.get() + (checkbox2_var.get() * 2) + (checkbox3_var.get() * 4) + (checkbox4_var.get() * 8) + (
-                checkbox5_var.get() * 16) + (checkbox6_var.get() * 32) + (checkbox7_var.get() * 64) + (
-                        checkbox8_var.get() * 128)
-
-    if checkbox1_var.get():
-        print("Checkbox is checked")
-    else:
-        print("Checkbox is unchecked")
-    print(value)
-
+    global check_boxes
+    check_boxes = [checkbox1_var.get(),checkbox2_var.get(),checkbox3_var.get(),checkbox4_var.get(),checkbox5_var.get(),checkbox6_var.get(),checkbox7_var.get(),checkbox8_var.get()]    
+    
 
 root = tk.Tk()
-root.title("BonnBonn Controller V1.0")
+root.title("BonnBonn Controller V1.1")
 global connect_flag
 connect_flag = 0
 connector_selection = tk.IntVar()
