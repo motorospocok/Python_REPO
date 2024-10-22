@@ -328,29 +328,30 @@ radio_button3.place(x=15,y=80)
 radio_button4.place(x=15,y=110)
 
 info_color_bg = "gray"
+info_color_fg = "chartreuse"
 
-info1 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info1 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info1.place(x=130,y=50)
 
-info2 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info2 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info2.place(x=185,y=20)
 
-info3 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info3 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info3.place(x=245,y=50)
 
-info4 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info4 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info4.place(x=305,y=20)
 
-info5 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info5 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info5.place(x=365,y=50)
 
-info6 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info6 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info6.place(x=425,y=20)
 
-info7 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info7 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info7.place(x=485,y=50)
 
-info8 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info8 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info8.place(x=545,y=20)
 
 info_boxes = [info1,info2,info3,info4,info5,info6,info7,info8]
