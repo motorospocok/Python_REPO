@@ -1,9 +1,10 @@
 # Bonn BUAW20 attenuator matrix Controller by ethtoja
-# V 1.0 - 21th October 2024 - working very basic functions - can step the matrix remotely :)
-# V 1.1 - 21th October 2024 - multiple button selection
-
+# v1.0 - 21th October 2024 - working very basic functions - can step the matrix remotely :)
+# v1.1 - 21th October 2024 - multiple button selection
+# v1.2 - 22th October 2024 - added FileMenu, re-designed GUI, possible to store info entry content
 
 import tkinter as tk
+from tkinter import filedialog, messagebox
 import socket
 
 global connect_flag
@@ -74,8 +75,9 @@ def send_tcp_packet(data):
     except socket.timeout:
         print("Socket timeout occurred")
         status_display.delete(0, tk.END)
-        status_display.insert(0, "SOCKET ERROR")
-        response= "!ASK:00,0,3,0,5.07,3.26,0.19,+35.6,08,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,47,37,27,60,60,56,46,36,26,60,60,55,45,35,25,60,60,54,44,34,24,60,60,53,43,33,23,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60"
+        status_display.insert(0, "CAN NOT CONNECT")
+        status_display.config(bg="red2")
+        response = "!ASK:00,0,3,0,5.07,3.26,0.19,+35.6,08,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,47,37,27,60,60,56,46,36,26,60,60,55,45,35,25,60,60,54,44,34,24,60,60,53,43,33,23,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60"
     except socket.error as e:
         print(f"Socket error: {e}")
 
@@ -88,7 +90,8 @@ def matrix_step(connector,selected_matrix,value1):
     send_tcp_packet(data)
 
 def LocRem():
-
+    global stop_blinking
+    stop_blinking = True
     update_matrix()
     global connect_flag
     print('flag')
@@ -215,9 +218,82 @@ def toggle_checkbox():
     global check_boxes
     check_boxes = [checkbox1_var.get(),checkbox2_var.get(),checkbox3_var.get(),checkbox4_var.get(),checkbox5_var.get(),checkbox6_var.get(),checkbox7_var.get(),checkbox8_var.get()]    
     
+def save_file():
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt",
+                                             filetypes=[("Text files", "*.txt"),
+                                                        ("All files", "*.*")])
+    if file_path:
+        with open(file_path, 'w') as file:
+            content = ""
+            for x in range (0, 8):
+                content = content + info_boxes[x].get() + ';'
+            file.write(content)
+        messagebox.showinfo("Info", "File saved successfully!")
+
+def load_file():
+    file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"),
+                                                      ("All files", "*.*")])
+    if file_path:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            content2 = content.split(';')
+            for x in range (0, 8):
+                if content2[x] != "":
+                    info_boxes[x].delete(0, tk.END)
+                    info_boxes[x].insert(0, content2[x])
+        messagebox.showinfo("Info", "File loaded successfully!")
+
+def exit_program():
+    root.quit()
+
+def toggle_text():
+    if not stop_blinking:
+        current_color = status_display.cget("bg")
+        new_color = "yellow" if current_color == "white" else "white"
+        status_display.config(bg=new_color)
+        root.after(200, toggle_text)  # 500 ms múlva újra meghívja a toggle_color függvényt
 
 root = tk.Tk()
-root.title("BonnBonn Controller V1.1")
+root.title("BonnBonn Controller V1.2")
+root.geometry("635x335")
+stop_blinking = False
+
+menu_bar = tk.Menu(root)
+file_menu = tk.Menu(menu_bar, tearoff=0)
+file_menu.add_command(label="Open", command=load_file)
+file_menu.add_command(label="Save", command=save_file)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=exit_program)
+menu_bar.add_cascade(label="File", menu=file_menu)
+root.config(menu=menu_bar)
+
+# Canvas létrehozása és elhelyezése
+canvas = tk.Canvas(root, width=635, height=335)
+canvas.place(x=0, y=0)
+
+# Vonal rajzolása a Canvas-ra (x1, y1, x2, y2)
+rectangle1 = canvas.create_rectangle(130, 95, 620, 140, fill="gray67")
+rectangle2 = canvas.create_rectangle(130, 142, 620, 243, fill="gray40")
+rectangle4 = canvas.create_rectangle(130, 245, 620, 275, fill="gray67")
+rectangle5 = canvas.create_rectangle(5, 15, 120, 275, fill="gray67")
+rectangle6 = canvas.create_rectangle(130, 280, 620, 320, fill="gray67")
+
+ln_color = "Blue4"
+
+line1 = canvas.create_line(165,75,165,90, fill=ln_color, width=3)
+line2 = canvas.create_line(225,45,225,90, fill=ln_color, width=3)
+
+line3 = canvas.create_line(285,75,285,90, fill=ln_color, width=3)
+line4 = canvas.create_line(345,45,345,90, fill=ln_color, width=3)
+
+line5 = canvas.create_line(405,75,405,90, fill=ln_color, width=3)
+line6 = canvas.create_line(465,45,465,90, fill=ln_color, width=3)
+
+line7 = canvas.create_line(525,75,525,90, fill=ln_color, width=3)
+line8 = canvas.create_line(585,45,585,90, fill=ln_color, width=3)
+
+
+
 global connect_flag
 connect_flag = 0
 connector_selection = tk.IntVar()
@@ -237,122 +313,6 @@ checkbox8_var = tk.BooleanVar()
 lcd_font = ("Courier", 20, "bold")  # LCD-szerű betűtípus beállítása
 lcd_font2 = ("Courier", 10, "bold")  # LCD-szerű betűtípus beállítása
 
-info1 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info1.grid(row=0, column=2, padx=padding, pady=padding)
-
-info2 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info2.grid(row=1, column=3, padx=padding, pady=padding)
-
-info3 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info3.grid(row=0, column=4, padx=padding, pady=padding)
-
-info4 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info4.grid(row=1, column=5, padx=padding, pady=padding)
-
-info5 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info5.grid(row=0, column=6, padx=padding, pady=padding)
-
-info6 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info6.grid(row=1, column=7, padx=padding, pady=padding)
-
-info7 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info7.grid(row=0, column=8, padx=padding, pady=padding)
-
-info8 = tk.Entry(root, width=8, font=lcd_font2, justify='center', bg='pink', fg='black')
-info8.grid(row=1, column=9, padx=padding, pady=padding)
-
-display1 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display1.grid(row=2, column=2, padx=padding, pady=padding)
-
-display2 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display2.grid(row=2, column=3, padx=padding, pady=padding)
-
-display3 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display3.grid(row=2, column=4, padx=padding, pady=padding)
-
-display4 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display4.grid(row=2, column=5, padx=padding, pady=padding)
-
-display5 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display5.grid(row=2, column=6, padx=padding, pady=padding)
-
-display6 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display6.grid(row=2, column=7, padx=padding, pady=padding)
-
-display7 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display7.grid(row=2, column=8, padx=padding, pady=padding)
-
-display8 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
-display8.grid(row=2, column=9, padx=padding, pady=padding)
-
-button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0,0), width=4, height=2)
-button_up1.grid(row=3, column=2, padx=padding, pady=padding)
-button_up1.bind("<Button-3>", lambda event: increment_matrix(0,1))
-
-button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1,0), width=4, height=2)
-button_up2.grid(row=3, column=3, padx=padding, pady=padding)
-button_up2.bind("<Button-3>", lambda event: increment_matrix(1,1))
-
-button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2,0), width=4, height=2)
-button_up3.grid(row=3, column=4, padx=padding, pady=padding)
-button_up3.bind("<Button-3>", lambda event: increment_matrix(2,1))
-
-button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3,0), width=4, height=2)
-button_up4.grid(row=3, column=5, padx=padding, pady=padding)
-button_up4.bind("<Button-3>", lambda event: increment_matrix(3,1))
-
-button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4,0), width=4, height=2)
-button_up5.grid(row=3, column=6, padx=padding, pady=padding)
-button_up5.bind("<Button-3>", lambda event: increment_matrix(4,1))
-
-button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5,0), width=4, height=2)
-button_up6.grid(row=3, column=7, padx=padding, pady=padding)
-button_up6.bind("<Button-3>", lambda event: increment_matrix(5,1))
-
-button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6,0), height=2)
-button_up7.grid(row=3, column=8, padx=padding, pady=padding)
-button_up7.bind("<Button-3>", lambda event: increment_matrix(6,1))
-
-button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7,0), width=4, height=2)
-button_up8.grid(row=3, column=9, padx=padding, pady=padding)
-button_up8.bind("<Button-3>", lambda event: increment_matrix(7,1))
-
-button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0,0), width=4, height=2)
-button_down1.grid(row=4, column=2, padx=padding, pady=padding)
-button_down1.bind("<Button-3>", lambda event: decrement_matrix(0,1))
-
-button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1,0), width=4, height=2)
-button_down2.grid(row=4, column=3, padx=padding, pady=padding)
-button_down2.bind("<Button-3>", lambda event: decrement_matrix(1,1))
-
-button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2,0), width=4, height=2)
-button_down3.grid(row=4, column=4, padx=padding, pady=padding)
-button_down3.bind("<Button-3>", lambda event: decrement_matrix(2,1))
-
-button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3,0), width=4, height=2)
-button_down4.grid(row=4, column=5, padx=padding, pady=padding)
-button_down4.bind("<Button-3>", lambda event: decrement_matrix(3,1))
-
-button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4,0), width=4, height=2)
-button_down5.grid(row=4, column=6, padx=padding, pady=padding)
-button_down5.bind("<Button-3>", lambda event: decrement_matrix(4,1))
-
-button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5,0), width=4, height=2)
-button_down6.grid(row=4, column=7, padx=padding, pady=padding)
-button_down6.bind("<Button-3>", lambda event: decrement_matrix(5,1))
-
-button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6,0), width=4, height=2)
-button_down7.grid(row=4, column=8, padx=padding, pady=padding)
-button_down7.bind("<Button-3>", lambda event: decrement_matrix(6,1))
-
-button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7,0), width=4, height=2)
-button_down8.grid(row=4, column=9, padx=padding, pady=padding)
-button_down8.bind("<Button-3>", lambda event: decrement_matrix(7,1))
-
-buttons_down = [button_down1,button_down2,button_down3,button_down4,button_down5,button_down6,button_down7,button_down8]
-buttons_up = [button_up1,button_up2,button_up3,button_up4,button_up5,button_up6,button_up7,button_up8]
-displays = [display1,display2,display3,display4,display5,display6,display7,display8]
-
 radio_button1 = tk.Radiobutton(root, text="Connector 1", variable=connector_selection, value=0,
                                command=on_radio_button_selected, bg="#00FF00")
 radio_button2 = tk.Radiobutton(root, text="Connector 2", variable=connector_selection, value=1,
@@ -362,47 +322,170 @@ radio_button3 = tk.Radiobutton(root, text="Connector 3", variable=connector_sele
 radio_button4 = tk.Radiobutton(root, text="Connector 4", variable=connector_selection, value=3,
                                command=on_radio_button_selected, bg='#ffffff')
 
-radio_button1.grid(row=0, column=0, padx=padding, pady=padding)
-radio_button2.grid(row=1, column=0, padx=padding, pady=padding)
-radio_button3.grid(row=2, column=0, padx=padding, pady=padding)
-radio_button4.grid(row=3, column=0, padx=padding, pady=padding)
+radio_button1.place(x=15,y=20)
+radio_button2.place(x=15,y=50)
+radio_button3.place(x=15,y=80)
+radio_button4.place(x=15,y=110)
+
+info_color_bg = "gray"
+
+info1 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info1.place(x=130,y=50)
+
+info2 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info2.place(x=185,y=20)
+
+info3 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info3.place(x=245,y=50)
+
+info4 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info4.place(x=305,y=20)
+
+info5 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info5.place(x=365,y=50)
+
+info6 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info6.place(x=425,y=20)
+
+info7 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info7.place(x=485,y=50)
+
+info8 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg='black')
+info8.place(x=545,y=20)
+
+info_boxes = [info1,info2,info3,info4,info5,info6,info7,info8]
+
+display1 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display1.place(x=140,y=100)
+
+display2 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display2.place(x=200,y=100)
+
+display3 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display3.place(x=260,y=100)
+
+display4 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display4.place(x=320,y=100)
+
+display5 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display5.place(x=380,y=100)
+
+display6 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display6.place(x=440,y=100)
+
+display7 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display7.place(x=500,y=100)
+
+display8 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
+display8.place(x=560,y=100)
+
+button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0,0), width=4, height=2)
+button_up1.place(x=145,y=145)
+button_up1.bind("<Button-3>", lambda event: increment_matrix(0,1))
+
+button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1,0), width=4, height=2)
+button_up2.place(x=205,y=145)
+button_up2.bind("<Button-3>", lambda event: increment_matrix(1,1))
+
+button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2,0), width=4, height=2)
+button_up3.place(x=265,y=145)
+button_up3.bind("<Button-3>", lambda event: increment_matrix(2,1))
+
+button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3,0), width=4, height=2)
+button_up4.place(x=325,y=145)
+button_up4.bind("<Button-3>", lambda event: increment_matrix(3,1))
+
+button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4,0), width=4, height=2)
+button_up5.place(x=385,y=145)
+button_up5.bind("<Button-3>", lambda event: increment_matrix(4,1))
+
+button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5,0), width=4, height=2)
+button_up6.place(x=445,y=145)
+button_up6.bind("<Button-3>", lambda event: increment_matrix(5,1))
+
+button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6,0), height=2)
+button_up7.place(x=510,y=145)
+button_up7.bind("<Button-3>", lambda event: increment_matrix(6,1))
+
+button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7,0), width=4, height=2)
+button_up8.place(x=565,y=145)
+button_up8.bind("<Button-3>", lambda event: increment_matrix(7,1))
+
+button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0,0), width=4, height=2)
+button_down1.place(x=145,y=195)
+button_down1.bind("<Button-3>", lambda event: decrement_matrix(0,1))
+
+button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1,0), width=4, height=2)
+button_down2.place(x=205,y=195)
+button_down2.bind("<Button-3>", lambda event: decrement_matrix(1,1))
+
+button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2,0), width=4, height=2)
+button_down3.place(x=265,y=195)
+button_down3.bind("<Button-3>", lambda event: decrement_matrix(2,1))
+
+button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3,0), width=4, height=2)
+button_down4.place(x=325,y=195)
+button_down4.bind("<Button-3>", lambda event: decrement_matrix(3,1))
+
+button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4,0), width=4, height=2)
+button_down5.place(x=385,y=195)
+button_down5.bind("<Button-3>", lambda event: decrement_matrix(4,1))
+
+button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5,0), width=4, height=2)
+button_down6.place(x=445,y=195)
+button_down6.bind("<Button-3>", lambda event: decrement_matrix(5,1))
+
+button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6,0), width=4, height=2)
+button_down7.place(x=505,y=195)
+button_down7.bind("<Button-3>", lambda event: decrement_matrix(6,1))
+
+button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7,0), width=4, height=2)
+button_down8.place(x=565,y=195)
+button_down8.bind("<Button-3>", lambda event: decrement_matrix(7,1))
+
+checkbox1 = tk.Checkbutton(root, text="M1", variable=checkbox1_var, command=toggle_checkbox)
+checkbox1.place(x=150,y=247)
+
+checkbox2 = tk.Checkbutton(root, text="M2", variable=checkbox2_var, command=toggle_checkbox)
+checkbox2.place(x=210,y=247)
+
+checkbox3 = tk.Checkbutton(root, text="M3", variable=checkbox3_var, command=toggle_checkbox)
+checkbox3.place(x=270,y=247)
+
+checkbox4 = tk.Checkbutton(root, text="M4", variable=checkbox4_var, command=toggle_checkbox)
+checkbox4.place(x=330,y=247)
+
+checkbox5 = tk.Checkbutton(root, text="M5", variable=checkbox5_var, command=toggle_checkbox)
+checkbox5.place(x=390,y=247)
+
+checkbox6 = tk.Checkbutton(root, text="M6", variable=checkbox6_var, command=toggle_checkbox)
+checkbox6.place(x=450,y=247)
+
+checkbox7 = tk.Checkbutton(root, text="M7", variable=checkbox7_var, command=toggle_checkbox)
+checkbox7.place(x=510,y=247)
+
+checkbox8 = tk.Checkbutton(root, text="M8", variable=checkbox8_var, command=toggle_checkbox)
+checkbox8.place(x=570,y=247)
 
 
-button_mode = tk.Button(root, text="Local-Remote", command=LocRem, width=15, height=3, bg='#666699')
-button_mode.grid(row=8, column=0, padx=10, pady=0)
 
-status_display = tk.Entry(root, width=20, font=lcd_font2, justify='center', bg='white', fg='black')
-status_display.grid(row=8, column=1, padx=0, pady=0)
-status_display.insert(0, "<-Press to connect")
+buttons_down = [button_down1,button_down2,button_down3,button_down4,button_down5,button_down6,button_down7,button_down8]
+buttons_up = [button_up1,button_up2,button_up3,button_up4,button_up5,button_up6,button_up7,button_up8]
+displays = [display1,display2,display3,display4,display5,display6,display7,display8]
+
+
+button_mode = tk.Button(root, text="Local-Remote", command=LocRem, width=12, height=3, bg='#666699')
+button_mode.place(x=15,y=155)
+
+status_display = tk.Entry(root, width=25, font=lcd_font2, justify='center', bg='gold', fg='black')
+status_display.place(x=140,y=290)
+status_display.insert(0, "Press Local-Remote First")
 
 ip_label = tk.Label(root, text="Matrix IP address:", bg="white")
-ip_label.grid(row=10, column=0, pady=10)
+ip_label.place(x=360,y=290)
 ip_entry = tk.Entry(root, width=15, font=lcd_font2, justify='center', bg='white', fg='black')
-ip_entry.grid(row=10, column=1, padx=padding, pady=padding)
+ip_entry.place(x=470,y=290)
 ip_entry.insert(0, "192.168.16.210")
 
-checkbox1 = tk.Checkbutton(root, text="Add M1", variable=checkbox1_var, command=toggle_checkbox)
-checkbox1.grid(row=5, column=2, padx=padding, pady=padding)
-
-checkbox2 = tk.Checkbutton(root, text="Add M2", variable=checkbox2_var, command=toggle_checkbox)
-checkbox2.grid(row=5, column=3, padx=padding, pady=padding)
-
-checkbox3 = tk.Checkbutton(root, text="Add M3", variable=checkbox3_var, command=toggle_checkbox)
-checkbox3.grid(row=5, column=4, padx=padding, pady=padding)
-
-checkbox4 = tk.Checkbutton(root, text="Add M4", variable=checkbox4_var, command=toggle_checkbox)
-checkbox4.grid(row=5, column=5, padx=padding, pady=padding)
-
-checkbox5 = tk.Checkbutton(root, text="Add M5", variable=checkbox5_var, command=toggle_checkbox)
-checkbox5.grid(row=5, column=6, padx=padding, pady=padding)
-
-checkbox6 = tk.Checkbutton(root, text="Add M6", variable=checkbox6_var, command=toggle_checkbox)
-checkbox6.grid(row=5, column=7, padx=padding, pady=padding)
-
-checkbox7 = tk.Checkbutton(root, text="Add M7", variable=checkbox7_var, command=toggle_checkbox)
-checkbox7.grid(row=5, column=8, padx=padding, pady=padding)
-
-checkbox8 = tk.Checkbutton(root, text="Add M8", variable=checkbox8_var, command=toggle_checkbox)
-checkbox8.grid(row=5, column=9, padx=padding, pady=padding)
-
+root.after(200, toggle_text)  # 500 ms múlva meghívja a toggle_text függvényt
 root.mainloop()
