@@ -256,6 +256,7 @@ def toggle_text():
 root = tk.Tk()
 root.title("BonnBonn Controller V1.2")
 root.geometry("635x335")
+root.resizable(False, False)
 stop_blinking = False
 
 menu_bar = tk.Menu(root)
@@ -327,7 +328,7 @@ radio_button2.place(x=15,y=50)
 radio_button3.place(x=15,y=80)
 radio_button4.place(x=15,y=110)
 
-info_color_bg = "gray"
+info_color_bg = "gray23"
 info_color_fg = "chartreuse"
 
 info1 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
