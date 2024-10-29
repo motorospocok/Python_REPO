@@ -1,7 +1,8 @@
 # Bonn BUAW20 attenuator matrix Controller by ethtoja
-# v1.0 - 21th October 2024 - working very basic functions - can step the matrix remotely :)
-# v1.1 - 21th October 2024 - multiple button selection
+# v1.0 - 21st October 2024 - working very basic functions - can step the matrix remotely :)
+# v1.1 - 21st October 2024 - multiple button selection
 # v1.2 - 22th October 2024 - added FileMenu, re-designed GUI, possible to store info entry content
+# v1.3 - 29th October 2024 - added continous increasing and decreasing function
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -111,12 +112,14 @@ def LocRem():
     update_matrix()
 
     if mode_flag == "0":
+        status_display.config(bg="yellow",fg="black")
         status_display.delete(0, tk.END)
         status_display.insert(0, "Local mode")
         button_mode.config(bg="red")
     if mode_flag == "1":
+        status_display.config(bg="green",fg="white")
         status_display.delete(0, tk.END)
-        status_display.insert(0, "Remote mode")
+        status_display.insert(0, "Remote mode")        
         button_mode.config(bg="green")
 
 def increment_matrix(number1,number2):
@@ -252,12 +255,46 @@ def toggle_text():
         new_color = "yellow" if current_color == "white" else "white"
         status_display.config(bg=new_color)
         root.after(200, toggle_text)  # 500 ms múlva újra meghívja a toggle_color függvényt
+        
+def start_increment(number1,number2):    
+    global incrementing
+    if not incrementing: 
+        incrementing = True
+        continue_increment(number1,number2)
+
+def continue_increment(number1,number2):
+    if incrementing:
+        increment_matrix(number1, number2)
+        root.after(100, lambda: continue_increment(number1,number2))
+
+def stop_increment(event):
+    global incrementing
+    incrementing = False
+    
+
+def start_decrement(number1,number2):    
+    global decrementing
+    if not decrementing: 
+        decrementing = True
+        continue_decrement(number1,number2)
+
+def continue_decrement(number1,number2):
+    if decrementing:
+        decrement_matrix(number1, number2)
+        root.after(100, lambda: continue_decrement(number1,number2))
+
+def stop_decrement(event):
+    global decrementing
+    decrementing = False    
+    
 
 root = tk.Tk()
-root.title("BonnBonn Controller V1.2")
+root.title("BonnBonn Controller V1.3 by Toja")
 root.geometry("635x335")
 root.resizable(False, False)
 stop_blinking = False
+incrementing = False
+decrementing = False
 
 menu_bar = tk.Menu(root)
 file_menu = tk.Menu(menu_bar, tearoff=0)
@@ -381,69 +418,101 @@ display7.place(x=500,y=100)
 display8 = tk.Entry(root, width=3, font=lcd_font, justify='center', bg='black', fg='light green')
 display8.place(x=560,y=100)
 
-button_up1 = tk.Button(root, text="Up1", command=lambda: increment_matrix(0,0), width=4, height=2)
+button_up1 = tk.Button(root, text="Up1", width=4, height=2)
 button_up1.place(x=145,y=145)
 button_up1.bind("<Button-3>", lambda event: increment_matrix(0,1))
+button_up1.bind("<ButtonPress-1>", lambda event: start_increment(0,0))
+button_up1.bind("<ButtonRelease-1>", stop_increment)
 
-button_up2 = tk.Button(root, text="Up2", command=lambda: increment_matrix(1,0), width=4, height=2)
+button_up2 = tk.Button(root, text="Up2", width=4, height=2)
 button_up2.place(x=205,y=145)
 button_up2.bind("<Button-3>", lambda event: increment_matrix(1,1))
+button_up2.bind("<ButtonPress-1>", lambda event: start_increment(1,0))
+button_up2.bind("<ButtonRelease-1>", stop_increment)
 
-button_up3 = tk.Button(root, text="Up3", command=lambda: increment_matrix(2,0), width=4, height=2)
+button_up3 = tk.Button(root, text="Up3", width=4, height=2)
 button_up3.place(x=265,y=145)
 button_up3.bind("<Button-3>", lambda event: increment_matrix(2,1))
+button_up3.bind("<ButtonPress-1>", lambda event: start_increment(2,0))
+button_up3.bind("<ButtonRelease-1>", stop_increment)
 
-button_up4 = tk.Button(root, text="Up4", command=lambda: increment_matrix(3,0), width=4, height=2)
+button_up4 = tk.Button(root, text="Up4", width=4, height=2)
 button_up4.place(x=325,y=145)
 button_up4.bind("<Button-3>", lambda event: increment_matrix(3,1))
+button_up4.bind("<ButtonPress-1>", lambda event: start_increment(3,0))
+button_up4.bind("<ButtonRelease-1>", stop_increment)
 
-button_up5 = tk.Button(root, text="Up5", command=lambda: increment_matrix(4,0), width=4, height=2)
+button_up5 = tk.Button(root, text="Up5", width=4, height=2)
 button_up5.place(x=385,y=145)
 button_up5.bind("<Button-3>", lambda event: increment_matrix(4,1))
+button_up5.bind("<ButtonPress-1>", lambda event: start_increment(4,0))
+button_up5.bind("<ButtonRelease-1>", stop_increment)
 
-button_up6 = tk.Button(root, text="Up6", command=lambda: increment_matrix(5,0), width=4, height=2)
+button_up6 = tk.Button(root, text="Up6", width=4, height=2)
 button_up6.place(x=445,y=145)
 button_up6.bind("<Button-3>", lambda event: increment_matrix(5,1))
+button_up6.bind("<ButtonPress-1>", lambda event: start_increment(5,0))
+button_up6.bind("<ButtonRelease-1>", stop_increment)
 
-button_up7 = tk.Button(root, text="Up7", command=lambda: increment_matrix(6,0), height=2)
+button_up7 = tk.Button(root, text="Up7", width=4, height=2)
 button_up7.place(x=510,y=145)
 button_up7.bind("<Button-3>", lambda event: increment_matrix(6,1))
+button_up7.bind("<ButtonPress-1>", lambda event: start_increment(6,0))
+button_up7.bind("<ButtonRelease-1>", stop_increment)
 
-button_up8 = tk.Button(root, text="Up8", command=lambda: increment_matrix(7,0), width=4, height=2)
+button_up8 = tk.Button(root, text="Up8", width=4, height=2)
 button_up8.place(x=565,y=145)
 button_up8.bind("<Button-3>", lambda event: increment_matrix(7,1))
+button_up8.bind("<ButtonPress-1>", lambda event: start_increment(7,0))
+button_up8.bind("<ButtonRelease-1>", stop_increment)
 
-button_down1 = tk.Button(root, text="Dn1", command=lambda: decrement_matrix(0,0), width=4, height=2)
+button_down1 = tk.Button(root, text="Dn1", width=4, height=2)
 button_down1.place(x=145,y=195)
 button_down1.bind("<Button-3>", lambda event: decrement_matrix(0,1))
+button_down1.bind("<ButtonPress-1>", lambda event: start_decrement(0,0))
+button_down1.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down2 = tk.Button(root, text="Dn2", command=lambda: decrement_matrix(1,0), width=4, height=2)
+button_down2 = tk.Button(root, text="Dn2", width=4, height=2)
 button_down2.place(x=205,y=195)
 button_down2.bind("<Button-3>", lambda event: decrement_matrix(1,1))
+button_down2.bind("<ButtonPress-1>", lambda event: start_decrement(1,0))
+button_down2.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down3 = tk.Button(root, text="Dn3", command=lambda: decrement_matrix(2,0), width=4, height=2)
+button_down3 = tk.Button(root, text="Dn3", width=4, height=2)
 button_down3.place(x=265,y=195)
 button_down3.bind("<Button-3>", lambda event: decrement_matrix(2,1))
+button_down3.bind("<ButtonPress-1>", lambda event: start_decrement(2,0))
+button_down3.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down4 = tk.Button(root, text="Dn4", command=lambda: decrement_matrix(3,0), width=4, height=2)
+button_down4 = tk.Button(root, text="Dn4", width=4, height=2)
 button_down4.place(x=325,y=195)
 button_down4.bind("<Button-3>", lambda event: decrement_matrix(3,1))
+button_down4.bind("<ButtonPress-1>", lambda event: start_decrement(3,0))
+button_down4.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down5 = tk.Button(root, text="Dn5", command=lambda: decrement_matrix(4,0), width=4, height=2)
+button_down5 = tk.Button(root, text="Dn5", width=4, height=2)
 button_down5.place(x=385,y=195)
 button_down5.bind("<Button-3>", lambda event: decrement_matrix(4,1))
+button_down5.bind("<ButtonPress-1>", lambda event: start_decrement(4,0))
+button_down5.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down6 = tk.Button(root, text="Dn6", command=lambda: decrement_matrix(5,0), width=4, height=2)
+button_down6 = tk.Button(root, text="Dn6", width=4, height=2)
 button_down6.place(x=445,y=195)
 button_down6.bind("<Button-3>", lambda event: decrement_matrix(5,1))
+button_down6.bind("<ButtonPress-1>", lambda event: start_decrement(5,0))
+button_down6.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down7 = tk.Button(root, text="Dn7", command=lambda: decrement_matrix(6,0), width=4, height=2)
+button_down7 = tk.Button(root, text="Dn7", width=4, height=2)
 button_down7.place(x=505,y=195)
 button_down7.bind("<Button-3>", lambda event: decrement_matrix(6,1))
+button_down7.bind("<ButtonPress-1>", lambda event: start_decrement(6,0))
+button_down7.bind("<ButtonRelease-1>", stop_decrement)
 
-button_down8 = tk.Button(root, text="Dn8", command=lambda: decrement_matrix(7,0), width=4, height=2)
+button_down8 = tk.Button(root, text="Dn8", width=4, height=2)
 button_down8.place(x=565,y=195)
 button_down8.bind("<Button-3>", lambda event: decrement_matrix(7,1))
+button_down8.bind("<ButtonPress-1>", lambda event: start_decrement(7,0))
+button_down8.bind("<ButtonRelease-1>", stop_decrement)
 
 checkbox1 = tk.Checkbutton(root, text="M1", variable=checkbox1_var, command=toggle_checkbox)
 checkbox1.place(x=150,y=247)
