@@ -3,10 +3,13 @@
 # v1.1 - 21st October 2024 - multiple button selection
 # v1.2 - 22th October 2024 - added FileMenu, re-designed GUI, possible to store info entry content
 # v1.3 - 29th October 2024 - added continous increasing and decreasing function
+# v1.4 - 4th November 2024 - added cell info popup window, currently only LTE cells work
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import socket
+from tktooltip import ToolTip
+from tkinter import Toplevel
 
 global connect_flag
 
@@ -286,10 +289,115 @@ def continue_decrement(number1,number2):
 def stop_decrement(event):
     global decrementing
     decrementing = False    
+
+def find_cell_info(input_value):
+    # Inicializáljuk a listát a találatok tárolására.
+    results = []
+    print("kereses: ",input_value)
+    
+    try:
+        # Megnyitjuk a cell_info.txt fájlt olvasásra.
+        with open('BonnBonn_cell_info.txt', 'r') as file:
+            for line in file:
+                # Levágjuk a sort az új sor jelektől és a whitespace-től.
+                line = line.strip()
+                # A sort elválasztjuk a ',' karakter szerint.
+                elements = line.split(';')              
+                
+                # Ellenőrizzük, hogy a második elem megfelel-e az inputnak.
+                if len(elements) > 1 and elements[2] == input_value:
+                    # Ha igen, adjuk hozzá a results listához a teljes sort.                    
+                    result = elements
+                    break
+    
+    except FileNotFoundError:
+        print("A BonnBonn_cell_info.txt fájl nem található.")
+    
+    return result
+
+def open_lte_info(result):
+    # Új ablak létrehozása
+    cell_window = Toplevel(root)
+    cell_window.title("LTE Cell Information")
+    cell_window.geometry("300x340")
+
+    site_label = tk.Label(cell_window, text="Site_name", bg="white")
+    site_label.place(x=10,y=10)
+    site_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    site_entry.place(x=90,y=10)
+        
+    tech_label = tk.Label(cell_window, text="Technology", bg="white")
+    tech_label.place(x=10,y=40)
+    tech_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    tech_entry.place(x=90,y=40)
+    
+    cell_label = tk.Label(cell_window, text="Cell name", bg="white")
+    cell_label.place(x=10,y=70)
+    cell_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    cell_entry.place(x=90,y=70)
+    
+    PCI_label = tk.Label(cell_window, text="PCI", bg="white")
+    PCI_label.place(x=10,y=100)
+    PCI_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    PCI_entry.place(x=90,y=100)
+    
+    TAC_label = tk.Label(cell_window, text="TAC", bg="white")
+    TAC_label.place(x=10,y=130)
+    TAC_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    TAC_entry.place(x=90,y=130)
+    
+    BW_label = tk.Label(cell_window, text="Bandwidth", bg="white")
+    BW_label.place(x=10,y=160)
+    BW_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    BW_entry.place(x=90,y=160)
+    
+    ArfcnDL_label = tk.Label(cell_window, text="ArfcnDL", bg="white")
+    ArfcnDL_label.place(x=10,y=190)
+    ArfcnDL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    ArfcnDL_entry.place(x=90,y=190)    
+    freqDL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    freqDL_entry.place(x=190,y=190)
+    
+    ArfcnUL_label = tk.Label(cell_window, text="ArfcnUL", bg="white")
+    ArfcnUL_label.place(x=10,y=220)
+    ArfcnUL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    ArfcnUL_entry.place(x=90,y=220)
+    freqUL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    freqUL_entry.place(x=190,y=220)
+    
+    band_label = tk.Label(cell_window, text="Band", bg="white")
+    band_label.place(x=10,y=250)
+    band_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    band_entry.place(x=90,y=250)           
+    
+    enb_label = tk.Label(cell_window, text="eNodeB ID", bg="white")
+    enb_label.place(x=10,y=280)
+    enb_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    enb_entry.place(x=90,y=280)
     
 
+    # Gomb hozzáadása az új ablakhoz, amely bezárja az ablakot
+    close_button = tk.Button(cell_window, text="Close", command=cell_window.destroy)
+    close_button.place(x=110,y=310) 
+    
+    entries = [site_entry,tech_entry,cell_entry,PCI_entry,TAC_entry,BW_entry,ArfcnDL_entry,freqDL_entry,ArfcnUL_entry,freqUL_entry,band_entry,enb_entry]
+    
+    i = 0
+    for elements in entries:
+        elements.delete(0, tk.END)
+        elements.insert(0, result[i])
+        i = i + 1        
+        
+
+def on_info_click(event,content):
+    print("itt vagyok",content)
+    result = find_cell_info(content)
+    if result:
+        if result[1] == "LTE" or result[1] == "LTE-ESS":
+            open_lte_info(result)    
+
 root = tk.Tk()
-root.title("BonnBonn Controller V1.3 by Toja")
+root.title("BonnBonn Controller V1.4 by Toja")
 root.geometry("635x335")
 root.resizable(False, False)
 stop_blinking = False
@@ -370,27 +478,35 @@ info_color_fg = "chartreuse"
 
 info1 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info1.place(x=130,y=50)
+info1.bind("<Double-1>", lambda event: on_info_click(event, info1.get()))
 
 info2 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info2.place(x=185,y=20)
+info2.bind("<Double-1>", lambda event: on_info_click(event, info2.get()))
 
 info3 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info3.place(x=245,y=50)
+info3.bind("<Double-1>", lambda event: on_info_click(event, info3.get()))
 
 info4 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info4.place(x=305,y=20)
+info4.bind("<Double-1>", lambda event: on_info_click(event, info4.get()))
 
 info5 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info5.place(x=365,y=50)
+info5.bind("<Double-1>", lambda event: on_info_click(event, info5.get()))
 
 info6 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info6.place(x=425,y=20)
+info6.bind("<Double-1>", lambda event: on_info_click(event, info6.get()))
 
 info7 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info7.place(x=485,y=50)
+info7.bind("<Double-1>", lambda event: on_info_click(event, info7.get()))
 
 info8 = tk.Entry(root, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
 info8.place(x=545,y=20)
+info8.bind("<Double-1>", lambda event: on_info_click(event, info8.get()))
 
 info_boxes = [info1,info2,info3,info4,info5,info6,info7,info8]
 
@@ -513,6 +629,15 @@ button_down8.place(x=565,y=195)
 button_down8.bind("<Button-3>", lambda event: decrement_matrix(7,1))
 button_down8.bind("<ButtonPress-1>", lambda event: start_decrement(7,0))
 button_down8.bind("<ButtonRelease-1>", stop_decrement)
+
+ToolTip(button_up1, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up2, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up3, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up4, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up5, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up6, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up7, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
+ToolTip(button_up8, msg="Increase atteanuation,right click max 60 dB", delay=2.0)
 
 checkbox1 = tk.Checkbutton(root, text="M1", variable=checkbox1_var, command=toggle_checkbox)
 checkbox1.place(x=150,y=247)
