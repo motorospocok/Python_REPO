@@ -1,9 +1,12 @@
 # Bonn BUAW20 attenuator matrix Controller by ethtoja
+# For cell info creation run moscript bonn_cell_data.mos
 # v1.0 - 21st October 2024 - working very basic functions - can step the matrix remotely :)
 # v1.1 - 21st October 2024 - multiple button selection
 # v1.2 - 22th October 2024 - added FileMenu, re-designed GUI, possible to store info entry content
 # v1.3 - 29th October 2024 - added continous increasing and decreasing function
 # v1.4 - 4th November 2024 - added cell info popup window, currently only LTE cells work
+# v1.5 - 6th November 2024 - added cell info popup window for NR
+
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -12,6 +15,8 @@ from tktooltip import ToolTip
 from tkinter import Toplevel
 
 global connect_flag
+global version
+version = "v1.5"
 
 def update_display(matrix_data):
     
@@ -292,8 +297,7 @@ def stop_decrement(event):
 
 def find_cell_info(input_value):
     # Inicializáljuk a listát a találatok tárolására.
-    results = []
-    print("kereses: ",input_value)
+    result = []    
     
     try:
         # Megnyitjuk a cell_info.txt fájlt olvasásra.
@@ -312,6 +316,7 @@ def find_cell_info(input_value):
     
     except FileNotFoundError:
         print("A BonnBonn_cell_info.txt fájl nem található.")
+        messagebox.showinfo("Info", "BonnBonn_cell_info.txt is missing!")
     
     return result
 
@@ -387,17 +392,103 @@ def open_lte_info(result):
         elements.delete(0, tk.END)
         elements.insert(0, result[i])
         i = i + 1        
+
+
+def open_NR_info(result):
+    # Új ablak létrehozása
+    cell_window = Toplevel(root)
+    cell_window.title("NR Cell Information")
+    cell_window.geometry("320x370")
+    cell_window.configure(bg="cornflower blue")
+
+    nrsite_label = tk.Label(cell_window, text="Site_name", bg="white")
+    nrsite_label.place(x=10,y=10)
+    nrsite_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrsite_entry.place(x=90,y=10)
+        
+    nrtech_label = tk.Label(cell_window, text="Technology", bg="white")
+    nrtech_label.place(x=10,y=40)
+    nrtech_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrtech_entry.place(x=90,y=40)
+    
+    nrcell_label = tk.Label(cell_window, text="Cell name", bg="white")
+    nrcell_label.place(x=10,y=70)
+    nrcell_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrcell_entry.place(x=90,y=70)
+    
+    nrPCI_label = tk.Label(cell_window, text="nrPCI", bg="white")
+    nrPCI_label.place(x=10,y=100)
+    nrPCI_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrPCI_entry.place(x=90,y=100)
+    
+    nrTAC_label = tk.Label(cell_window, text="nrTAC", bg="white")
+    nrTAC_label.place(x=10,y=130)
+    nrTAC_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrTAC_entry.place(x=90,y=130)
+    
+    nrBW_label = tk.Label(cell_window, text="Bandwidth", bg="white")
+    nrBW_label.place(x=10,y=160)
+    nrBW_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrBW_entry.place(x=90,y=160)
+    
+    nrArfcnDL_label = tk.Label(cell_window, text="ArfcnDL", bg="white")
+    nrArfcnDL_label.place(x=10,y=190)
+    nrArfcnDL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrArfcnDL_entry.place(x=90,y=190)    
+    nrfreqDL_entry = tk.Entry(cell_window, width=15, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrfreqDL_entry.place(x=190,y=190)
+    
+    nrArfcnUL_label = tk.Label(cell_window, text="ArfcnUL", bg="white")
+    nrArfcnUL_label.place(x=10,y=220)
+    nrArfcnUL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrArfcnUL_entry.place(x=90,y=220)
+    nrfreqUL_entry = tk.Entry(cell_window, width=15, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrfreqUL_entry.place(x=190,y=220)
+    
+    SSBArfcn_label = tk.Label(cell_window, text="SSB Freq", bg="white")
+    SSBArfcn_label.place(x=10,y=250)
+    SSBArfcn_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    SSBArfcn_entry.place(x=90,y=250)
+    SSBfreq_entry = tk.Entry(cell_window, width=15, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    SSBfreq_entry.place(x=190,y=250)
+    
+    nrband_label = tk.Label(cell_window, text="Band", bg="white")
+    nrband_label.place(x=10,y=280)
+    nrband_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    nrband_entry.place(x=90,y=280)           
+    
+    gnb_label = tk.Label(cell_window, text="gNodeB ID", bg="white")
+    gnb_label.place(x=10,y=310)
+    gnb_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    gnb_entry.place(x=90,y=310)
+    
+
+    # Gomb hozzáadása az új ablakhoz, amely bezárja az ablakot
+    close_button = tk.Button(cell_window, text="Close", command=cell_window.destroy)
+    close_button.place(x=110,y=340) 
+    
+    entries_NR = [nrsite_entry,nrtech_entry,nrcell_entry,nrPCI_entry,nrTAC_entry,nrBW_entry,nrArfcnDL_entry,nrfreqDL_entry,nrArfcnUL_entry,nrfreqUL_entry,SSBArfcn_entry,SSBfreq_entry,nrband_entry,gnb_entry]
+    
+    i = 0
+    for elements in entries_NR:
+        elements.delete(0, tk.END)
+        elements.insert(0, result[i])
+        i = i + 1   
         
 
-def on_info_click(event,content):
-    print("itt vagyok",content)
+def on_info_click(event,content):    
     result = find_cell_info(content)
     if result:
         if result[1] == "LTE" or result[1] == "LTE-ESS":
-            open_lte_info(result)    
+            open_lte_info(result)
+        if result[1] == "NR_TDD" or result[1] == "NR_FDD":
+            open_NR_info(result)
+    else:
+        messagebox.showinfo("Info", "No Cell information has been found!")
 
 root = tk.Tk()
-root.title("BonnBonn Controller V1.4 by Toja")
+title_text1 = "BonnBonn Controller " + version + " by Toja"
+root.title(title_text1)
 root.geometry("635x335")
 root.resizable(False, False)
 stop_blinking = False
