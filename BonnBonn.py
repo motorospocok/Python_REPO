@@ -6,6 +6,7 @@
 # v1.3 - 29th October 2024 - added continous increasing and decreasing function
 # v1.4 - 4th November 2024 - added cell info popup window, currently only LTE cells work
 # v1.5 - 6th November 2024 - added cell info popup window for NR
+# v1.6 - 6th November 2024 - NR_FDD_ESS cell info processing added
 
 
 import tkinter as tk
@@ -16,7 +17,7 @@ from tkinter import Toplevel
 
 global connect_flag
 global version
-version = "v1.5"
+version = "v1.6"
 
 def update_display(matrix_data):
     
@@ -481,7 +482,7 @@ def on_info_click(event,content):
     if result:
         if result[1] == "LTE" or result[1] == "LTE-ESS":
             open_lte_info(result)
-        if result[1] == "NR_TDD" or result[1] == "NR_FDD":
+        if result[1] == "NR_TDD" or result[1] == "NR_FDD" or result[1] == "NR_FDD_ESS":
             open_NR_info(result)
     else:
         messagebox.showinfo("Info", "No Cell information has been found!")
