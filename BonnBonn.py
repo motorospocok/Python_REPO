@@ -8,6 +8,7 @@
 # v1.5 - 6th November 2024 - added cell info popup window for NR
 # v1.6 - 6th November 2024 - NR_FDD_ESS cell info processing added
 # v1.7 - 11st November 2024 - GSM cell info processing added
+# v1.7b - 11st November 2024 - ToolTip for info fields
 
 
 import tkinter as tk
@@ -18,7 +19,7 @@ from tkinter import Toplevel
 
 global connect_flag
 global version
-version = "v1.7"
+version = "v1.7b"
 
 def update_display(matrix_data):
     
@@ -811,6 +812,15 @@ ToolTip(button_down5, msg="Left click decrease atteanuation,right click set 0 dB
 ToolTip(button_down6, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
 ToolTip(button_down7, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
 ToolTip(button_down8, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
+
+ToolTip(info1, msg="Double click to check cell info", delay=2.0)
+ToolTip(info2, msg="Double click to check cell info", delay=2.0)
+ToolTip(info3, msg="Double click to check cell info", delay=2.0)
+ToolTip(info4, msg="Double click to check cell info", delay=2.0)
+ToolTip(info5, msg="Double click to check cell info", delay=2.0)
+ToolTip(info6, msg="Double click to check cell info", delay=2.0)
+ToolTip(info7, msg="Double click to check cell info", delay=2.0)
+ToolTip(info8, msg="Double click to check cell info", delay=2.0)
 
 
 checkbox1 = tk.Checkbutton(root, text="M1", variable=checkbox1_var, command=toggle_checkbox)
