@@ -7,6 +7,7 @@
 # v1.4 - 4th November 2024 - added cell info popup window, currently only LTE cells work
 # v1.5 - 6th November 2024 - added cell info popup window for NR
 # v1.6 - 6th November 2024 - NR_FDD_ESS cell info processing added
+# v1.7 - 11st November 2024 - GSM cell info processing added
 
 
 import tkinter as tk
@@ -17,7 +18,7 @@ from tkinter import Toplevel
 
 global connect_flag
 global version
-version = "v1.6"
+version = "v1.7"
 
 def update_display(matrix_data):
     
@@ -320,6 +321,75 @@ def find_cell_info(input_value):
         messagebox.showinfo("Info", "BonnBonn_cell_info.txt is missing!")
     
     return result
+    
+def open_gsm_info(result):
+    # Új ablak létrehozása
+    cell_window = Toplevel(root)
+    cell_window.title("GSM Cell Information")
+    cell_window.geometry("300x340")
+    cell_window.configure(bg="khaki1")
+
+    site_label = tk.Label(cell_window, text="Site_name", bg="white")
+    site_label.place(x=10,y=10)
+    site_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    site_entry.place(x=90,y=10)
+        
+    tech_label = tk.Label(cell_window, text="Technology", bg="white")
+    tech_label.place(x=10,y=40)
+    tech_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    tech_entry.place(x=90,y=40)
+    
+    cell_label = tk.Label(cell_window, text="Cell name", bg="white")
+    cell_label.place(x=10,y=70)
+    cell_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    cell_entry.place(x=90,y=70)
+    
+    LAI_label = tk.Label(cell_window, text="Location Area:", bg="white")
+    LAI_label.place(x=10,y=100)
+    LAI_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    LAI_entry.place(x=90,y=100)
+    
+    CELL_ID_label = tk.Label(cell_window, text="Cell Identity", bg="white")
+    CELL_ID_label.place(x=10,y=130)
+    CELL_ID_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    CELL_ID_entry.place(x=90,y=130)
+    
+    BSIC_label = tk.Label(cell_window, text="BSIC:", bg="white")
+    BSIC_label.place(x=10,y=160)
+    BSIC_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    BSIC_entry.place(x=90,y=160)
+    
+    ArfcnDL_label = tk.Label(cell_window, text="ArfcnDL", bg="white")
+    ArfcnDL_label.place(x=10,y=190)
+    ArfcnDL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    ArfcnDL_entry.place(x=90,y=190)    
+    freqDL_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    freqDL_entry.place(x=190,y=190) 
+    
+    band_label = tk.Label(cell_window, text="Band", bg="white")
+    band_label.place(x=10,y=220)
+    band_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    band_entry.place(x=90,y=220)           
+    
+    BSC_label = tk.Label(cell_window, text="BSC ID", bg="white")
+    BSC_label.place(x=10,y=250)
+    BSC_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    BSC_entry.place(x=90,y=250)
+    
+
+    # Gomb hozzáadása az új ablakhoz, amely bezárja az ablakot
+    close_button = tk.Button(cell_window, text="Close", command=cell_window.destroy)
+    close_button.place(x=110,y=290) 
+    
+    entries = [site_entry,tech_entry,cell_entry,LAI_entry,CELL_ID_entry,BSIC_entry,ArfcnDL_entry,freqDL_entry,band_entry,BSC_entry]
+    
+    i = 0
+    for elements in entries:
+        elements.delete(0, tk.END)
+        elements.insert(0, result[i])
+        i = i + 1        
+
+
 
 def open_lte_info(result):
     # Új ablak létrehozása
@@ -376,17 +446,17 @@ def open_lte_info(result):
     band_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
     band_entry.place(x=90,y=250)           
     
-    enb_label = tk.Label(cell_window, text="eNodeB ID", bg="white")
-    enb_label.place(x=10,y=280)
-    enb_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
-    enb_entry.place(x=90,y=280)
+    BSC_label = tk.Label(cell_window, text="eNodeB ID", bg="white")
+    BSC_label.place(x=10,y=280)
+    BSC_entry = tk.Entry(cell_window, width=10, font=lcd_font2, justify='center', bg=info_color_bg, fg=info_color_fg)
+    BSC_entry.place(x=90,y=280)
     
 
     # Gomb hozzáadása az új ablakhoz, amely bezárja az ablakot
     close_button = tk.Button(cell_window, text="Close", command=cell_window.destroy)
     close_button.place(x=110,y=310) 
     
-    entries = [site_entry,tech_entry,cell_entry,PCI_entry,TAC_entry,BW_entry,ArfcnDL_entry,freqDL_entry,ArfcnUL_entry,freqUL_entry,band_entry,enb_entry]
+    entries = [site_entry,tech_entry,cell_entry,PCI_entry,TAC_entry,BW_entry,ArfcnDL_entry,freqDL_entry,ArfcnUL_entry,freqUL_entry,band_entry,BSC_entry]
     
     i = 0
     for elements in entries:
@@ -484,6 +554,8 @@ def on_info_click(event,content):
             open_lte_info(result)
         if result[1] == "NR_TDD" or result[1] == "NR_FDD" or result[1] == "NR_FDD_ESS":
             open_NR_info(result)
+        if result[1] == "GSM":
+            open_gsm_info(result)
     else:
         messagebox.showinfo("Info", "No Cell information has been found!")
 
