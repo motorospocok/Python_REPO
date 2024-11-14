@@ -8,9 +8,9 @@
 # v1.5 - 6th November 2024 - added cell info popup window for NR
 # v1.6 - 6th November 2024 - NR_FDD_ESS cell info processing added
 # v1.7 - 11st November 2024 - GSM cell info processing added
-# v1.7b - 11st November 2024 - ToolTip for info fields
+# v1.7b - 14th November 2024 - Small changes in the BonnBonn_cell_info.txt search path,now it always search it in the same dir where the code is placed
 
-
+import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import socket
@@ -303,8 +303,11 @@ def find_cell_info(input_value):
     result = []    
     
     try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, 'BonnBonn_cell_info.txt')
+        print("file path ",file_path)
         # Megnyitjuk a cell_info.txt fájlt olvasásra.
-        with open('BonnBonn_cell_info.txt', 'r') as file:
+        with open(file_path, 'r') as file:
             for line in file:
                 # Levágjuk a sort az új sor jelektől és a whitespace-től.
                 line = line.strip()
@@ -389,8 +392,6 @@ def open_gsm_info(result):
         elements.delete(0, tk.END)
         elements.insert(0, result[i])
         i = i + 1        
-
-
 
 def open_lte_info(result):
     # Új ablak létrehozása
@@ -812,15 +813,6 @@ ToolTip(button_down5, msg="Left click decrease atteanuation,right click set 0 dB
 ToolTip(button_down6, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
 ToolTip(button_down7, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
 ToolTip(button_down8, msg="Left click decrease atteanuation,right click set 0 dB", delay=2.0)
-
-ToolTip(info1, msg="Double click to check cell info", delay=2.0)
-ToolTip(info2, msg="Double click to check cell info", delay=2.0)
-ToolTip(info3, msg="Double click to check cell info", delay=2.0)
-ToolTip(info4, msg="Double click to check cell info", delay=2.0)
-ToolTip(info5, msg="Double click to check cell info", delay=2.0)
-ToolTip(info6, msg="Double click to check cell info", delay=2.0)
-ToolTip(info7, msg="Double click to check cell info", delay=2.0)
-ToolTip(info8, msg="Double click to check cell info", delay=2.0)
 
 
 checkbox1 = tk.Checkbutton(root, text="M1", variable=checkbox1_var, command=toggle_checkbox)
