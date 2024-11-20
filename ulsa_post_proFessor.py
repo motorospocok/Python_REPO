@@ -30,7 +30,7 @@ def enable_ok_button(*args):
         plot_button.config(state=tk.NORMAL)
     else:
         merge_button.config(state=tk.DISABLED)  # Az OK gomb inaktív
-        plot_button.config(state=tk.DIS)
+        plot_button.config(state=tk.DISABLED)
 
 def merge_csv():
     directory = entry.get()
