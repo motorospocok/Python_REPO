@@ -2,6 +2,7 @@
 # Just made several ULSA capture CSV in one directory after start this application and select the directory
 # After merging the average values into one CSV file the graph can be displayed / plotted 
 # v1.0 - first  working version
+# v1.1 - Added graph title, legend and color parameters
 
 import os
 import pandas as pd
@@ -11,7 +12,7 @@ import matplotlib.pyplot as plt
 from tkinter import messagebox
 
 global version
-version = "v1.0"
+version = "v1.1"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -80,14 +81,17 @@ def plot_graph():
     data_file_name = os.path.join(directory, 'average_values.csv')    
     data1 = pd.read_csv(data_file_name, sep=',')
     plt.figure(figsize=(10, 6))
+    label_1 = str(graph_legend1_entry.get())
+    title_1 = str(graph_title_entry.get())
+    color_1 =str(spinbox_graphColor.get())
     
     # Első oszlop: Power1 [dbm]
-    plt.plot(data1['Frequency [kHz]'], data1['Average Power [dbm]'], marker=',', linestyle=line_style[conn], color='blue', label='ULSA average result [dbm]')
+    plt.plot(data1['Frequency [kHz]'], data1['Average Power [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
     
     # Második oszlop: Power2 [dbm]
     #plt.plot(data['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=':', color='red', label='Power2 [dbm]')
     
-    plt.title('ULSA spectrum on average')
+    plt.title(title_1)
     plt.xlabel('Frequency [kHz]')
     plt.ylabel('Power [dbm]')
     plt.grid(True)
@@ -101,7 +105,7 @@ def plot_graph():
 root = tk.Tk()
 title_text1 = "ULSA post proFessor :) " + version + " by Toja"
 root.title(title_text1)
-root.geometry("400x250")
+root.geometry("380x350")
 root.resizable(False, False)
 
 connector_selection = tk.IntVar()
@@ -140,8 +144,28 @@ radio_button1.place(x=10,y=165)
 radio_button2 = tk.Radiobutton(root, text="Dot graph style", variable=connector_selection, value=1, bg="gray64")
 radio_button2.place(x=150,y=165)
 
+graph_title_label = tk.Label(root, text="Graph Title")
+graph_title_label.place(x=10,y=195)
+
+graph_title_entry = tk.Entry(root, width=35)
+graph_title_entry.place(x=150,y=195)
+graph_title_entry.insert(0, "ULSA spectrum on average")
+
+graph_legend1_label = tk.Label(root, text="Graph legend No.1: ")
+graph_legend1_label.place(x=10,y=225)
+
+graph_legend1_entry = tk.Entry(root, width=35)
+graph_legend1_entry.place(x=150,y=225)
+graph_legend1_entry.insert(0, "ULSA average result [dbm]")
+
+graph_color_label = tk.Label(root, text="Color of graph No 1.: ")
+graph_color_label.place(x=10,y=255)
+
+spinbox_graphColor = tk.Spinbox(root, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"))
+spinbox_graphColor.place(x=150,y=255)
+
 plot_button = tk.Button(root, text="Plot Graph", command=plot_graph, state=tk.DISABLED)
-plot_button.place(x=130,y=195)
+plot_button.place(x=130,y=300)
 
 # Fő ciklus
 root.mainloop()
