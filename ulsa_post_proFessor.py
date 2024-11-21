@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import filedialog
 import matplotlib.pyplot as plt
 from tkinter import messagebox
+from tkinter import Toplevel
 
 global version
 version = "v1.1"
@@ -100,12 +101,151 @@ def plot_graph():
     min_value = int(entry_min.get())
     plt.ylim(min_value,max_value)
     plt.show()
+    
+def merge_two():
+    # Új ablak létrehozása
+    merge_window = Toplevel(root)
+    merge_window.title("Merge results")
+    merge_window.geometry("600x500")
+    merge_window.configure(bg="gray")
+    
+    merge_button2 = tk.Button(merge_window, text="Select merged CSV file", state=tk.DISABLED) 
+    merge_button2.place(x=10,y=70)
+    merge_button2.bind("<Button-1>", lambda event: merge_csv2())
+    
+    generate_button = tk.Button(merge_window, text="Generate merged file", state=tk.DISABLED) 
+    generate_button.place(x=10,y=130)
+    generate_button.bind("<Button-1>", lambda event: merge_csv3())
+    
+    merge_entry = tk.Entry(merge_window, width=70, justify='left')
+    merge_entry.place(x=150,y=72)
+    merge_entry.insert(0, "Waiting for generation")
+    
+    csv1_entry = tk.Entry(merge_window, width=70, justify='left')
+    csv1_entry.place(x=130,y=12)
+    csv1_entry.insert(0, "Select a CSV file")
+    csv1_button = tk.Button(merge_window, text="Select 1st CSV File") 
+    csv1_button.place(x=10,y=10)
+    csv1_button.bind("<Button-1>", lambda event: select_csv(0))
+    
+    csv2_entry = tk.Entry(merge_window, width=70, justify='left')
+    csv2_entry.place(x=130,y=42)
+    csv2_entry.insert(0, "Select a CSV file")
+    csv2_button = tk.Button(merge_window, text="Select 2nd CSV File") 
+    csv2_button.place(x=10,y=40)
+    csv2_button.bind("<Button-1>", lambda event: select_csv(1))
+    
+    mraph_title_label = tk.Label(merge_window, text="Graph Title")
+    mraph_title_label.place(x=10,y=195)
 
+    mgraph1_title_entry = tk.Entry(merge_window, width=35)
+    mgraph1_title_entry.place(x=150,y=195)
+    mgraph1_title_entry.insert(0, "ULSA spectrum on average")
+    
+    mgraph1_legend_label = tk.Label(merge_window, text="Graph legend No.1: ")
+    mgraph1_legend_label.place(x=10,y=225)
+
+    mgraph1_legend_entry = tk.Entry(merge_window, width=35)
+    mgraph1_legend_entry.place(x=150,y=225)
+    mgraph1_legend_entry.insert(0, "ULSA average result 1 [dbm]")
+
+    mgraph1_color_label = tk.Label(merge_window, text="Color of graph No 1.: ")
+    mgraph1_color_label.place(x=10,y=255)
+
+    mspinbox1_graphColor = tk.Spinbox(merge_window, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"))
+    mspinbox1_graphColor.place(x=150,y=255)
+    
+    mgraph2_legend_label = tk.Label(merge_window, text="Graph legend No.2: ")
+    mgraph2_legend_label.place(x=10,y=285)
+
+    mgraph2_legend_entry = tk.Entry(merge_window, width=35)
+    mgraph2_legend_entry.place(x=150,y=285)
+    mgraph2_legend_entry.insert(0, "ULSA average result 2 [dbm]")
+
+    mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ")
+    mgraph2_color_label.place(x=10,y=315)
+
+    mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"))
+    mspinbox2_graphColor.place(x=150,y=315)
+    
+    mlabel_max = tk.Label(merge_window, text="Max value of Y-axis")
+    mlabel_max.place(x=10,y=345)
+
+    mentry_max = tk.Entry(merge_window, width=15)
+    mentry_max.place(x=150,y=345)
+    mentry_max.insert(0, "-90")
+
+    mlabel_min = tk.Label(merge_window, text="Max value of Y-axis")
+    mlabel_min.place(x=10,y=375)
+
+    mentry_min = tk.Entry(merge_window, width=15)
+    mentry_min.place(x=150,y=375)
+    mentry_min.insert(0, "-150")
+
+
+    mplot_button = tk.Button(merge_window, text="Plot Graph", command=plot_graph2)
+    mplot_button.place(x=130,y=405)
+        
+    
+    global csv_entries
+    csv_entries = [csv1_entry, csv2_entry, merge_entry, mgraph1_title_entry, mgraph1_legend_entry, mgraph2_legend_entry, mspinbox1_graphColor, mspinbox2_graphColor]
+    global csv_buttons
+    csv_buttons = [csv1_button, csv2_button, merge_button2, generate_button]
+
+def plot_graph2():
+    print("hello")
+    
+
+def select_csv(file_entry):
+    print("itt vagyok")
+    file_path = filedialog.askopenfilename(title="Select CSV file",
+                                            filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+    if file_path:  # Ellenőrizzük, hogy választottunk-e                
+        csv_entries[file_entry].delete(0, tk.END)
+        csv_entries[file_entry].insert(0, file_path)
+    
+    if csv_entries[0] != "Select a CSV file" and csv_entries[1] != "Select a CSV file":
+        csv_buttons[2].config(state=tk.NORMAL)
+        
+    
+def merge_csv2():
+    file1 = csv_entries[0].get()
+    file2 = csv_entries[1].get()
+    file_path = filedialog.asksaveasfilename(title="Select CSV file",filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+    csv_entries[2].delete(0, tk.END)
+    csv_entries[2].insert(0, file_path)
+    csv_buttons[3].config(state=tk.NORMAL)
+    
+def merge_csv3():
+    file1 = csv_entries[0].get()
+    file2 = csv_entries[1].get()
+    output_file = csv_entries[2].get()
+    data1 = pd.read_csv(file1)
+    data2 = pd.read_csv(file2)
+    print(data1)
+    print('------------')
+    print(data2)
+    
+
+    combined_data = pd.DataFrame({
+    'Frequency [kHz]': data1.iloc[:, 0],  
+    'Power1 [dbm]': data1.iloc[:, 1],
+    'Power2 [dbm]': data2.iloc[:, 1]})
+
+# Az új fájl kiírása, a fejléc is szerepel
+    combined_data.to_csv(output_file, index=False)
+
+    print(f"Az adatok sikeresen kiírásra kerültek a {output_file} fájlba.")    
+
+
+    
+        
+    
 # Fő ablak létrehozása
 root = tk.Tk()
 title_text1 = "ULSA post proFessor :) " + version + " by Toja"
 root.title(title_text1)
-root.geometry("380x350")
+root.geometry("380x370")
 root.resizable(False, False)
 
 connector_selection = tk.IntVar()
@@ -166,6 +306,9 @@ spinbox_graphColor.place(x=150,y=255)
 
 plot_button = tk.Button(root, text="Plot Graph", command=plot_graph, state=tk.DISABLED)
 plot_button.place(x=130,y=300)
+
+plot_button = tk.Button(root, text="Merge two results", command=merge_two)
+plot_button.place(x=105,y=330)
 
 # Fő ciklus
 root.mainloop()
