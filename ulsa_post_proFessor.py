@@ -3,6 +3,7 @@
 # After merging the average values into one CSV file the graph can be displayed / plotted 
 # v1.0 - first  working version
 # v1.1 - Added graph title, legend and color parameters
+# v1.2 - Added function to plot two data diagramm
 
 import os
 import pandas as pd
@@ -13,7 +14,7 @@ from tkinter import messagebox
 from tkinter import Toplevel
 
 global version
-version = "v1.1"
+version = "v1.2"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -105,8 +106,8 @@ def plot_graph():
 def merge_two():
     # Új ablak létrehozása
     merge_window = Toplevel(root)
-    merge_window.title("Merge results")
-    merge_window.geometry("600x500")
+    merge_window.title("Merge function")
+    merge_window.geometry("600x500+500+100")
     merge_window.configure(bg="gray")
     
     merge_button2 = tk.Button(merge_window, text="Select merged CSV file", state=tk.DISABLED) 
@@ -122,14 +123,14 @@ def merge_two():
     merge_entry.insert(0, "Waiting for generation")
     
     csv1_entry = tk.Entry(merge_window, width=70, justify='left')
-    csv1_entry.place(x=130,y=12)
+    csv1_entry.place(x=150,y=12)
     csv1_entry.insert(0, "Select a CSV file")
     csv1_button = tk.Button(merge_window, text="Select 1st CSV File") 
     csv1_button.place(x=10,y=10)
     csv1_button.bind("<Button-1>", lambda event: select_csv(0))
     
     csv2_entry = tk.Entry(merge_window, width=70, justify='left')
-    csv2_entry.place(x=130,y=42)
+    csv2_entry.place(x=150,y=42)
     csv2_entry.insert(0, "Select a CSV file")
     csv2_button = tk.Button(merge_window, text="Select 2nd CSV File") 
     csv2_button.place(x=10,y=40)
@@ -156,44 +157,70 @@ def merge_two():
     mspinbox1_graphColor.place(x=150,y=255)
     
     mgraph2_legend_label = tk.Label(merge_window, text="Graph legend No.2: ")
-    mgraph2_legend_label.place(x=10,y=285)
+    mgraph2_legend_label.place(x=10,y=300)
 
     mgraph2_legend_entry = tk.Entry(merge_window, width=35)
-    mgraph2_legend_entry.place(x=150,y=285)
+    mgraph2_legend_entry.place(x=150,y=300)
     mgraph2_legend_entry.insert(0, "ULSA average result 2 [dbm]")
 
     mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ")
-    mgraph2_color_label.place(x=10,y=315)
+    mgraph2_color_label.place(x=10,y=330)
 
     mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"))
-    mspinbox2_graphColor.place(x=150,y=315)
+    mspinbox2_graphColor.place(x=150,y=330)
     
     mlabel_max = tk.Label(merge_window, text="Max value of Y-axis")
-    mlabel_max.place(x=10,y=345)
+    mlabel_max.place(x=10,y=380)
 
     mentry_max = tk.Entry(merge_window, width=15)
-    mentry_max.place(x=150,y=345)
+    mentry_max.place(x=150,y=380)
     mentry_max.insert(0, "-90")
 
     mlabel_min = tk.Label(merge_window, text="Max value of Y-axis")
-    mlabel_min.place(x=10,y=375)
+    mlabel_min.place(x=10,y=410)
 
     mentry_min = tk.Entry(merge_window, width=15)
-    mentry_min.place(x=150,y=375)
+    mentry_min.place(x=150,y=410)
     mentry_min.insert(0, "-150")
 
 
     mplot_button = tk.Button(merge_window, text="Plot Graph", command=plot_graph2)
-    mplot_button.place(x=130,y=405)
+    mplot_button.place(x=130,y=440)
         
     
     global csv_entries
-    csv_entries = [csv1_entry, csv2_entry, merge_entry, mgraph1_title_entry, mgraph1_legend_entry, mgraph2_legend_entry, mspinbox1_graphColor, mspinbox2_graphColor]
+    csv_entries = [csv1_entry, csv2_entry, merge_entry, mgraph1_title_entry, mgraph1_legend_entry, mgraph2_legend_entry, mspinbox1_graphColor, mspinbox2_graphColor, mentry_max, mentry_min]
     global csv_buttons
     csv_buttons = [csv1_button, csv2_button, merge_button2, generate_button]
 
 def plot_graph2():
-    print("hello")
+    conn = int(connector_selection.get())
+    line_style = ['-',':']
+    data_file_name = str(csv_entries[2].get())
+    print(data_file_name)
+    data1 = pd.read_csv(data_file_name, sep=',')
+    plt.figure(figsize=(10, 6))
+    label_1 = str(csv_entries[4].get())
+    label_2 = str(csv_entries[5].get())
+    title_1 = str(csv_entries[3].get())
+    color_1 = str(csv_entries[6].get())
+    color_2 = str(csv_entries[7].get())
+    
+    # Első oszlop: Power1 [dbm]
+    plt.plot(data1['Frequency [kHz]'], data1['Power1 [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
+    
+    # Második oszlop: Power2 [dbm]
+    plt.plot(data1['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=line_style[conn], color=color_2, label=label_2)
+    
+    plt.title(title_1)
+    plt.xlabel('Frequency [kHz]')
+    plt.ylabel('Power [dbm]')
+    plt.grid(True)
+    plt.legend()  # Megjeleníti a jelmagyarázatot
+    max_value = int(csv_entries[8].get())
+    min_value = int(csv_entries[9].get())
+    plt.ylim(min_value,max_value)
+    plt.show()
     
 
 def select_csv(file_entry):
@@ -245,7 +272,7 @@ def merge_csv3():
 root = tk.Tk()
 title_text1 = "ULSA post proFessor :) " + version + " by Toja"
 root.title(title_text1)
-root.geometry("380x370")
+root.geometry("380x370+100+100")
 root.resizable(False, False)
 
 connector_selection = tk.IntVar()
