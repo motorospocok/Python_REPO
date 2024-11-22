@@ -4,6 +4,7 @@
 # v1.0 - first  working version
 # v1.1 - Added graph title, legend and color parameters
 # v1.2 - Added function to plot two data diagramm
+# v1.2b - Some minor GUI modification
 
 import os
 import pandas as pd
@@ -14,7 +15,7 @@ from tkinter import messagebox
 from tkinter import Toplevel
 
 global version
-version = "v1.2"
+version = "v1.2b"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -109,13 +110,20 @@ def merge_two():
     merge_window.title("Merge function")
     merge_window.geometry("600x500+500+100")
     merge_window.configure(bg="gray")
+    canvas = tk.Canvas(merge_window, width=600, height=500)
+    canvas.place(x=0, y=0)
+    line1 = canvas.create_line(0,4,600,4, fill="blue", width=2)
+    line2 = canvas.create_line(0,102,600,102, fill="blue", width=2)
+    line3 = canvas.create_line(0,140,600,140, fill="blue", width=2)
+    line4 = canvas.create_line(0,185,600,185, fill="blue", width=2)
+    line4 = canvas.create_line(0,355,600,355, fill="blue", width=2)
     
-    merge_button2 = tk.Button(merge_window, text="Select merged CSV file", state=tk.DISABLED) 
+    merge_button2 = tk.Button(merge_window, text="Sum CSV file", state=tk.DISABLED) 
     merge_button2.place(x=10,y=70)
     merge_button2.bind("<Button-1>", lambda event: merge_csv2())
     
-    generate_button = tk.Button(merge_window, text="Generate merged file", state=tk.DISABLED) 
-    generate_button.place(x=10,y=130)
+    generate_button = tk.Button(merge_window, text="Generate Merged CSV from the two files into SUM CSV ", state=tk.DISABLED) 
+    generate_button.place(x=10,y=108)
     generate_button.bind("<Button-1>", lambda event: merge_csv3())
     
     merge_entry = tk.Entry(merge_window, width=70, justify='left')
@@ -143,30 +151,30 @@ def merge_two():
     mgraph1_title_entry.place(x=150,y=195)
     mgraph1_title_entry.insert(0, "ULSA spectrum on average")
     
-    mgraph1_legend_label = tk.Label(merge_window, text="Graph legend No.1: ")
+    mgraph1_legend_label = tk.Label(merge_window, text="Graph legend No.1: ",bg="lightblue")
     mgraph1_legend_label.place(x=10,y=225)
 
-    mgraph1_legend_entry = tk.Entry(merge_window, width=35)
+    mgraph1_legend_entry = tk.Entry(merge_window, width=35, bg="lightblue")
     mgraph1_legend_entry.place(x=150,y=225)
     mgraph1_legend_entry.insert(0, "ULSA average result 1 [dbm]")
 
-    mgraph1_color_label = tk.Label(merge_window, text="Color of graph No 1.: ")
+    mgraph1_color_label = tk.Label(merge_window, text="Color of graph No 1.: ", bg="lightblue")
     mgraph1_color_label.place(x=10,y=255)
 
-    mspinbox1_graphColor = tk.Spinbox(merge_window, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"))
+    mspinbox1_graphColor = tk.Spinbox(merge_window, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"), bg="lightblue")
     mspinbox1_graphColor.place(x=150,y=255)
     
-    mgraph2_legend_label = tk.Label(merge_window, text="Graph legend No.2: ")
+    mgraph2_legend_label = tk.Label(merge_window, text="Graph legend No.2: ", bg="PeachPuff2")
     mgraph2_legend_label.place(x=10,y=300)
 
-    mgraph2_legend_entry = tk.Entry(merge_window, width=35)
+    mgraph2_legend_entry = tk.Entry(merge_window, width=35, bg="PeachPuff2")
     mgraph2_legend_entry.place(x=150,y=300)
     mgraph2_legend_entry.insert(0, "ULSA average result 2 [dbm]")
 
-    mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ")
+    mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ", bg="PeachPuff2")
     mgraph2_color_label.place(x=10,y=330)
 
-    mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"))
+    mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"), bg="PeachPuff2")
     mspinbox2_graphColor.place(x=150,y=330)
     
     mlabel_max = tk.Label(merge_window, text="Max value of Y-axis")
@@ -285,10 +293,10 @@ entry_var.trace_add("write", enable_ok_button)  # Figyel az Entry mező változ�
 entry = tk.Entry(root, width=35, justify='center', bg='white', fg='black',textvariable=entry_var)
 entry.place(x=120,y=10)
 
-file_button = tk.Button(root, text="Select directory", command=select_file)
+file_button = tk.Button(root, text="Select source CSV files", command=select_file)
 file_button.place(x=130,y=45)
 
-merge_button = tk.Button(root, text="Merge CSV files", command=merge_csv, state=tk.DISABLED)
+merge_button = tk.Button(root, text="Create CSV file with average values", command=merge_csv, state=tk.DISABLED)
 merge_button.place(x=130,y=75)
 
 label_max = tk.Label(root, text="Max value of Y-axis")
