@@ -5,6 +5,7 @@
 # v1.1 - Added graph title, legend and color parameters
 # v1.2 - Added function to plot two data diagramm
 # v1.2b - Some minor GUI modification
+# v1.3 - Redesigned GUI and simplified plotting
 
 import os
 import pandas as pd
@@ -15,7 +16,7 @@ from tkinter import messagebox
 from tkinter import Toplevel
 
 global version
-version = "v1.2b"
+version = "v1.3"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -103,9 +104,15 @@ def plot_graph():
     min_value = int(entry_min.get())
     plt.ylim(min_value,max_value)
     plt.show()
+
     
 def merge_two():
     # Új ablak létrehozása
+    
+    checkbox1_var = tk.BooleanVar()
+    checkbox2_var = tk.BooleanVar()
+    mconnector_selection = tk.IntVar()
+    
     merge_window = Toplevel(root)
     merge_window.title("Merge function")
     merge_window.geometry("600x500+500+100")
@@ -153,6 +160,9 @@ def merge_two():
     
     mgraph1_legend_label = tk.Label(merge_window, text="Graph legend No.1: ",bg="lightblue")
     mgraph1_legend_label.place(x=10,y=225)
+    
+    mcheckbox1 = tk.Checkbutton(merge_window, text="Select Graph 1", variable=checkbox1_var)
+    mcheckbox1.place(x=390,y=223)
 
     mgraph1_legend_entry = tk.Entry(merge_window, width=35, bg="lightblue")
     mgraph1_legend_entry.place(x=150,y=225)
@@ -170,6 +180,9 @@ def merge_two():
     mgraph2_legend_entry = tk.Entry(merge_window, width=35, bg="PeachPuff2")
     mgraph2_legend_entry.place(x=150,y=300)
     mgraph2_legend_entry.insert(0, "ULSA average result 2 [dbm]")
+    
+    mcheckbox2 = tk.Checkbutton(merge_window, text="Select Graph 2", variable=checkbox2_var)
+    mcheckbox2.place(x=390,y=298)
 
     mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ", bg="PeachPuff2")
     mgraph2_color_label.place(x=10,y=330)
@@ -177,32 +190,39 @@ def merge_two():
     mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"), bg="PeachPuff2")
     mspinbox2_graphColor.place(x=150,y=330)
     
+    mradio_button1 = tk.Radiobutton(merge_window, text="Line graph style", variable=mconnector_selection, value=0, bg="gray64")
+    mradio_button1.place(x=10,y=370)
+
+    mradio_button2 = tk.Radiobutton(merge_window, text="Dot graph style", variable=mconnector_selection, value=1, bg="gray64")
+    mradio_button2.place(x=150,y=370)
+    
     mlabel_max = tk.Label(merge_window, text="Max value of Y-axis")
-    mlabel_max.place(x=10,y=380)
+    mlabel_max.place(x=10,y=400)
 
     mentry_max = tk.Entry(merge_window, width=15)
-    mentry_max.place(x=150,y=380)
+    mentry_max.place(x=150,y=400)
     mentry_max.insert(0, "-90")
 
     mlabel_min = tk.Label(merge_window, text="Max value of Y-axis")
-    mlabel_min.place(x=10,y=410)
+    mlabel_min.place(x=10,y=430)
 
     mentry_min = tk.Entry(merge_window, width=15)
-    mentry_min.place(x=150,y=410)
+    mentry_min.place(x=150,y=430)
     mentry_min.insert(0, "-150")
-
-
-    mplot_button = tk.Button(merge_window, text="Plot Graph", command=plot_graph2)
-    mplot_button.place(x=130,y=440)
-        
     
+    mplot_button = tk.Button(merge_window, text="Plot Graph", command=lambda: plot_graph2(checkbox1_var,checkbox2_var,mconnector_selection))
+    mplot_button.place(x=130,y=460)
+        
+    global mcolor_box
+    mcolor_box = [mspinbox1_graphColor, mspinbox2_graphColor]
     global csv_entries
     csv_entries = [csv1_entry, csv2_entry, merge_entry, mgraph1_title_entry, mgraph1_legend_entry, mgraph2_legend_entry, mspinbox1_graphColor, mspinbox2_graphColor, mentry_max, mentry_min]
     global csv_buttons
     csv_buttons = [csv1_button, csv2_button, merge_button2, generate_button]
 
-def plot_graph2():
-    conn = int(connector_selection.get())
+def plot_graph2(graph_selection1,graph_selection2,style_selection):    
+    print(style_selection)
+    conn = int(style_selection.get())
     line_style = ['-',':']
     data_file_name = str(csv_entries[2].get())
     print(data_file_name)
@@ -215,10 +235,18 @@ def plot_graph2():
     color_2 = str(csv_entries[7].get())
     
     # Első oszlop: Power1 [dbm]
-    plt.plot(data1['Frequency [kHz]'], data1['Power1 [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
+    if graph_selection1.get() == 1 and graph_selection2.get() != 1:
+        plt.plot(data1['Frequency [kHz]'], data1['Power1 [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
+        
+    if graph_selection1.get() == 1 and graph_selection2.get() == 1:
+        plt.plot(data1['Frequency [kHz]'], data1['Power1 [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
+        plt.plot(data1['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=line_style[conn], color=color_2, label=label_2)
     
     # Második oszlop: Power2 [dbm]
-    plt.plot(data1['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=line_style[conn], color=color_2, label=label_2)
+    if graph_selection2.get() == 1 and graph_selection1.get() != 1:
+        plt.plot(data1['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=line_style[conn], color=color_2, label=label_2)
+    
+    
     
     plt.title(title_1)
     plt.xlabel('Frequency [kHz]')
@@ -232,7 +260,6 @@ def plot_graph2():
     
 
 def select_csv(file_entry):
-    print("itt vagyok")
     file_path = filedialog.askopenfilename(title="Select CSV file",
                                             filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
     if file_path:  # Ellenőrizzük, hogy választottunk-e                
@@ -280,7 +307,7 @@ def merge_csv3():
 root = tk.Tk()
 title_text1 = "ULSA post proFessor :) " + version + " by Toja"
 root.title(title_text1)
-root.geometry("380x370+100+100")
+root.geometry("380x170+100+100")
 root.resizable(False, False)
 
 connector_selection = tk.IntVar()
@@ -299,51 +326,10 @@ file_button.place(x=130,y=45)
 merge_button = tk.Button(root, text="Create CSV file with average values", command=merge_csv, state=tk.DISABLED)
 merge_button.place(x=130,y=75)
 
-label_max = tk.Label(root, text="Max value of Y-axis")
-label_max.place(x=10,y=105)
 
-entry_max = tk.Entry(root, width=15)
-entry_max.place(x=150,y=105)
-entry_max.insert(0, "-90")
 
-label_min = tk.Label(root, text="Max value of Y-axis")
-label_min.place(x=10,y=135)
-
-entry_min = tk.Entry(root, width=15)
-entry_min.place(x=150,y=135)
-entry_min.insert(0, "-150")
-
-radio_button1 = tk.Radiobutton(root, text="Line graph style", variable=connector_selection, value=0, bg="gray64")
-radio_button1.place(x=10,y=165)
-
-radio_button2 = tk.Radiobutton(root, text="Dot graph style", variable=connector_selection, value=1, bg="gray64")
-radio_button2.place(x=150,y=165)
-
-graph_title_label = tk.Label(root, text="Graph Title")
-graph_title_label.place(x=10,y=195)
-
-graph_title_entry = tk.Entry(root, width=35)
-graph_title_entry.place(x=150,y=195)
-graph_title_entry.insert(0, "ULSA spectrum on average")
-
-graph_legend1_label = tk.Label(root, text="Graph legend No.1: ")
-graph_legend1_label.place(x=10,y=225)
-
-graph_legend1_entry = tk.Entry(root, width=35)
-graph_legend1_entry.place(x=150,y=225)
-graph_legend1_entry.insert(0, "ULSA average result [dbm]")
-
-graph_color_label = tk.Label(root, text="Color of graph No 1.: ")
-graph_color_label.place(x=10,y=255)
-
-spinbox_graphColor = tk.Spinbox(root, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"))
-spinbox_graphColor.place(x=150,y=255)
-
-plot_button = tk.Button(root, text="Plot Graph", command=plot_graph, state=tk.DISABLED)
-plot_button.place(x=130,y=300)
-
-plot_button = tk.Button(root, text="Merge two results", command=merge_two)
-plot_button.place(x=105,y=330)
+plot_button = tk.Button(root, text="Plot Functions", command=merge_two)
+plot_button.place(x=130,y=110)
 
 # Fő ciklus
 root.mainloop()
