@@ -6,6 +6,7 @@
 # v1.2 - Added function to plot two data diagramm
 # v1.2b - Some minor GUI modification
 # v1.3 - Redesigned GUI and simplified plotting
+# v1.4 - Added some minor changes e.g color change of legend
 
 import os
 import pandas as pd
@@ -16,7 +17,7 @@ from tkinter import messagebox
 from tkinter import Toplevel
 
 global version
-version = "v1.3"
+version = "v1.4"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -77,35 +78,16 @@ def merge_csv():
     result.to_csv(csv_path, index=False)
 
     print("The average data is calculated and written into csv file")
-    
-def plot_graph():
-    directory = entry.get()
-    conn = int(connector_selection.get())
-    line_style = ['-',':']
-    data_file_name = os.path.join(directory, 'average_values.csv')    
-    data1 = pd.read_csv(data_file_name, sep=',')
-    plt.figure(figsize=(10, 6))
-    label_1 = str(graph_legend1_entry.get())
-    title_1 = str(graph_title_entry.get())
-    color_1 =str(spinbox_graphColor.get())
-    
-    # Első oszlop: Power1 [dbm]
-    plt.plot(data1['Frequency [kHz]'], data1['Average Power [dbm]'], marker=',', linestyle=line_style[conn], color=color_1, label=label_1)
-    
-    # Második oszlop: Power2 [dbm]
-    #plt.plot(data['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=':', color='red', label='Power2 [dbm]')
-    
-    plt.title(title_1)
-    plt.xlabel('Frequency [kHz]')
-    plt.ylabel('Power [dbm]')
-    plt.grid(True)
-    plt.legend()  # Megjeleníti a jelmagyarázatot
-    max_value = int(entry_max.get())
-    min_value = int(entry_min.get())
-    plt.ylim(min_value,max_value)
-    plt.show()
 
-    
+def color_change():
+     color_1 = str(csv_entries[6].get())
+     color_2 = str(csv_entries[7].get())
+     print(color_1)
+     print(color_2)
+     csv_entries[4].config(fg=color_1)
+     csv_entries[5].config(fg=color_2)
+     
+        
 def merge_two():
     # Új ablak létrehozása
     
@@ -114,7 +96,7 @@ def merge_two():
     mconnector_selection = tk.IntVar()
     
     merge_window = Toplevel(root)
-    merge_window.title("Merge function")
+    merge_window.title("Plot Function")
     merge_window.geometry("600x500+500+100")
     merge_window.configure(bg="gray")
     canvas = tk.Canvas(merge_window, width=600, height=500)
@@ -164,20 +146,20 @@ def merge_two():
     mcheckbox1 = tk.Checkbutton(merge_window, text="Select Graph 1", variable=checkbox1_var)
     mcheckbox1.place(x=390,y=223)
 
-    mgraph1_legend_entry = tk.Entry(merge_window, width=35, bg="lightblue")
+    mgraph1_legend_entry = tk.Entry(merge_window, width=35, fg="blue", bg="white")
     mgraph1_legend_entry.place(x=150,y=225)
     mgraph1_legend_entry.insert(0, "ULSA average result 1 [dbm]")
 
     mgraph1_color_label = tk.Label(merge_window, text="Color of graph No 1.: ", bg="lightblue")
     mgraph1_color_label.place(x=10,y=255)
 
-    mspinbox1_graphColor = tk.Spinbox(merge_window, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"), bg="lightblue")
+    mspinbox1_graphColor = tk.Spinbox(merge_window, values=("blue", "red", "green", "purple", "cyan", "black", "yellow"), bg="lightblue",command=lambda: color_change())
     mspinbox1_graphColor.place(x=150,y=255)
     
     mgraph2_legend_label = tk.Label(merge_window, text="Graph legend No.2: ", bg="PeachPuff2")
     mgraph2_legend_label.place(x=10,y=300)
 
-    mgraph2_legend_entry = tk.Entry(merge_window, width=35, bg="PeachPuff2")
+    mgraph2_legend_entry = tk.Entry(merge_window, width=35, fg="red", bg="white")
     mgraph2_legend_entry.place(x=150,y=300)
     mgraph2_legend_entry.insert(0, "ULSA average result 2 [dbm]")
     
@@ -187,7 +169,7 @@ def merge_two():
     mgraph2_color_label = tk.Label(merge_window, text="Color of graph No 2.: ", bg="PeachPuff2")
     mgraph2_color_label.place(x=10,y=330)
 
-    mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"), bg="PeachPuff2")
+    mspinbox2_graphColor = tk.Spinbox(merge_window, values=("red", "blue", "green", "purple", "cyan", "black", "yellow"), bg="PeachPuff2",command=lambda: color_change())
     mspinbox2_graphColor.place(x=150,y=330)
     
     mradio_button1 = tk.Radiobutton(merge_window, text="Line graph style", variable=mconnector_selection, value=0, bg="gray64")
