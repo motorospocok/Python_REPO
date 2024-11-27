@@ -1,4 +1,4 @@
-# Ulsa post processor file
+# Ulsa post processor file tool
 # Just made several ULSA capture CSV in one directory after start this application and select the directory
 # After merging the average values into one CSV file the graph can be displayed / plotted 
 # v1.0 - first  working version
@@ -7,6 +7,7 @@
 # v1.2b - Some minor GUI modification
 # v1.3 - Redesigned GUI and simplified plotting
 # v1.4 - Added some minor changes e.g color change of legend
+# v1.5 - Target summary file selection option introduced
 
 import os
 import pandas as pd
@@ -17,7 +18,7 @@ from tkinter import messagebox
 from tkinter import Toplevel
 
 global version
-version = "v1.4"
+version = "v1.5"
 
 def select_file():
     # Fájl kiválasztó dialógus megnyitása, CSV fájlok szűrésével
@@ -32,30 +33,29 @@ def enable_ok_button(*args):
     """Aktiválja vagy deaktiválja az OK gombot attól függően, hogy az Entry mező ki van-e töltve."""
     if entry_var.get():  # Ha az Entry mező nem üres
         merge_button.config(state=tk.NORMAL)
-        plot_button.config(state=tk.NORMAL)
+       
     else:
         merge_button.config(state=tk.DISABLED)  # Az OK gomb inaktív
-        plot_button.config(state=tk.DISABLED)
+       
+    
+    if entry2_var.get():
+        csv_target_button.config(state=tk.NORMAL)
+    else:
+        csv_target_button.config(state=tk.DISABLED)
+        
 
 def merge_csv():
     directory = entry.get()
     file_path = os.path.join(directory, "average_values.csv")
-    if os.path.isfile(file_path):
-        try:
-            os.remove(file_path)  # Törölni a fájlt
-            print(f"A '{file_path}' old file is deleted.")
-        except Exception as e:
-            print(f"Error during deleting the file: {e}")
-    else:
-        print(f"A '{file_path}' fájl nem található.")
-    
+  
           
     # Egy üres DataFrame létrehozása az adatok tárolására
-    data = pd.DataFrame()    
+    data = pd.DataFrame() 
+    csv_path = entry2.get()  
 
     # A legtöbb fájl beolvasása a megadott könyvtárból
     for filename in os.listdir(directory):
-        if filename.endswith('.csv'):
+        if filename.endswith('.csv') and filename != csv_path:
             file_path = os.path.join(directory, filename)
             # A CSV fájl beolvasása, az első sort (fejléc) kihagyva
             df = pd.read_csv(file_path, header=0)
@@ -72,8 +72,7 @@ def merge_csv():
     result = pd.DataFrame({
         'Frequency [kHz]': data.iloc[:, 0],  # Az eredeti első oszlop
         'Average Power [dbm]': averages  # Az átlagok
-    })
-    csv_path = os.path.join(directory, "average_values.csv")
+    })    
     # A fejléc kiírása és adatok kiírása egy új CSV fájlba
     result.to_csv(csv_path, index=False)
 
@@ -88,7 +87,7 @@ def color_change():
      csv_entries[5].config(fg=color_2)
      
         
-def merge_two():
+def plot_function():
     # Új ablak létrehozása
     
     checkbox1_var = tk.BooleanVar()
@@ -120,7 +119,7 @@ def merge_two():
     merge_entry.insert(0, "Waiting for generation")
     
     csv1_entry = tk.Entry(merge_window, width=70, justify='left')
-    csv1_entry.place(x=150,y=12)
+    csv1_entry.place(x=150,y=10)
     csv1_entry.insert(0, "Select a CSV file")
     csv1_button = tk.Button(merge_window, text="Select 1st CSV File") 
     csv1_button.place(x=10,y=10)
@@ -227,9 +226,7 @@ def plot_graph2(graph_selection1,graph_selection2,style_selection):
     # Második oszlop: Power2 [dbm]
     if graph_selection2.get() == 1 and graph_selection1.get() != 1:
         plt.plot(data1['Frequency [kHz]'], data1['Power2 [dbm]'], marker=',', linestyle=line_style[conn], color=color_2, label=label_2)
-    
-    
-    
+            
     plt.title(title_1)
     plt.xlabel('Frequency [kHz]')
     plt.ylabel('Power [dbm]')
@@ -240,7 +237,6 @@ def plot_graph2(graph_selection1,graph_selection2,style_selection):
     plt.ylim(min_value,max_value)
     plt.show()
     
-
 def select_csv(file_entry):
     file_path = filedialog.askopenfilename(title="Select CSV file",
                                             filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
@@ -250,8 +246,7 @@ def select_csv(file_entry):
     
     if csv_entries[0] != "Select a CSV file" and csv_entries[1] != "Select a CSV file":
         csv_buttons[2].config(state=tk.NORMAL)
-        
-    
+            
 def merge_csv2():
     file1 = csv_entries[0].get()
     file2 = csv_entries[1].get()
@@ -265,36 +260,31 @@ def merge_csv3():
     file2 = csv_entries[1].get()
     output_file = csv_entries[2].get()
     data1 = pd.read_csv(file1)
-    data2 = pd.read_csv(file2)
-    print(data1)
-    print('------------')
-    print(data2)
-    
-
+    data2 = pd.read_csv(file2)    
     combined_data = pd.DataFrame({
     'Frequency [kHz]': data1.iloc[:, 0],  
     'Power1 [dbm]': data1.iloc[:, 1],
     'Power2 [dbm]': data2.iloc[:, 1]})
-
 # Az új fájl kiírása, a fejléc is szerepel
     combined_data.to_csv(output_file, index=False)
-
     print(f"Az adatok sikeresen kiírásra kerültek a {output_file} fájlba.")    
 
-
+def target_csv():
+    file_path = filedialog.asksaveasfilename(title="Select CSV file",filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+    entry2.delete(0, tk.END)
+    entry2.insert(0, file_path)
     
-        
     
 # Fő ablak létrehozása
 root = tk.Tk()
 title_text1 = "ULSA post proFessor :) " + version + " by Toja"
 root.title(title_text1)
-root.geometry("380x170+100+100")
+root.geometry("380x300+100+100")
 root.resizable(False, False)
 
 connector_selection = tk.IntVar()
 
-label_1 = tk.Label(root, text="Working Directory")
+label_1 = tk.Label(root, text="CSV Files location")
 label_1.place(x=10,y=10)
 
 entry_var = tk.StringVar()
@@ -302,16 +292,27 @@ entry_var.trace_add("write", enable_ok_button)  # Figyel az Entry mező változ�
 entry = tk.Entry(root, width=35, justify='center', bg='white', fg='black',textvariable=entry_var)
 entry.place(x=120,y=10)
 
+label_2 = tk.Label(root, text="Result CSV File")
+label_2.place(x=10,y=30)
+
+entry2_var = tk.StringVar()
+entry2_var.trace_add("write", enable_ok_button)  # Figyel az Entry mező változásaira
+entry2 = tk.Entry(root, width=35, justify='center', bg='white', fg='black',textvariable=entry2_var)
+entry2.place(x=120,y=30)
+
 file_button = tk.Button(root, text="Select source CSV files", command=select_file)
-file_button.place(x=130,y=45)
+file_button.place(x=130,y=65)
 
-merge_button = tk.Button(root, text="Create CSV file with average values", command=merge_csv, state=tk.DISABLED)
-merge_button.place(x=130,y=75)
+merge_button = tk.Button(root, text="Select target CSV file", command=target_csv, state=tk.DISABLED)
+merge_button.place(x=130,y=95)
+
+csv_target_button = tk.Button(root, text="Merge values into target CSV File", command=merge_csv, state=tk.DISABLED)
+csv_target_button.place(x=130,y=130)
 
 
 
-plot_button = tk.Button(root, text="Plot Functions", command=merge_two)
-plot_button.place(x=130,y=110)
+plot_button = tk.Button(root, text="Plot Functions", command=plot_function)
+plot_button.place(x=130,y=170)
 
 # Fő ciklus
 root.mainloop()
